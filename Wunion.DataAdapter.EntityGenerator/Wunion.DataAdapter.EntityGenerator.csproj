@@ -1,0 +1,102 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Globals">
+    <SccProjectName></SccProjectName>
+    <SccProvider></SccProvider>
+    <SccAuxPath></SccAuxPath>
+    <SccLocalPath></SccLocalPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <AssemblyName>WdaEntityGenerator</AssemblyName>
+    <RootNamespace>Wunion.DataAdapter.EntityGenerator</RootNamespace>
+    <ApplicationIcon>CodeBuilder-Icon.ico</ApplicationIcon>
+    <StartupObject>Wunion.DataAdapter.EntityGenerator.Program</StartupObject>
+    <Authors>cnzhnet (巽翎君)</Authors>
+    <Product>Wunion.DataAdapter.EntityGenerator</Product>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NET462</DefineConstants>
+    <OutputPath>bin\Debug</OutputPath>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
+    <DefineConstants>TRACE;NET462</DefineConstants>
+    <OutputPath>bin\Release</OutputPath>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;</DefineConstants>
+    <OutputPath>bin\Debug</OutputPath>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|AnyCPU'">
+    <DefineConstants>TRACE;</DefineConstants>
+    <OutputPath>bin\Release</OutputPath>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <None Remove="app.manifest" />
+    <None Remove="App.config" />
+    <None Remove="Properties\Settings.settings" />
+    <Compile Remove="Views\**" />
+    <EmbeddedResource Remove="Views\**" />
+    <None Remove="Views\**" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+    <Compile Remove="CommandProviders\**" />
+    <Folder Include="Properties\" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.4.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.EntityUtils\Wunion.DataAdapter.NetCore.EntityUtils.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.MySQL\Wunion.DataAdapter.NetCore.MySQL.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.PostgreSQL\Wunion.DataAdapter.NetCore.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.SQLite3\Wunion.DataAdapter.NetCore.SQLite3.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.SQLServer\Wunion.DataAdapter.NetCore.SQLServer.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore\Wunion.DataAdapter.NetCore.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="lang\en-US.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="lang\zh-CN.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

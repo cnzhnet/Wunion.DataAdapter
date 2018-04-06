@@ -1,0 +1,102 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.SQLServer", "Wunion.DataAdapter.NetCore.SQLServer\Wunion.DataAdapter.NetCore.SQLServer.csproj", "{57AAF15F-F1F3-4A02-B917-5DBD53A67941}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore", "Wunion.DataAdapter.NetCore\Wunion.DataAdapter.NetCore.csproj", "{64B73E42-1686-409F-AA48-5EEF1E4895C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.SQLite3", "Wunion.DataAdapter.NetCore.SQLite3\Wunion.DataAdapter.NetCore.SQLite3.csproj", "{8C054897-903F-4F6F-A732-99666990E0FC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wunion.DataAdapter.NetCore", "Wunion.DataAdapter.NetCore", "{14C6E7D3-16BA-44BD-9CB2-94AAE459E1F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.Demo", "Wunion.DataAdapter.NetCore.Demo\Wunion.DataAdapter.NetCore.Demo.csproj", "{6A92989A-DE7D-4DEF-89AD-DA47FA6D728B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wunion.DataAdapter.NetCore.Demos", "Wunion.DataAdapter.NetCore.Demos", "{050C26AA-69B6-47C2-B82A-46D33A970A75}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.Demo.Common", "Wunion.DataAdapter.NetCore.Demo.Common\Wunion.DataAdapter.NetCore.Demo.Common.csproj", "{D8140C7C-E0B3-4359-BE0C-201EA0BFA12F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.Demo.WindowsService", "Wunion.DataAdapter.NetCore.Demo.WindowsService\Wunion.DataAdapter.NetCore.Demo.WindowsService.csproj", "{BE85D20A-45FD-4EE5-99F5-DE8CB20BAF54}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.MySQL", "Wunion.DataAdapter.NetCore.MySQL\Wunion.DataAdapter.NetCore.MySQL.csproj", "{4B3ADE69-823A-4D5F-A4B5-54DEBC006ADB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.EntityUtils", "Wunion.DataAdapter.NetCore.EntityUtils\Wunion.DataAdapter.NetCore.EntityUtils.csproj", "{F778F9A2-5175-42D4-81D0-FF9FAACC602B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wunion.DataAdapter.CodeGenerator", "Wunion.DataAdapter.CodeGenerator", "{6878B861-E6F6-4513-9F6F-35715109771C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.EntityGenerator", "Wunion.DataAdapter.EntityGenerator\Wunion.DataAdapter.EntityGenerator.csproj", "{43862947-6F1A-46E1-9E17-F97EBD965458}"
+	ProjectSection(ProjectDependencies) = postProject
+		{57AAF15F-F1F3-4A02-B917-5DBD53A67941} = {57AAF15F-F1F3-4A02-B917-5DBD53A67941}
+		{4B3ADE69-823A-4D5F-A4B5-54DEBC006ADB} = {4B3ADE69-823A-4D5F-A4B5-54DEBC006ADB}
+		{8C054897-903F-4F6F-A732-99666990E0FC} = {8C054897-903F-4F6F-A732-99666990E0FC}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.PostgreSQL", "Wunion.DataAdapter.NetCore.PostgreSQL\Wunion.DataAdapter.NetCore.PostgreSQL.csproj", "{72D72501-EEB4-4C69-831A-0322B014BA23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57AAF15F-F1F3-4A02-B917-5DBD53A67941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57AAF15F-F1F3-4A02-B917-5DBD53A67941}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57AAF15F-F1F3-4A02-B917-5DBD53A67941}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57AAF15F-F1F3-4A02-B917-5DBD53A67941}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64B73E42-1686-409F-AA48-5EEF1E4895C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64B73E42-1686-409F-AA48-5EEF1E4895C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64B73E42-1686-409F-AA48-5EEF1E4895C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64B73E42-1686-409F-AA48-5EEF1E4895C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C054897-903F-4F6F-A732-99666990E0FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C054897-903F-4F6F-A732-99666990E0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C054897-903F-4F6F-A732-99666990E0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C054897-903F-4F6F-A732-99666990E0FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A92989A-DE7D-4DEF-89AD-DA47FA6D728B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A92989A-DE7D-4DEF-89AD-DA47FA6D728B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A92989A-DE7D-4DEF-89AD-DA47FA6D728B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A92989A-DE7D-4DEF-89AD-DA47FA6D728B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8140C7C-E0B3-4359-BE0C-201EA0BFA12F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8140C7C-E0B3-4359-BE0C-201EA0BFA12F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8140C7C-E0B3-4359-BE0C-201EA0BFA12F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8140C7C-E0B3-4359-BE0C-201EA0BFA12F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE85D20A-45FD-4EE5-99F5-DE8CB20BAF54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE85D20A-45FD-4EE5-99F5-DE8CB20BAF54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE85D20A-45FD-4EE5-99F5-DE8CB20BAF54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE85D20A-45FD-4EE5-99F5-DE8CB20BAF54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B3ADE69-823A-4D5F-A4B5-54DEBC006ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B3ADE69-823A-4D5F-A4B5-54DEBC006ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B3ADE69-823A-4D5F-A4B5-54DEBC006ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B3ADE69-823A-4D5F-A4B5-54DEBC006ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F778F9A2-5175-42D4-81D0-FF9FAACC602B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F778F9A2-5175-42D4-81D0-FF9FAACC602B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F778F9A2-5175-42D4-81D0-FF9FAACC602B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F778F9A2-5175-42D4-81D0-FF9FAACC602B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43862947-6F1A-46E1-9E17-F97EBD965458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43862947-6F1A-46E1-9E17-F97EBD965458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43862947-6F1A-46E1-9E17-F97EBD965458}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{43862947-6F1A-46E1-9E17-F97EBD965458}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{72D72501-EEB4-4C69-831A-0322B014BA23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72D72501-EEB4-4C69-831A-0322B014BA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72D72501-EEB4-4C69-831A-0322B014BA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72D72501-EEB4-4C69-831A-0322B014BA23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{57AAF15F-F1F3-4A02-B917-5DBD53A67941} = {14C6E7D3-16BA-44BD-9CB2-94AAE459E1F5}
+		{64B73E42-1686-409F-AA48-5EEF1E4895C3} = {14C6E7D3-16BA-44BD-9CB2-94AAE459E1F5}
+		{8C054897-903F-4F6F-A732-99666990E0FC} = {14C6E7D3-16BA-44BD-9CB2-94AAE459E1F5}
+		{6A92989A-DE7D-4DEF-89AD-DA47FA6D728B} = {050C26AA-69B6-47C2-B82A-46D33A970A75}
+		{D8140C7C-E0B3-4359-BE0C-201EA0BFA12F} = {050C26AA-69B6-47C2-B82A-46D33A970A75}
+		{BE85D20A-45FD-4EE5-99F5-DE8CB20BAF54} = {050C26AA-69B6-47C2-B82A-46D33A970A75}
+		{4B3ADE69-823A-4D5F-A4B5-54DEBC006ADB} = {14C6E7D3-16BA-44BD-9CB2-94AAE459E1F5}
+		{F778F9A2-5175-42D4-81D0-FF9FAACC602B} = {14C6E7D3-16BA-44BD-9CB2-94AAE459E1F5}
+		{43862947-6F1A-46E1-9E17-F97EBD965458} = {6878B861-E6F6-4513-9F6F-35715109771C}
+		{72D72501-EEB4-4C69-831A-0322B014BA23} = {14C6E7D3-16BA-44BD-9CB2-94AAE459E1F5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {688132EA-40E2-418A-8A7C-A56F8227047F}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+  <string bind-ui="true" key="region-name" value="简体中文（中国）" />
+  <string bind-ui="true" key="MainForm" value="Wunion DataAdapter EntityUtils 代码生成工具" />
+  <string bind-ui="true" key="CaptionTitle" value="代码生成器" />
+  <string bind-ui="true" key="CopyrightText" value="Copyright (C) 巽翎君保留所有权利." />
+  <string bind-ui="true" key="ToolDescription" value="若在设计数据库时没有为表或字段设置备注信息，可以在“注释”一列为生成的代码添加注释信息，同时还可根据需要保存或加载它们." />
+  <string bind-ui="true" key="GroupBoxOptions" value="代码生成选项" />
+  <string bind-ui="true" key="LabelDatabase" value="数据库类型：" />
+  <string bind-ui="true" key="LabelDbConnection" value="数据库连接：" />
+  <string bind-ui="true" key="btn_connect" value="连接(&amp;C)" />
+  <string bind-ui="true" key="LabelNamespace" value="代码命名空间：" />
+  <string bind-ui="true" key="LabelOutputDir" value="代码生成目录：" />
+  <string bind-ui="true" key="btn_outPut" value="浏览(&amp;B)" />
+  <string bind-ui="true" key="GroupBoxTables" value="数据库中的所有表" />
+  <string bind-ui="true" key="DataGridColumnChoose" value="选择" />
+  <string bind-ui="true" key="DataGridColumnTabName" value="表名称" />
+  <string bind-ui="true" key="DataGridColumnTabDescr" value="注释" />
+  <string bind-ui="true" key="DataGridColumnFieldName" value="列名" />
+  <string bind-ui="true" key="DataGridColumnPrimaryKey" value="主键" />
+  <string bind-ui="true" key="DataGridColumnIdentity" value="自增长" />
+  <string bind-ui="true" key="DataGridColumnDataType" value="数据类型" />
+  <string bind-ui="true" key="DataGridColumnAllowNull" value="允许空值" />
+  <string bind-ui="true" key="DataGridColumnDefaultVal" value="默认值" />
+  <string bind-ui="true" key="DataGridColumnFieldDescr" value="列注释" />
+  <string bind-ui="true" key="smi_viewTable" value="查看所有字段" />
+  <string bind-ui="true" key="btn_selectAll" value="全选" />
+  <string bind-ui="true" key="btn_InvertSelection" value="返选" />
+  <string bind-ui="true" key="btn_buildAll" value="生成实体及代理类" />
+  <string bind-ui="true" key="btn_buildEntity" value="仅生成实体类" />
+  <string bind-ui="true" key="btn_buildAgent" value="仅生成代理类" />
+  <string bind-ui="true" key="btn_saveComments" value="保存注释" />
+  <string bind-ui="true" key="btn_loadComments" value="加载注释" />
+  <string bind-ui="true" key="BuildingDialogForm" value="正在生成..." />
+  <string bind-ui="true" key="BuildingDlgTitle" value="正在生成实体及代理类，请稍候......" />
+  <string bind-ui="true" key="TableColumnsForm" value="数据表字段信息" />
+  <string bind-ui="true" key="ColumnsDlgTableName" format="true" value="{0} 表" />
+  <string bind-ui="true" key="ColumnsDlgDescription" value="在此，您可以为该表的字段生成的实体属性编写注释信息。" />
+
+  <string bind-ui="false" key="MsgBoxErrorTitle" value="错误信息" />
+  <string bind-ui="false" key="MsgBoxInfoTitle" value="提示信息" />
+  <string bind-ui="false" key="NullDbConnection" value="未指定数据库连接." />
+  <string bind-ui="false" key="NullCodeService" value="尚未连接到数据库并初始化代码生成服务." />
+  <string bind-ui="false" key="NullOutputDir" value="未设置代码输出目录." />
+  <string bind-ui="false" key="NullCodeNamespace" value="未指定生成代码的命名空间." />
+  <string bind-ui="false" key="NoTableAvailable" value="在数据库中未能找到可用的表." />
+  <string bind-ui="false" key="NoTableSelected" value="没有选择要生成的表." />
+  <string bind-ui="false" key="BuildingCompleted" value="已成功为您生成代码." />
+  <string bind-ui="false" key="CommentsSaveTitle" value="注释保存" />
+  <string bind-ui="false" key="CommentsFileFilter" value="XML注释文档(*.xml)|*.xml" />
+  <string bind-ui="false" key="CommentsLoadTitle" value="加载注释" />
+  <string bind-ui="false" key="BuildingEntiryTitle" value="正在生成实体类，请稍候......" />
+  <string bind-ui="false" key="BuildingAgentTitle" value="正在生成代理类，请稍候......" />
+  <string bind-ui="false" key="BuildingAllTitle" value="正在生成实体及代理类，请稍候......" />
+  <string bind-ui="false" key="BuildingError" value="生成代码时产生错误." />
+  <string bind-ui="false" key="BuildingEntityClass" format="true" value="正在生成实体类：{0}" />
+  <string bind-ui="false" key="BuildingAgentClass" format="true" value="正在生成代理类：{0}Agent" />
+  <string bind-ui="false" key="AgentClassComment" format="true" value="{0}（实体查询代理类）" />
+  <string bind-ui="false" key="BuildingContextClass" format="true" value="正在生成代理类：{0}Context" />
+  <string bind-ui="false" key="ContextClassComment" format="true" value="表示 &lt;see cref=&quot;{0}Agent&quot; /&gt; 类代理的数据表上下文对象类型." />
+  
+  <string bind-ui="false" key="DefaultConstructor" format="true" value="创建一个 &lt;see cref=&quot;{0}.{1}&quot;/&gt; 的对象实例." />
+  <string bind-ui="false" key="EntityAgent.CreateContext()" value="创建该代理类代理的数据表上下文对象." />
+  <string bind-ui="false" key="EntityAgent.CreateContext:Return" value="创建该代理类代理的数据表上下文对象." />
+  <string bind-ui="false" key="TableContext.Select(@selector)" value="查询实体映射的表，并返回实体集合." />
+  <string bind-ui="false" key="TableContext.Select@selector" value="用于返回查询条件的筛选器." />
+  <string bind-ui="false" key="TableContext.Select:Return" value="返回查询查询结果实体集合.." />
+  <string bind-ui="false" key="TableContext.Select(@action)" value="根据复杂的查询条件及分页等行为查询对应的表，并返回数据集合." />
+  <string bind-ui="false" key="TableContext.Select@action" value="用于指定查询条件、分页信息等." />
+  <string bind-ui="false" key="TableContext.Add(@entity,@trans)" value="向数据表中添加一条记录." />
+  <string bind-ui="false" key="TableContext.Add@TEntity" value="数据表对应的实体类型." />
+  <string bind-ui="false" key="TableContext.Add@entity" value="实体对象." />
+  <string bind-ui="false" key="TableContext.Add@trans" value="写事务的事务控制器." />
+  <string bind-ui="false" key="TableContext.Add:Exception" value="当新增数据出错时引发该异常." />
+  <string bind-ui="false" key="TableContext.Update(@entity,@func)" value="更新数据表中的记录." />
+  <string bind-ui="false" key="TableContext.Update@entity" value="实体对象." />
+  <string bind-ui="false" key="TableContext.Update@func" value="用于创建更新条件." />
+  <string bind-ui="false" key="TableContext.Update:ArgumentNullException" value="当必备的参数为空时引发此异常." />
+  <string bind-ui="false" key="TableContext.Update:Exception" value="当执行更新时产生错误时引发此异常." />
+  <string bind-ui="false" key="TableContext.Update:Return" value="返回受影响的记录数." />
+  <string bind-ui="false" key="TableContext.Update(@trans,@entity,@func)" value="在事务中更新数据表中的记录." />
+  <string bind-ui="false" key="TableContext.Update@trans" value="事务控制器." />
+  
+  <string bind-ui="false" key="CommandLine_Name" value="Wunion DataAdapter 代码生成工具(跨平台)" />
+  <string bind-ui="false" key="VersionDisplay" format="true" value="版本: {0}" />
+  <string bind-ui="false" key="LocaleDisplay" format="true" value="语言环境: {0}" />
+  <string bind-ui="false" key="EnterPrompt" value="命令>: " />
+  <string bind-ui="false" key="CommandNotFound" format="true" value="错误：未找到命令 &quot;{0}&quot;." />
+  <string bind-ui="false" key="DatabaseConnected" value="成功连接到数据库." />
+  <string bind-ui="false" key="AlreadySetOption" format="true" value="{0} 已设置." />
+  <string bind-ui="false" key="DoNothing" value="未做任何处理." />
+</strings> 

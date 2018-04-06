@@ -1,0 +1,10 @@
+{
+  "netstandard": {
+    "file": "Wunion.DataAdapter.NetCore.1.0.2.Src.zip",
+    "count": 3
+  },
+  "net4x": {
+    "file": "Wunion.DataAdapter.Kernel.2.0.2.Src.zip",
+    "count": 2
+  }
+}

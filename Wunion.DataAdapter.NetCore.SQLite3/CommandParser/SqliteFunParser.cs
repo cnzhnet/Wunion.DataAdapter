@@ -1,0 +1,84 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using Wunion.DataAdapter.Kernel.CommandBuilders;
+using Wunion.DataAdapter.Kernel.CommandParser;
+
+namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
+{
+    /// <summary>
+    /// SQLite 的函数解释器。
+    /// </summary>
+    public class SqliteFunParser : FunParser
+    {
+        /// <summary>
+        /// 所属的父级适配器。
+        /// </summary>
+        /// <param name="adapter">所属的父级适配器。</param>
+        public SqliteFunParser(ParserAdapter adapter) : base(adapter)
+        { }
+
+        /// <summary>
+        /// Now 函数解释。
+        /// </summary>
+        /// <param name="D"></param>
+        /// <param name="DbParameters"></param>
+        /// <returns></returns>
+        protected override string NowParsing(FunDescription D, ref List<IDbDataParameter> DbParameters)
+        {
+            return "DATETIME(CURRENT_TIMESTAMP, 'localtime')";
+        }
+
+        /// <summary>
+        /// Len 函数解释。
+        /// </summary>
+        /// <param name="D"></param>
+        /// <param name="DbParameters"></param>
+        /// <returns></returns>
+        protected override string LenParsing(FunDescription D, ref List<IDbDataParameter> DbParameters)
+        {
+            if (D.Parameter is IDescription)
+            {
+                IDescription desObject = (IDescription)(D.Parameter);
+                desObject.DescriptionParserAdapter = D.DescriptionParserAdapter;
+                string buf = desObject.GetParser().Parsing(ref DbParameters);
+                if (buf[0] == (char)0x20)
+                    buf = buf.Remove(0, 1);
+                return string.Format("LENGTH({0})", buf);
+            }
+            else
+            {
+                IDbDataParameter p = Adapter.CreateDbParameter("uf_len_param", D.Parameter);
+                AddDbParameter(ref DbParameters, p);
+                return string.Format("LENGTH({0})", p.ParameterName);
+            }
+        }
+
+        /// <summary>
+        /// Substring 函数解释。
+        /// </summary>
+        /// <param name="D"></param>
+        /// <param name="DbParameters"></param>
+        /// <returns></returns>
+        protected override string SubstringParsing(FunDescription D, ref List<IDbDataParameter> DbParameters)
+        {
+            object[] ps = (object[])D.Parameter;
+            if (ps[0] is IDescription)
+            {
+                IDescription desObject = (IDescription)ps[0];
+                desObject.DescriptionParserAdapter = D.DescriptionParserAdapter;
+                string buf = desObject.GetParser().Parsing(ref DbParameters);
+                if (buf[0] == (char)0x20)
+                    buf = buf.Remove(0, 1);
+                return string.Format("SUBSTR({0}, {1}, {2})", buf, ps[1], ps[2]);
+            }
+            else
+            {
+                IDbDataParameter p = Adapter.CreateDbParameter("uf_substring", ps[0]);
+                AddDbParameter(ref DbParameters, p);
+                return string.Format("SUBSTR({0}, {1}, {2})", p.ParameterName, ps[1], ps[2]);
+            }
+        }
+    }
+}

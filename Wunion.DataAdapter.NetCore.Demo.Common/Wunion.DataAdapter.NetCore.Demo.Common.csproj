@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName></SccProjectName>
+    <SccProvider></SccProvider>
+    <SccAuxPath></SccAuxPath>
+    <SccLocalPath></SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Wunion.DataAdapter.NetCore.Demo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="ResourceFiles\lib\CryptoJS\enc-base64-min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.MySQL\Wunion.DataAdapter.NetCore.MySQL.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.PostgreSQL\Wunion.DataAdapter.NetCore.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.SQLite3\Wunion.DataAdapter.NetCore.SQLite3.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.SQLServer\Wunion.DataAdapter.NetCore.SQLServer.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore\Wunion.DataAdapter.NetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ResourceFiles\js\About.Change.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="ResourceFiles\js\About.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="ResourceFiles\lib\bootstrap\bootstrap-table-zh-CN.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="ResourceFiles\lib\bootstrap\bootstrap-table.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="ResourceFiles\lib\bootstrap\bootstrap-table.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="ResourceFiles\lib\CryptoJS\CryptoJS-core-min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="ResourceFiles\lib\jquery\jquery.dataTables.min.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

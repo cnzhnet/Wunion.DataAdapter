@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Wunion.DataAdapter.EntityGenerator": {
+      "commandName": "Project"
+    }
+  }
+}

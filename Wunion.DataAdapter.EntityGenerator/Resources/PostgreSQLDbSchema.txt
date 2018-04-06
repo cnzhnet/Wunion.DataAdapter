@@ -1,0 +1,13 @@
+﻿select 
+	cols.table_name as tableName, 
+	cols.column_name as paramName, 
+	case cols.is_nullable when 'YES' then true else false end allowNull, 
+	cols.data_type, 
+	cols.udt_name as dbType,
+	case pkt.constraint_type when 'PRIMARY KEY' then true else false end isPrimary,
+	case when position('nextval(' in cols.column_default) > 0 then true else false end isIdentity 
+from 
+	information_schema.columns cols 
+	left join (select tc.constraint_type,tc.table_name,tc.constraint_name,ccu.column_name from information_schema.table_constraints tc inner join information_schema.constraint_column_usage ccu on ccu.constraint_name=tc.constraint_name where tc.constraint_schema='public' and tc.constraint_type='PRIMARY KEY') 
+		pkt on cols.column_name=pkt.column_name and cols.table_name=pkt.table_name 
+where cols.table_schema = 'public'

@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName></SccProjectName>
+    <SccProvider></SccProvider>
+    <SccAuxPath></SccAuxPath>
+    <SccLocalPath></SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Wunion.DataAdapter.Kernel.MySQL</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Wunion.DataAdapter.NetCore 的 MySQL 数据库支持包。
+1.0.2、更进Wunion.DataAdapter.NetCore 1.0.3解释适配器的新模式支持</Description>
+    <Authors>cnzhnet(巽翎君)</Authors>
+    <Company />
+    <PackageProjectUrl>http://code.wunion.net:4393</PackageProjectUrl>
+    <Copyright>cnzhnet</Copyright>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Wunion.DataAdapter.NetCore.MySQL.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Wunion.DataAdapter.NetCore.MySQL.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pomelo.Data.MySql" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore\Wunion.DataAdapter.NetCore.csproj" />
+  </ItemGroup>
+
+</Project>

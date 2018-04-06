@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName></SccProjectName>
+    <SccProvider></SccProvider>
+    <SccAuxPath></SccAuxPath>
+    <SccLocalPath></SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>cnzhnet(巽翎君)</Authors>
+    <Description>Wunion.DataAdapter.NetCore 的 PostgreSQL 数据库支持包。
+该包在 PostgreSQL 10 环境测试通过.</Description>
+    <Copyright>cnzhnet</Copyright>
+    <PackageProjectUrl>http://code.wunion.net:4393</PackageProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Wunion.DataAdapter.NetCore.PostgreSQL.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Wunion.DataAdapter.NetCore.PostgreSQL.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="3.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore\Wunion.DataAdapter.NetCore.csproj" />
+  </ItemGroup>
+
+</Project>

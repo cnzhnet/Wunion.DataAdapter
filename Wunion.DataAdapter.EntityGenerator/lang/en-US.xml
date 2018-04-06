@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+  <string bind-ui="true" key="region-name" value="English (United States)" />
+  <string bind-ui="true" key="MainForm" value="Wunion DataAdapter EntityUtils Coder" />
+  <string bind-ui="true" key="CaptionTitle" value="CodeGenerator" />
+  <string bind-ui="true" key="CopyrightText" value="Copyright (C) cnzhnet all rights reserved." />
+  <string bind-ui="true" key="ToolDescription" value="If you did not set the comments for a table or field when you designed the database, you can add comments to the generated code in the &quot;Comments&quot; column, and you can also save or load them as needed." />
+  <string bind-ui="true" key="GroupBoxOptions" value="Generator options" />
+  <string bind-ui="true" key="LabelDatabase" value="Database:" />
+  <string bind-ui="true" key="LabelDbConnection" value="Db Connection:" />
+  <string bind-ui="true" key="btn_connect" value="Connect(&amp;C)" />
+  <string bind-ui="true" key="LabelNamespace" value="Code namespace:" />
+  <string bind-ui="true" key="LabelOutputDir" value="Code Output:" />
+  <string bind-ui="true" key="btn_outPut" value="Browse(&amp;B)" />
+  <string bind-ui="true" key="GroupBoxTables" value="All tables in the database" />
+  <string bind-ui="true" key="DataGridColumnChoose" value="Choose" />
+  <string bind-ui="true" key="DataGridColumnTabName" value="Table name" />
+  <string bind-ui="true" key="DataGridColumnTabDescr" value="Comments" />
+  <string bind-ui="true" key="DataGridColumnFieldName" value="Column name" />
+  <string bind-ui="true" key="DataGridColumnPrimaryKey" value="PK" />
+  <string bind-ui="true" key="DataGridColumnIdentity" value="Identity" />
+  <string bind-ui="true" key="DataGridColumnDataType" value="Data type" />
+  <string bind-ui="true" key="DataGridColumnAllowNull" value="Allow null" />
+  <string bind-ui="true" key="DataGridColumnDefaultVal" value="Default val" />
+  <string bind-ui="true" key="DataGridColumnFieldDescr" value="Comments" />
+  <string bind-ui="true" key="smi_viewTable" value="Table fields details" />
+  <string bind-ui="true" key="btn_selectAll" value="Select all" />
+  <string bind-ui="true" key="btn_InvertSelection" value="Invert selection" />
+  <string bind-ui="true" key="btn_buildAll" value="Build all class" />
+  <string bind-ui="true" key="btn_buildEntity" value="Build entity class" />
+  <string bind-ui="true" key="btn_buildAgent" value="Build agent class" />
+  <string bind-ui="true" key="btn_saveComments" value="Save comments" />
+  <string bind-ui="true" key="btn_loadComments" value="Load comments" />
+  <string bind-ui="true" key="BuildingDialogForm" value="Building code..." />
+  <string bind-ui="true" key="BuildingDlgTitle" value="Building all class now, please wait......" />
+  <string bind-ui="true" key="TableColumnsForm" value="Table columns details" />
+  <string bind-ui="true" key="ColumnsDlgTableName" format="true" value="Table {0}" />
+  <string bind-ui="true" key="ColumnsDlgDescription" value="Here, you can write comments for the fields generated code by the table." />
+
+  <string bind-ui="false" key="MsgBoxErrorTitle" value="Error Message." />
+  <string bind-ui="false" key="MsgBoxInfoTitle" value="Prompt Message." />
+  <string bind-ui="false" key="NullDbConnection" value="No set connection for the Database." />
+  <string bind-ui="false" key="NullCodeService" value="No connect to the database, Can't to initialize code generation service." />
+  <string bind-ui="false" key="NullOutputDir" value="No set the codes output directory." />
+  <string bind-ui="false" key="NullCodeNamespace" value="No set namespace for codes." />
+  <string bind-ui="false" key="NoTableAvailable" value="Failed to find the available table in the database." />
+  <string bind-ui="false" key="NoTableSelected" value="no choice for the table to be build code." />
+  <string bind-ui="false" key="BuildingCompleted" value="Successfully generated codes for you." />
+  <string bind-ui="false" key="CommentsSaveTitle" value="Save Comments" />
+  <string bind-ui="false" key="CommentsFileFilter" value="XML comments document(*.xml)|*.xml" />
+  <string bind-ui="false" key="CommentsLoadTitle" value="Load Comments" />
+  <string bind-ui="false" key="BuildingEntiryTitle" value="Building entity class, please wait......" />
+  <string bind-ui="false" key="BuildingAgentTitle" value="Building agent class, please wait......" />
+  <string bind-ui="false" key="BuildingAllTitle" value="Building all class, please wait......" />
+  <string bind-ui="false" key="BuildingError" value="Error building code." />
+  <string bind-ui="false" key="BuildingEntityClass" format="true" value="Building entity class: {0}" />
+  <string bind-ui="false" key="BuildingAgentClass" format="true" value="Building agent class: {0}Agent" />
+  <string bind-ui="false" key="AgentClassComment" format="true" value="{0}(entity query agent class)" />
+  <string bind-ui="false" key="BuildingContextClass" format="true" value="Building mapper class: {0}Context" />
+  <string bind-ui="false" key="ContextClassComment" format="true" value="The table context object type of the &lt;see cref=&quot;{0}Agent&quot; /&gt; agent." />
+  
+  <string bind-ui="false" key="DefaultConstructor" format="true" value="Create a &lt;see cref=&quot;{0}.{1}&quot; /&gt; object instance." />
+  <string bind-ui="false" key="EntityAgent.CreateContext()" value="Create table context object for this agent class." />
+  <string bind-ui="false" key="EntityAgent.CreateContext:Return" value="Return a table context object for this agent class." />
+  <string bind-ui="false" key="TableContext.Select(@selector)" value="Query the entity-mapped table and return a entity collection." />
+  <string bind-ui="false" key="TableContext.Select@selector" value="To return query conditions." />
+  <string bind-ui="false" key="TableContext.Select:Return" value="Return a entity collection." />
+  <string bind-ui="false" key="TableContext.Select(@action)" value="Query the corresponding table according to complex query conditions and paging behavior." />
+  <string bind-ui="false" key="TableContext.Select@action" value="Specify query conditions, paging information, etc." />
+  <string bind-ui="false" key="TableContext.Add(@entity,@trans)" value="Add a new record to the table." />
+  <string bind-ui="false" key="TableContext.Add@TEntity" value="Entity type corresponding to the table." />
+  <string bind-ui="false" key="TableContext.Add@entity" value="Entity object." />
+  <string bind-ui="false" key="TableContext.Add@trans" value="Controller of the write transaction." />
+  <string bind-ui="false" key="TableContext.Add:Exception" value="This exception is raised when add data error occurs." />
+  <string bind-ui="false" key="TableContext.Update(@entity,@func)" value="Update records to the table." />
+  <string bind-ui="false" key="TableContext.Update@entity" value="Entity object." />
+  <string bind-ui="false" key="TableContext.Update@func" value="Used to create update conditions." />
+  <string bind-ui="false" key="TableContext.Update:ArgumentNullException" value="Raised this exception when the required argument is null." />
+  <string bind-ui="false" key="TableContext.Update:Exception" value="When an error occurs while execute an update." />
+  <string bind-ui="false" key="TableContext.Update:Return" value="Returns the number of records affected." />
+  <string bind-ui="false" key="TableContext.Update(@trans,@entity,@func)" value="Update records to table in a transaction." />
+  <string bind-ui="false" key="TableContext.Update@trans" value="Controller of the write transaction." />
+
+  <string bind-ui="false" key="CommandLine_Name" value="Wunion DataAdapter Code Generator for Cross-platform" />
+  <string bind-ui="false" key="VersionDisplay" format="true" value="Version: {0}" />
+  <string bind-ui="false" key="LocaleDisplay" format="true" value="Locale: {0}" />
+  <string bind-ui="false" key="EnterPrompt" value="Command>: " />
+  <string bind-ui="false" key="CommandNotFound" format="true" value="Error: Command &quot;{0}&quot; not found." />
+  <string bind-ui="false" key="DatabaseConnected" value="Successfully connected to the database." />
+  <string bind-ui="false" key="AlreadySetOption" format="true" value="Already set {0}." />
+  <string bind-ui="false" key="DoNothing" value="Do nothing." />
+</strings>
