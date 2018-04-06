@@ -18,7 +18,7 @@ SQLite3
 
 
 更多信息请阅读 Documents 目录下的开发人员文档 <br />
-For more information, please read the developers documentation in the documents directory.
+For more information, please read the developers documentation in the "Documents" directory.
 
 
 右键点击项目打开“管理NuGet程序包”，并搜索关键字 “Wunion.DataAdapter.NetCore” 安装相应的包，您也可以自行编译nuget包发布到自己的Nuget服务器上。<br />
