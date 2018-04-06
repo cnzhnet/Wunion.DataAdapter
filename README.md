@@ -2,7 +2,7 @@
 巽翎君的开源代码库
 
 轻量级的.NET跨平台数据库查询组件库.<br />
-Lightweight. NET cross-platform database query component library.
+Lightweight .NET cross-platform database query component library.
 
 
 <strong>兼容性(Compatibility) :</strong><br />
