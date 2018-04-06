@@ -21,8 +21,5 @@ SQLite3
 For more information, please read the developers documentation in the documents directory.
 
 
-在您的项目中引由开发者发布的Nuget包 <br />
-using nuget packages published by author in your project
-
 右键点击项目打开“管理NuGet程序包”，并搜索关键字 “Wunion.DataAdapter.NetCore” 安装相应的包，您也可以自行编译nuget包发布到自己的Nuget服务器上。<br />
 Right-click on your project open the NuGet Package Manager, Search keyword: "Wunion.DataAdapter.NetCore" for installation. And you can also compile and publish your own NuGet package to your own NuGet server
