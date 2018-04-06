@@ -5,12 +5,12 @@
 Lightweight. NET cross-platform database query component library.
 
 
-兼容性(Compatibility) :<br />
+<strong>兼容性(Compatibility) :</strong><br />
 .NET Framework >= 4.6.1 <br />
 .NET Core >= 2.0 <br />
 
 
-数据库支持 (Supported databases)：<br/>
+<strong>数据库支持 (Supported databases)：</strong><br/>
 Microsoft SQL Server <br />
 PostgreSQL <br />
 MySQL <br />
