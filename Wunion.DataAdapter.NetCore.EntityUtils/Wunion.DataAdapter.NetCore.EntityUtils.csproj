@@ -14,10 +14,12 @@
     <Description>Wunion.DataAdapter.NetCore 的实体查询支持库.
 配套代码生成器：WdaEntityGenerator</Description>
     <Copyright>cnzhnet</Copyright>
-    <PackageProjectUrl>http://code.wunion.net:4393</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
     <PackageReleaseNotes></PackageReleaseNotes>
     <RootNamespace>Wunion.DataAdapter.EntityUtils</RootNamespace>
     <Authors>cnzhnet(巽翎君)</Authors>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

@@ -21,9 +21,10 @@
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <Copyright>cnzhnet</Copyright>
-    <PackageProjectUrl>http://code.wunion.net:4393</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
     <PackageReleaseNotes>该组件为开源项目，目前完全免费。所有该组件的原生代码版权为开发者本人所有，任何企业及个人皆可免费使用，但除开发者外禁止任何企业以及个人以任何形式将组件的源代码纳入自己的知识产权范围。使用该组件源引起的任何商业或利益上的损失、风险以及任何刑事或民事纠纷一概由使用者自行承担。</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageIconUrl>https://github.com/cnzhnet/LingOpenSource</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

@@ -3,3 +3,11 @@
 ################################################################################
 
 /.vs/Wunion.DataAdapter.NetCore/v15/Server/sqlite3
+/Wunion.DataAdapter.EntityGenerator/bin/Debug/net462
+/Wunion.DataAdapter.EntityGenerator/obj/Debug/net462/WdaEntityGenerator.exe
+/Wunion.DataAdapter.EntityGenerator/obj/Debug/net462/WdaEntityGenerator.exe.config
+/Wunion.DataAdapter.EntityGenerator/obj/Debug/net462/WdaEntityGenerator.pdb
+*.CopyComplete
+/Wunion.DataAdapter.EntityGenerator/obj/Debug/net462/Wunion.DataAdapter.EntityGenerator.csproj.FileListAbsolute.txt
+/Wunion.DataAdapter.EntityGenerator/obj/Debug/net462/Wunion.DataAdapter.EntityGenerator.csproj.GenerateResource.cache
+/Wunion.DataAdapter.EntityGenerator/obj/Release/net462

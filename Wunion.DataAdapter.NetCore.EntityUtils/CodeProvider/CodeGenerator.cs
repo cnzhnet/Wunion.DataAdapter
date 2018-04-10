@@ -75,7 +75,7 @@ namespace Wunion.DataAdapter.EntityUtils.CodeProvider
             builder.AppendLine("using System;");
             builder.AppendLine("using System.Collections.Generic;");
             builder.AppendLine("using System.Text;");
-            builder.AppendLine("using Wunion.DataAdapter.EntityUtils");
+            builder.AppendLine("using Wunion.DataAdapter.EntityUtils;");
             return builder.ToString();
         }
 

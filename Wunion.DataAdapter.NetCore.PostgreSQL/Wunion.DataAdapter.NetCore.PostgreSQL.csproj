@@ -14,7 +14,8 @@
     <Description>Wunion.DataAdapter.NetCore 的 PostgreSQL 数据库支持包。
 该包在 PostgreSQL 10 环境测试通过.</Description>
     <Copyright>cnzhnet</Copyright>
-    <PackageProjectUrl>http://code.wunion.net:4393</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
