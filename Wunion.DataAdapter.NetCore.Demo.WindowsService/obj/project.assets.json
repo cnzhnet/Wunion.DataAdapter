@@ -2267,7 +2267,7 @@
           "Wunion.DataAdapter.NetCore.MySQL": "1.0.2",
           "Wunion.DataAdapter.NetCore.PostgreSQL": "1.0.0",
           "Wunion.DataAdapter.NetCore.SQLServer": "1.0.2",
-          "Wunion.DataAdapter.NetCore.SQLite3": "1.0.2"
+          "Wunion.DataAdapter.NetCore.SQLite3": "1.0.2.1"
         },
         "compile": {
           "bin/placeholder/Wunion.DataAdapter.NetCore.Demo.Common.dll": {}
@@ -2304,7 +2304,7 @@
           "bin/placeholder/Wunion.DataAdapter.NetCore.PostgreSQL.dll": {}
         }
       },
-      "Wunion.DataAdapter.NetCore.SQLite3/1.0.2": {
+      "Wunion.DataAdapter.NetCore.SQLite3/1.0.2.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
@@ -4453,7 +4453,7 @@
           "Wunion.DataAdapter.NetCore.MySQL": "1.0.2",
           "Wunion.DataAdapter.NetCore.PostgreSQL": "1.0.0",
           "Wunion.DataAdapter.NetCore.SQLServer": "1.0.2",
-          "Wunion.DataAdapter.NetCore.SQLite3": "1.0.2"
+          "Wunion.DataAdapter.NetCore.SQLite3": "1.0.2.1"
         },
         "compile": {
           "bin/placeholder/Wunion.DataAdapter.NetCore.Demo.Common.dll": {}
@@ -4490,7 +4490,7 @@
           "bin/placeholder/Wunion.DataAdapter.NetCore.PostgreSQL.dll": {}
         }
       },
-      "Wunion.DataAdapter.NetCore.SQLite3/1.0.2": {
+      "Wunion.DataAdapter.NetCore.SQLite3/1.0.2.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
@@ -8577,7 +8577,7 @@
       "path": "../Wunion.DataAdapter.NetCore.PostgreSQL/Wunion.DataAdapter.NetCore.PostgreSQL.csproj",
       "msbuildProject": "../Wunion.DataAdapter.NetCore.PostgreSQL/Wunion.DataAdapter.NetCore.PostgreSQL.csproj"
     },
-    "Wunion.DataAdapter.NetCore.SQLite3/1.0.2": {
+    "Wunion.DataAdapter.NetCore.SQLite3/1.0.2.1": {
       "type": "project",
       "path": "../Wunion.DataAdapter.NetCore.SQLite3/Wunion.DataAdapter.NetCore.SQLite3.csproj",
       "msbuildProject": "../Wunion.DataAdapter.NetCore.SQLite3/Wunion.DataAdapter.NetCore.SQLite3.csproj"
