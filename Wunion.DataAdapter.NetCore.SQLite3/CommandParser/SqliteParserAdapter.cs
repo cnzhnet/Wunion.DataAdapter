@@ -34,6 +34,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
         {
             base.InitializeParsers();
             Put(typeof(FunDescription), new SqliteFunParser(this));
+            Put(typeof(LikeDescription), new SqliteLikeParser(this));
             Put(typeof(SelectBlock), new SqliteSelectBlockParser(this));
         }
 
