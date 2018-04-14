@@ -301,7 +301,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "restore": {
       "projectUniqueName": "D:\\Documents\\Visual Studio 2017\\Projects\\Wunion.DataAdapter.NetCore\\Wunion.DataAdapter.NetCore.EntityUtils\\Wunion.DataAdapter.NetCore.EntityUtils.csproj",
       "projectName": "Wunion.DataAdapter.NetCore.EntityUtils",

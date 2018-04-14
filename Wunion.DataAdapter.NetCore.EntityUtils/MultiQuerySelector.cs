@@ -195,6 +195,17 @@ namespace Wunion.DataAdapter.EntityUtils
         /// <returns></returns>
         public object QueryScalar(Func<AgentBufferItem[], object[]> func)
         {
+            // 接收 Lambda 表达式返回的查询字段，并添加到 SELECT 命令中.
+            // 使用 object[] 的目的为向外隐藏 IDescription 接口
+            object[] fields = func(Agents.ToArray());
+            int insIndex = sBlock.Blocks.IndexOf(fBlock);
+            IDescription descr;
+            foreach (object desObject in fields)
+            {
+                descr = desObject as IDescription;
+                if (descr != null) // 当返回的字段元素非 IDescription 对象时忽略它（否则命令解无法解释）.
+                    sBlock.Blocks.Insert(insIndex++, descr); // 此时应在 SELECT 命令中的 FROM 子句前插入字段元素，否则解释出的 SQL 命令将会是错误的.
+            }
             return ReadEngine.ExecuteScalar(Command);
         }
 

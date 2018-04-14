@@ -227,7 +227,7 @@
           "bin/placeholder/Wunion.DataAdapter.NetCore.dll": {}
         }
       },
-      "Wunion.DataAdapter.NetCore.EntityUtils/1.0.0": {
+      "Wunion.DataAdapter.NetCore.EntityUtils/1.0.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
@@ -492,7 +492,7 @@
           "bin/placeholder/Wunion.DataAdapter.NetCore.dll": {}
         }
       },
-      "Wunion.DataAdapter.NetCore.EntityUtils/1.0.0": {
+      "Wunion.DataAdapter.NetCore.EntityUtils/1.0.1": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
@@ -930,7 +930,7 @@
       "path": "../Wunion.DataAdapter.NetCore/Wunion.DataAdapter.NetCore.csproj",
       "msbuildProject": "../Wunion.DataAdapter.NetCore/Wunion.DataAdapter.NetCore.csproj"
     },
-    "Wunion.DataAdapter.NetCore.EntityUtils/1.0.0": {
+    "Wunion.DataAdapter.NetCore.EntityUtils/1.0.1": {
       "type": "project",
       "path": "../Wunion.DataAdapter.NetCore.EntityUtils/Wunion.DataAdapter.NetCore.EntityUtils.csproj",
       "msbuildProject": "../Wunion.DataAdapter.NetCore.EntityUtils/Wunion.DataAdapter.NetCore.EntityUtils.csproj"
@@ -960,7 +960,7 @@
     ".NETFramework,Version=v4.6.2": [
       "System.Data.SqlClient >= 4.4.2",
       "Wunion.DataAdapter.NetCore >= 1.0.3.1",
-      "Wunion.DataAdapter.NetCore.EntityUtils >= 1.0.0",
+      "Wunion.DataAdapter.NetCore.EntityUtils >= 1.0.1",
       "Wunion.DataAdapter.NetCore.MySQL >= 1.0.2",
       "Wunion.DataAdapter.NetCore.PostgreSQL >= 1.0.0",
       "Wunion.DataAdapter.NetCore.SQLServer >= 1.0.2",

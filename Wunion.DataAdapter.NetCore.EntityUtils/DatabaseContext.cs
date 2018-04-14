@@ -65,17 +65,16 @@ namespace Wunion.DataAdapter.EntityUtils
             int result = 0;
             if (trans == null)
             {
+                result = WriteEngine.ExecuteNoneQuery(Command);
+                if (result < 0 && WriteEngine.DBA.Error != null)
+                    throw new Exception(WriteEngine.DBA.Error.Message);                
+            }
+            else
+            {
                 trans.DBA.Errors.Clear();
                 result = trans.DBA.ExecuteNoneQuery(Command);
                 if (result < 0 && trans.DBA.Errors.Count > 0)
                     throw new Exception(trans.DBA.Errors[0].Message);
-            }
-            else
-            {
-                result = WriteEngine.ExecuteNoneQuery(Command);
-                if (result < 0 && WriteEngine.DBA.Error != null)
-                    throw new Exception(WriteEngine.DBA.Error.Message);
-
             }
             return result;
         }
