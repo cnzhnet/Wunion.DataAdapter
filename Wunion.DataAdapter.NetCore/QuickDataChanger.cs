@@ -161,7 +161,10 @@ namespace Wunion.DataAdapter.Kernel
             foreach (KeyValuePair<string, object> item in data)
             {
                 Fields.Add(td.Field(item.Key));
-                Values.Add(item.Value);
+                if (item.Value == null)
+                    Values.Add(DBNull.Value);
+                else
+                    Values.Add(item.Value);
             }
             DbCommandBuilder Command = new DbCommandBuilder();
             Command.Insert(fm.Table(TableName), Fields.ToArray()).Values(Values.ToArray());
@@ -181,7 +184,12 @@ namespace Wunion.DataAdapter.Kernel
         {
             List<IDescription> expressions = new List<IDescription>();
             foreach (KeyValuePair<string, object> item in data)
-                expressions.Add(td.Field(item.Key) == item.Value);
+            {
+                if (item.Value == null)
+                    expressions.Add(td.Field(item.Key) == DBNull.Value);
+                else
+                    expressions.Add(td.Field(item.Key) == item.Value);
+            }
             DbCommandBuilder Command = new DbCommandBuilder();
             if (Conditions != null)
                 Command.Update(fm.Table(TableName)).Set(expressions.ToArray()).Where(Conditions.ToArray());
@@ -265,7 +273,12 @@ namespace Wunion.DataAdapter.Kernel
                         foreach (SpeedDataColumn c in Row.Table.Columns)
                         {
                             if (!NotInsertFieldsContains(rowSubmission, c.Name))
-                                expressions.Add(td.Field(c.Name) == Row[c.Name]);
+                            {
+                                if (Row[c.Name] == null)
+                                    expressions.Add(td.Field(c.Name) == DBNull.Value);
+                                else
+                                    expressions.Add(td.Field(c.Name) == Row[c.Name]);
+                            }
                         }
                         Command.Update(Row.Table.TableName).Set(expressions.ToArray()).Where(rowSubmission.Conditions.ToArray());
                     }
@@ -278,7 +291,10 @@ namespace Wunion.DataAdapter.Kernel
                         if (!NotInsertFieldsContains(rowSubmission, c.Name))
                         {
                             Fields.Add(td.Field(c.Name));
-                            Values.Add(Row[c.Name]);
+                            if (Row[c.Name] == DBNull.Value)
+                                Values.Add(DBNull.Value);
+                            else
+                                Values.Add(Row[c.Name]);
                         }
                     }
                     Command.Insert(fm.Table(Row.Table.TableName), Fields.ToArray()).Values(Values.ToArray());
@@ -356,7 +372,12 @@ namespace Wunion.DataAdapter.Kernel
                         foreach (DataColumn c in Row.Table.Columns)
                         {
                             if (!NotInsertFieldsContains(rowSubmission, c.ColumnName))
-                                expressions.Add(td.Field(c.ColumnName) == Row[c.ColumnName]);
+                            {
+                                if (Row[c.ColumnName] == null)
+                                    expressions.Add(td.Field(c.ColumnName) == DBNull.Value);
+                                else
+                                    expressions.Add(td.Field(c.ColumnName) == Row[c.ColumnName]);
+                            }
                         }
                         Command.Update(Row.Table.TableName).Set(expressions.ToArray()).Where(rowSubmission.Conditions.ToArray());
                     }
@@ -369,7 +390,10 @@ namespace Wunion.DataAdapter.Kernel
                         if (!NotInsertFieldsContains(rowSubmission, c.ColumnName))
                         {
                             Fields.Add(td.Field(c.ColumnName));
-                            Values.Add(Row[c.ColumnName]);
+                            if (Row[c.ColumnName] == DBNull.Value)
+                                Values.Add(DBNull.Value);
+                            else
+                                Values.Add(Row[c.ColumnName]);
                         }
                     }
                     Command.Insert(fm.Table(Row.Table.TableName), Fields.ToArray()).Values(Values.ToArray());
