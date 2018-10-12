@@ -5,10 +5,10 @@ using System.Dynamic;
 using System.ComponentModel;
 using System.Collections;
 
-namespace Wunion.DataAdapter.EntityUtils
+namespace Wunion.DataAdapter.Kernel.DataCollection
 {
     /// <summary>
-    /// 表示动态实体类型.
+    /// 表示动态数据实体对象类型.
     /// </summary>
     [Serializable]
     public class DynamicEntity : DynamicObject, IDictionary<string, object>, ICloneable, INotifyPropertyChanged
@@ -18,9 +18,12 @@ namespace Wunion.DataAdapter.EntityUtils
         /// <summary>
         /// 创建一个 <see cref="DynamicEntity"/> 的对象实例.
         /// </summary>
-        public DynamicEntity()
+        public DynamicEntity(Dictionary<string, object> entityData = null)
         {
-            Data = new Dictionary<string, object>();
+            if (entityData == null)
+                Data = new Dictionary<string, object>();
+            else
+                Data = entityData;
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace Wunion.DataAdapter.EntityUtils
             if (value == null || value == DBNull.Value)
             {
                 if (valueType.IsValueType)
-                    return; // 属性为值类型时设置成员
+                    value = System.Activator.CreateInstance(valueType);
                 else
                     value = null;
             }

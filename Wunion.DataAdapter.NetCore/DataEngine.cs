@@ -80,6 +80,17 @@ namespace Wunion.DataAdapter.Kernel
         }
 
         /// <summary>
+        /// 执行指定的查询，并返回该查询对应的动态实体对象数据集合.
+        /// </summary>
+        /// <param name="Command">要执行的查询命令对象.</param>
+        /// <exception cref="Exception">在查询过程中产生错误时引发此异常.</exception>
+        /// <returns>查询对应的动态实体对象数据集合.</returns>
+        public List<dynamic> ExecuteDynamicEntity(CommandBuilder Command)
+        {
+            return DBA.ExecuteDynamicEntity(Command);
+        }
+
+        /// <summary>
         /// 执行指定的查询命令，并返回相应的数据读取器。
         /// </summary>
         /// <param name="Command">CommandBuilder对象。</param>

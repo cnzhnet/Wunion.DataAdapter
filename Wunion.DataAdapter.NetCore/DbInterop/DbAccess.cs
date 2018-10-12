@@ -171,6 +171,39 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
         }
 
         /// <summary>
+        /// 执行指定的查询，并返回该查询对应的动态实体对象数据集合.
+        /// </summary>
+        /// <param name="Command">要执行的查询命令对象.</param>
+        /// <exception cref="Exception">在查询过程中产生错误时引发此异常.</exception>
+        /// <returns>查询对应的动态实体对象数据集合.</returns>
+        public List<dynamic> ExecuteDynamicEntity(CommandBuilder Command)
+        {
+            IDataReader Rd = ExecuteReader(Command);
+            if (Rd == null)
+            {
+                string error;
+                if (this.Error == null)
+                    error = "在查询数据库时产生了未知的错误.";
+                else
+                    error = this.Error.Message;
+                throw new Exception(error);
+            }
+            List<dynamic> dataCollection = new List<dynamic>();
+            DynamicEntity entity;
+            int i = 0;
+            while (Rd.Read())
+            {
+                entity = new DynamicEntity();
+                for (i = 0; i < Rd.FieldCount; ++i)
+                    entity.SetPropertyValue(Rd.GetName(i), Rd.GetValue(i), Rd.GetFieldType(i));
+                dataCollection.Add(entity);
+            }
+            Rd.Close();
+            Rd.Dispose();
+            return dataCollection;
+        }
+
+        /// <summary>
         /// 执行指定的查询命令，并返回相应的数据读取器。
         /// </summary>
         /// <param name="Command">要执行的查询。</param>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using Wunion.DataAdapter.Kernel;
+using Wunion.DataAdapter.Kernel.DataCollection;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
 
 namespace Wunion.DataAdapter.EntityUtils
