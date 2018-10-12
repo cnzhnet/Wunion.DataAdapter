@@ -10,10 +10,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.Kernel</RootNamespace>
-    <AssemblyVersion>1.0.3.1</AssemblyVersion>
-    <FileVersion>1.0.3.1</FileVersion>
+    <AssemblyVersion>1.0.3.2</AssemblyVersion>
+    <FileVersion>1.0.3.2</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.3.1</Version>
+    <Version>1.0.3.2</Version>
     <Description>轻量级源数据库访问框架：稳定可靠！DBHelper的性能，如ORM框架般的便利！
 1、增加新的查询或更新条件的语法特性，使整体语法更加清析易懂（兼容老版本库的语法）.
 2、重新设计解析适配器的适配方式（此为核心代码的变动，不影响任何用户代码）
