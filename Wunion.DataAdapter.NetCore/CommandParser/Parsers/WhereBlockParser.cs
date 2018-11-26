@@ -27,6 +27,10 @@ namespace Wunion.DataAdapter.Kernel.CommandParser
         public override string Parsing(ref List<IDbDataParameter> DbParameters)
         {
             WhereBlock wb = (WhereBlock)this.Description;
+            if (wb.Content == null)
+                return string.Empty;
+            if (wb.Content.Count < 1)
+                return string.Empty;
             StringBuilder cBuffer = new StringBuilder(" WHERE");
             IDescription D;
             string item_buf;

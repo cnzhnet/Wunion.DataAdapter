@@ -10,15 +10,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.Kernel</RootNamespace>
-    <AssemblyVersion>1.0.3.3</AssemblyVersion>
-    <FileVersion>1.0.3.3</FileVersion>
+    <AssemblyVersion>1.0.3.4</AssemblyVersion>
+    <FileVersion>1.0.3.4</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.3.3</Version>
+    <Version>1.0.3.4</Version>
     <Description>轻量级源数据库访问框架：稳定可靠！DBHelper的性能，如ORM框架般的便利！
-1、增加新的查询或更新条件的语法特性，使整体语法更加清析易懂（兼容老版本库的语法）.
-2、重新设计解析适配器的适配方式（此为核心代码的变动，不影响任何用户代码）.
-3、更新在事务中获取自增长值的实现方式（兼容 PostgreSQL）.
-4、增加 DynamicEntity 动态实体集合的查询返回支持.</Description>
+1.0.3.4 更新说明( Update Description)：
+-- 修正 Delete 命令在未指定 where 条件时生成的SQL命令错误的 Bug。
+-- Bug that fixes SQL command errors that are generated when the Delete command does not specify conditions.</Description>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <Copyright>cnzhnet</Copyright>

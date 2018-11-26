@@ -13,9 +13,9 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Wunion.DataAdapter.NetCore 的实体查询支持库.
 配套代码生成器：WdaEntityGenerator
-1. 修复 DatabaseContext.ExecuteNoneQuery 方法报错的bug.
-2. 修复 DatabaseContext.Form&lt;TEntityAgent&gt;().QueryScalar 方法生成目录SQL错误的Bug.
-3. 删除 DynamicEntity 动态实体类（移至 Wunion.DataAdapter.Kernel.DataCollection 中）.</Description>
+1.0.2.1 更新说明 (Update Description) ：
+-- 补回在上一个版本误删的 DataEntity 类。
+-- Recharge the Dataentity class that was mistakenly deleted in the previous version.</Description>
     <Copyright>cnzhnet</Copyright>
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
     <PackageReleaseNotes>修复 DatabaseContext.ExecuteNoneQuery 方法报错的bug.
@@ -24,8 +24,8 @@
     <Authors>cnzhnet(巽翎君)</Authors>
     <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
-    <Version>1.0.2</Version>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <Version>1.0.2.1</Version>
+    <AssemblyVersion>1.0.2.1</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

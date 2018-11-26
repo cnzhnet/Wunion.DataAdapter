@@ -5,6 +5,7 @@ using System.Data;
 using System.Reflection;
 using Wunion.DataAdapter.Kernel;
 using Wunion.DataAdapter.Kernel.DbInterop;
+using Wunion.DataAdapter.Kernel.DataCollection;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
 
 namespace Wunion.DataAdapter.EntityUtils
