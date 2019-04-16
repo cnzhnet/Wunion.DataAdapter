@@ -315,6 +315,7 @@ namespace Wunion.DataAdapter.Kernel
         /// <para>示例代码请参见更新日志中。</para>
         /// </param>
         /// <returns></returns>
+        [Obsolete("该方法已遭弃用，批量处理请改用 BatchCommander 类提供的支持或者在事务中进行.", false)]
         public int BatchSaveDataTable(SpeedDataTable Table, BatchSaveSpeedRowJudgment rowJudgment)
         {
             if (Table == null)
@@ -414,6 +415,7 @@ namespace Wunion.DataAdapter.Kernel
         /// <para>示例代码请参见更新日志中。</para>
         /// </param>
         /// <returns></returns>
+        [Obsolete("该方法已遭弃用，批量处理请改用 BatchCommander 类提供的支持或者在事务中进行.", false)]
         public int BatchSaveDataTable(DataTable Table, BatchSaveDataRowJudgment rowJudgment)
         {
             if (Table == null)

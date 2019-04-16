@@ -16,6 +16,11 @@ namespace Wunion.DataAdapter.EntityUtils
     public abstract class TableMapper
     {
         /// <summary>
+        /// 用于在一个连接上连续分批处理数据的批处理器对象.
+        /// </summary>
+        public DataBatchProccesser BatchProccesser { get; internal set; }
+
+        /// <summary>
         /// 获取数据表的映射信息.
         /// </summary>
         /// <returns></returns>
@@ -59,7 +64,9 @@ namespace Wunion.DataAdapter.EntityUtils
         /// 创建一个 <see cref="TableContext{TAgent}"/> 的对象实例.
         /// </summary>
         protected TableContext()
-        { }
+        {
+            BatchProccesser = null;
+        }
 
         /// <summary>
         /// 获取读该表数据的引擎.
@@ -85,7 +92,11 @@ namespace Wunion.DataAdapter.EntityUtils
             if (Attributes == null || Attributes.Length < 0)
                 throw new NotSupportedException(string.Format("Not supported table context object, please use {1} for class: {0}.", typeof(EntityTableAttribute).FullName, agentType.FullName));
             EntityTableAttribute tableAttribute = (EntityTableAttribute)Attributes[0];
-            TableAttributeCache.Add(agentType, tableAttribute);
+            lock (TableAttributeCache) // 防止多任务时产生并发调用而引起错误
+            {
+                if (!(TableAttributeCache.ContainsKey(agentType)))
+                    TableAttributeCache.Add(agentType, tableAttribute);
+            }
             return tableAttribute;
         }
 
@@ -141,12 +152,20 @@ namespace Wunion.DataAdapter.EntityUtils
         /// <returns></returns>
         protected List<TEntity> ExecuteQuery<TEntity>(DbCommandBuilder Command) where TEntity : DataEntity, new()
         {
-            IDataReader Rd = Reader.ExecuteReader(Command);
-            if (Rd == null)
+            IDataReader Rd = null;
+            if (BatchProccesser == null)
             {
-                string ErrorMessage = (Reader.DBA.Error == null) ? "查询数据时产生了未知的错误．" : Reader.DBA.Error.Message;
-                throw new Exception(ErrorMessage);
+                Rd = Reader.ExecuteReader(Command);
+                if (Rd == null)
+                {
+                    string ErrorMessage = (Reader.DBA.Error == null) ? "查询数据时产生了未知的错误．" : Reader.DBA.Error.Message;
+                    throw new Exception(ErrorMessage);
+                }
             }
+            else
+            {
+                Rd = BatchProccesser.Commander.ExecuteReader(Command);
+            }            
             List<TEntity> Result = new List<TEntity>();
             TEntity entity;
             string Field;
@@ -217,9 +236,17 @@ namespace Wunion.DataAdapter.EntityUtils
             agent.TableContext = this;
             TableQuerySelector selector = new TableQuerySelector(entityTable.TableName);
             action(agent, selector);
-            object Result = Reader.ExecuteScalar(selector.DbCommand);
-            if (Result == null && Reader.DBA.Error != null)
-                throw new Exception(Reader.DBA.Error.Message);
+            object Result;
+            if (BatchProccesser == null)
+            {
+                Result = Reader.ExecuteScalar(selector.DbCommand);
+                if (Result == null && Reader.DBA.Error != null)
+                    throw new Exception(Reader.DBA.Error.Message);
+            }
+            else
+            {
+                Result = BatchProccesser.Commander.QueryScalar(selector.DbCommand);
+            }
             return Result;
         }
 
@@ -256,34 +283,53 @@ namespace Wunion.DataAdapter.EntityUtils
             if (entity == null)
                 return;
             // 增加记录时过滤掉自增长字段.
-            string[] withOutFields = GetWithOutFields(entity.GetType());
-            // 向数据库中增加记录
-            bool InTransaction = trans != null;
+            string[] withOutFields = GetWithOutFields(entity.GetType());            
             EntityTableAttribute tableAttribute = GetTableAttribute();
-            QuickDataChanger DC;
-            if (InTransaction)
-                DC = new QuickDataChanger(trans, Writer);
-            else
-                DC = new QuickDataChanger(Writer);
-            int result = DC.SaveToDataBase(tableAttribute.TableName, entity.ToDictionary(withOutFields), false);
-            if (result == -1) // 若添加失败则向外界抛出异常.
+            int result = 0;
+            if (BatchProccesser == null) // 非同连接分批处理模式.
             {
-                string Error;
+                bool InTransaction = trans != null;
+                QuickDataChanger DC;
                 if (InTransaction)
-                    Error = (trans.DBA.Errors != null && trans.DBA.Errors.Count > 0) ? trans.DBA.Errors[0].Message : string.Format("新增：{0}是产生未知错误.", entity.GetType().Name);
+                    DC = new QuickDataChanger(trans, Writer);
                 else
-                    Error = (Writer.DBA.Error == null) ? string.Format("新增：{0}是产生未知错误.", entity.GetType().Name) : Writer.DBA.Error.Message;
-                throw new Exception(Error);
-            }
-            else // 新增成功时更新实体中的自增长字段值.
-            {
-                if (withOutFields.Length > 0)
+                    DC = new QuickDataChanger(Writer);
+                result = DC.SaveToDataBase(tableAttribute.TableName, entity.ToDictionary(withOutFields), false);
+                if (result == -1) // 若添加失败则向外界抛出异常.
                 {
+                    string Error;
                     if (InTransaction)
-                        entity.SetValue(withOutFields[withOutFields.Length - 1], trans.DBA.SCOPE_IDENTITY, true);
+                        Error = (trans.DBA.Errors != null && trans.DBA.Errors.Count > 0) ? trans.DBA.Errors[0].Message : string.Format("新增：{0}是产生未知错误.", entity.GetType().Name);
                     else
-                        entity.SetValue(withOutFields[withOutFields.Length - 1], Writer.DBA.SCOPE_IDENTITY, true);
+                        Error = (Writer.DBA.Error == null) ? string.Format("新增：{0}是产生未知错误.", entity.GetType().Name) : Writer.DBA.Error.Message;
+                    throw new Exception(Error);
                 }
+                else // 新增成功时更新实体中的自增长字段值.
+                {
+                    if (withOutFields.Length > 0)
+                    {
+                        if (InTransaction)
+                            entity.SetValue(withOutFields[withOutFields.Length - 1], trans.DBA.SCOPE_IDENTITY, true);
+                        else
+                            entity.SetValue(withOutFields[withOutFields.Length - 1], Writer.DBA.SCOPE_IDENTITY, true);
+                    }
+                }
+            }
+            else // 在同一个连接的分批处理模式.
+            {                
+                List<FieldDescription> fields = new List<FieldDescription>();
+                List<object> values = new List<object>();
+                Dictionary<string, object> data = entity.ToDictionary(withOutFields);
+                foreach (KeyValuePair<string, object> item in data)
+                {
+                    fields.Add(td.Field(item.Key));
+                    values.Add(item.Value);
+                }
+                DbCommandBuilder cb = new DbCommandBuilder();
+                cb.Insert(tableAttribute.TableName, fields.ToArray()).Values(values.ToArray());
+                result = BatchProccesser.Commander.ExecuteNonQuery(cb);
+                if (withOutFields.Length > 0 && result > 0)
+                    entity.SetValue(withOutFields[withOutFields.Length - 1], BatchProccesser.Commander.SCOPE_IDENTITY, true);
             }
         }
 
@@ -305,16 +351,33 @@ namespace Wunion.DataAdapter.EntityUtils
             // 过滤掉自增长字段.
             string[] withOutFields = GetWithOutFields(entity.GetType());
             EntityTableAttribute tableAttribute = GetTableAttribute();
-            QuickDataChanger DC = new QuickDataChanger(Writer);
-            if (func != null)
+            object[] conditions = null;
+            if (func != null)  // 获得外部 lambda 表达式返回的条件.
             {
                 TEntityAgent agent = new TEntityAgent();
                 agent.TableContext = this;
-                DC.Conditions.AddRange(func(agent));
+                conditions = func(agent);
             }
-            int result = DC.SaveToDataBase(tableAttribute.TableName, entity.ToDictionary(withOutFields), true);
-            if (result == -1) // 若更新失败时向外界抛出异常.
-                throw new Exception(Writer.DBA.Error.Message);
+            int result = 0;
+            if (BatchProccesser == null)  //非同连接分批处理模式.
+            {
+                QuickDataChanger DC = new QuickDataChanger(Writer);
+                if (conditions != null)
+                    DC.Conditions.AddRange(conditions);
+                result = DC.SaveToDataBase(tableAttribute.TableName, entity.ToDictionary(withOutFields), true);
+                if (result == -1) // 若更新失败时向外界抛出异常.
+                    throw new Exception(Writer.DBA.Error.Message);
+            }
+            else  //在同一个连接的分批处理模式.
+            {
+                List<IDescription> exp = new List<IDescription>();
+                Dictionary<string, object> data = entity.ToDictionary(withOutFields);
+                foreach (KeyValuePair<string, object> item in data)
+                    exp.Add(td.Field(item.Key) == item.Value);
+                DbCommandBuilder cb = new DbCommandBuilder();
+                cb.Update(tableAttribute.TableName).Set(exp.ToArray()).Where(conditions);
+                result = BatchProccesser.Commander.ExecuteNonQuery(cb);
+            }
             return result;
         }
 
@@ -336,7 +399,6 @@ namespace Wunion.DataAdapter.EntityUtils
                 throw new ArgumentNullException(nameof(entity));
             if (func == null)
                 throw new Exception("未指定更新条件时，整个数据表中的所有数据都将被更新为一样的，此操作已被禁止.");
-            // 过滤掉自增长字段.
             // 过滤掉自增长字段.
             string[] withOutFields = GetWithOutFields(entity.GetType());
             EntityTableAttribute tableAttribute = GetTableAttribute();
@@ -371,14 +433,25 @@ namespace Wunion.DataAdapter.EntityUtils
         {
             if (func == null)
                 throw new Exception("在不指定条件的情况下将会删除整个数据表中的所有数据，该操作已被禁止.");
-            EntityTableAttribute tableAttribute = GetTableAttribute();
-            QuickDataChanger DC = new QuickDataChanger(Writer);
+            EntityTableAttribute tableAttribute = GetTableAttribute();            
             TEntityAgent agent = new TEntityAgent();
             agent.TableContext = this;
-            DC.Conditions.AddRange(func(agent));
-            int result = DC.Delete(tableAttribute.TableName);
-            if (result == -1)
-                throw new Exception(Writer.DBA.Error.Message);
+            object[] conditions = func(agent);
+            int result = 0;
+            if (BatchProccesser == null)
+            {
+                QuickDataChanger DC = new QuickDataChanger(Writer);
+                DC.Conditions.AddRange(conditions);
+                result = DC.Delete(tableAttribute.TableName);
+                if (result == -1)
+                    throw new Exception(Writer.DBA.Error.Message);
+            }
+            else
+            {
+                DbCommandBuilder cb = new DbCommandBuilder();
+                cb.Delete(tableAttribute.TableName).Where(conditions);
+                result = BatchProccesser.Commander.ExecuteNonQuery(cb);
+            }
             return result;
         }
 

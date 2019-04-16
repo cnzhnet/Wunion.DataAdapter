@@ -18,14 +18,15 @@
 -- Recharge the Dataentity class that was mistakenly deleted in the previous version.</Description>
     <Copyright>cnzhnet</Copyright>
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
-    <PackageReleaseNotes>修复 DatabaseContext.ExecuteNoneQuery 方法报错的bug.
-修复 DatabaseContext.Form&lt;TEntityAgent&gt;().QueryScalar 方法生成目录SQL错误的Bug.</PackageReleaseNotes>
+    <PackageReleaseNotes>新增 DataBatchProccesser 类，以支持在同一个连接中批量处理数据的实体集合.
+Added DataBatchProccesser class to support the collection of entities that process data in bulk in the same connection
+</PackageReleaseNotes>
     <RootNamespace>Wunion.DataAdapter.EntityUtils</RootNamespace>
     <Authors>cnzhnet(巽翎君)</Authors>
     <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
-    <Version>1.0.2.1</Version>
-    <AssemblyVersion>1.0.2.1</AssemblyVersion>
+    <Version>1.0.2.2</Version>
+    <AssemblyVersion>1.0.2.2</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

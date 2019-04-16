@@ -30,7 +30,7 @@ namespace Wunion.DataAdapter.EntityUtils
         protected DatabaseContext() { }
 
         /// <summary>
-        /// 获取指定的数据一上下文对象.
+        /// 获取指定的数据表上下文对象.
         /// </summary>
         /// <typeparam name="TContext"></typeparam>
         /// <returns></returns>
@@ -107,11 +107,21 @@ namespace Wunion.DataAdapter.EntityUtils
 
         /// <summary>
         /// 开启并返回一个写数据的事务.
+        /// <param name="li">事务锁定行为（即隔离级别）.</param>
         /// </summary>
         /// <returns>返回事务控制器对象.</returns>
-        public DBTransactionController BeginTransAction()
+        public DBTransactionController BeginTransAction(IsolationLevel? il = null)
         {
-            return WriteEngine.BeginTrans();
+            return WriteEngine.BeginTrans(il);
+        }
+
+        /// <summary>
+        /// 创建并返回一个用于在同一个连接上分批处理数据的处理器对象.
+        /// </summary>
+        /// <returns>返回一个用于在同一个连接上分批处理数据的处理器对象.</returns>
+        public DataBatchProccesser BatchProccess()
+        {
+            return new DataBatchProccesser(WriteEngine);
         }
 
         /// <summary>

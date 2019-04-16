@@ -113,14 +113,19 @@ namespace Wunion.DataAdapter.Kernel
         /// <summary>
         /// 开启事务处理。
         /// </summary>
+        /// <param name="il">事务锁定行为（即隔离级别）.</param>
         /// <returns></returns>
-        public DBTransactionController BeginTrans()
+        public DBTransactionController BeginTrans(IsolationLevel? il = null)
         {
             if (DBA == null || CommandParserAdapter == null)
                 throw (new Exception("无法开启事务，因为尚未初始化 DBA 或 CommandParserAdapter 对象。"));
             IDbConnection DbConnection = DBA.Connect();
             DbConnection.Open();
-            IDbTransaction Trans = DbConnection.BeginTransaction();
+            IDbTransaction Trans;
+            if (il == null)
+                Trans = DbConnection.BeginTransaction();
+            else
+                Trans = DbConnection.BeginTransaction(il.Value);
             IDbCommand DbCommand = DBA.CreateDbCommand();
             DbCommand.Connection = DbConnection;
             DbCommand.Transaction = Trans;
