@@ -8,16 +8,16 @@ namespace Wunion.DataAdapter.EntityUtils
     /// <summary>
     /// 实现在一个连接上分批处理数据的批处理器.
     /// </summary>
-    public sealed class DataBatchProccesser : IDisposable
+    public sealed class DataBatchProcessor : IDisposable
     {
         private BatchCommander _commander;
         private DataEngine Engine;
 
         /// <summary>
-        /// 创建一个 <see cref="DataBatchProccesser"/> 的对象实例.
+        /// 创建一个 <see cref="DataBatchProcessor"/> 的对象实例.
         /// </summary>
         /// <param name="_engine">此批处理使用的数据库引擎实例.</param>
-        internal DataBatchProccesser(DataEngine _engine)
+        internal DataBatchProcessor(DataEngine _engine)
         {
             Engine = _engine;
             _commander = new BatchCommander(_engine);
@@ -66,7 +66,7 @@ namespace Wunion.DataAdapter.EntityUtils
         /// <summary>
         /// 对象终结器（析构函数）.
         /// </summary>
-        ~DataBatchProccesser()
+        ~DataBatchProcessor()
         {
             Dispose(false);
         }

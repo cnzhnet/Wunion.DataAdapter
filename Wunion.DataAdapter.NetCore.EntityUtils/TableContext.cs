@@ -18,7 +18,7 @@ namespace Wunion.DataAdapter.EntityUtils
         /// <summary>
         /// 用于在一个连接上连续分批处理数据的批处理器对象.
         /// </summary>
-        public DataBatchProccesser BatchProccesser { get; internal set; }
+        public DataBatchProcessor BatchProccesser { get; internal set; }
 
         /// <summary>
         /// 获取数据表的映射信息.

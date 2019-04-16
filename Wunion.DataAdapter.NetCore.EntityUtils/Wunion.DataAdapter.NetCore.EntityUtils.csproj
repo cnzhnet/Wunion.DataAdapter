@@ -25,8 +25,9 @@ Added DataBatchProccesser class to support the collection of entities that proce
     <Authors>cnzhnet(巽翎君)</Authors>
     <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
-    <Version>1.0.2.2</Version>
-    <AssemblyVersion>1.0.2.2</AssemblyVersion>
+    <Version>1.0.2.3</Version>
+    <AssemblyVersion>1.0.2.3</AssemblyVersion>
+    <FileVersion>1.0.2.3</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

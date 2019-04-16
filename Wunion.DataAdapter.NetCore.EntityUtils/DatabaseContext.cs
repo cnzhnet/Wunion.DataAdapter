@@ -119,9 +119,9 @@ namespace Wunion.DataAdapter.EntityUtils
         /// 创建并返回一个用于在同一个连接上分批处理数据的处理器对象.
         /// </summary>
         /// <returns>返回一个用于在同一个连接上分批处理数据的处理器对象.</returns>
-        public DataBatchProccesser BatchProccess()
+        public DataBatchProcessor BatchProcess()
         {
-            return new DataBatchProccesser(WriteEngine);
+            return new DataBatchProcessor(WriteEngine);
         }
 
         /// <summary>
