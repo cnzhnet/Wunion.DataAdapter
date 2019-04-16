@@ -13,9 +13,9 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Wunion.DataAdapter.NetCore 的实体查询支持库.
 配套代码生成器：WdaEntityGenerator
-1.0.2.1 更新说明 (Update Description) ：
--- 补回在上一个版本误删的 DataEntity 类。
--- Recharge the Dataentity class that was mistakenly deleted in the previous version.</Description>
+1.0.2.4 更新说明 (Update Description) ：
+新增 DataBatchProccesser 类，以支持在同一个连接中批量处理数据的实体集合.
+Added DataBatchProccesser class to support the collection of entities that process data in bulk in the same connection</Description>
     <Copyright>cnzhnet</Copyright>
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
     <PackageReleaseNotes>新增 DataBatchProccesser 类，以支持在同一个连接中批量处理数据的实体集合.
@@ -25,9 +25,9 @@ Added DataBatchProccesser class to support the collection of entities that proce
     <Authors>cnzhnet(巽翎君)</Authors>
     <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
-    <Version>1.0.2.3</Version>
-    <AssemblyVersion>1.0.2.3</AssemblyVersion>
-    <FileVersion>1.0.2.3</FileVersion>
+    <Version>1.0.2.4</Version>
+    <AssemblyVersion>1.0.2.4</AssemblyVersion>
+    <FileVersion>1.0.2.4</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

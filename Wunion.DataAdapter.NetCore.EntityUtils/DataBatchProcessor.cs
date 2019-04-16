@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wunion.DataAdapter.Kernel;
+using Wunion.DataAdapter.Kernel.CommandBuilders;
 
 namespace Wunion.DataAdapter.EntityUtils
 {
@@ -34,6 +35,16 @@ namespace Wunion.DataAdapter.EntityUtils
             context.BatchProccesser = this;
             context.SetDataEngine(Engine, Engine);
             return context;
+        }
+
+        /// <summary>
+        /// 执行指定的命令，并返回受影响记录数.
+        /// </summary>
+        /// <param name="command">要执行的命令.</param>
+        /// <returns></returns>
+        public int ExecuteNonQuery(DbCommandBuilder command)
+        {
+            return Commander.ExecuteNonQuery(command);
         }
 
         /// <summary>
