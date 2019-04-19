@@ -112,7 +112,7 @@ namespace Wunion.DataAdapter.Kernel
             commander.CommandText = command.Parsing(Engine.CommandParserAdapter);
             foreach (IDbDataParameter p in command.CommandParameters)
                 commander.Parameters.Add(p);
-            return commander.ExecuteReader(CommandBehavior.CloseConnection);
+            return commander.ExecuteReader();
         }
 
         #region IDisposable成员实现
