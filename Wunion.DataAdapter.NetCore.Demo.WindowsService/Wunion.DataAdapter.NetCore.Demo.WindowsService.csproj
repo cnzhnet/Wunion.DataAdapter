@@ -38,5 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wunion.DataAdapter.NetCore.Demo.Common\Wunion.DataAdapter.NetCore.Demo.Common.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.EntityUtils\Wunion.DataAdapter.NetCore.EntityUtils.csproj" />
   </ItemGroup>
 </Project>
