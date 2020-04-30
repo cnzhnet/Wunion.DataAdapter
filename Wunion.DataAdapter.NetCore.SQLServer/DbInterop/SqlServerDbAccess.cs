@@ -32,7 +32,7 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
         /// 连接数据库，并返回一个 DbConnection 对象。
         /// </summary>
         /// <returns></returns>
-        public override IDbConnection GetConnection()
+        public override IDbConnection Connect()
         {
             if (string.IsNullOrEmpty(ConnectionString))
                 throw (new Exception("Connection string is invalid."));
@@ -61,7 +61,7 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
             SqlCommand DbCommand = new SqlCommand();
             try
             {
-                DbCommand.Connection = (SqlConnection)GetConnection();
+                DbCommand.Connection = (SqlConnection)Connect();
                 DbCommand.CommandText = string.Format("SET IDENTITY_INSERT [{0}] {1}", table, enabled ? "ON" : "OFF");
                 DbCommand.CommandType = CommandType.Text;
                 DbCommand.Connection.Open();
@@ -87,7 +87,7 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
             SqlCommand DbCommand = new SqlCommand();
             try
             {
-                DbCommand.Connection = (SqlConnection)GetConnection();
+                DbCommand.Connection = (SqlConnection)Connect();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqlParameter)p);
@@ -122,7 +122,7 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
             if (!typeof(T).Equals(typeof(DataTable)))
                 throw (new Exception("目标类型只能是 System.Data.DataTable."));
             ClearError();
-            SqlDataAdapter DbAdapter = new SqlDataAdapter(Command.Parsing(parserAdapter), (SqlConnection)GetConnection());
+            SqlDataAdapter DbAdapter = new SqlDataAdapter(Command.Parsing(parserAdapter), (SqlConnection)Connect());
             try
             {
                 foreach (object p in Command.CommandParameters)
@@ -157,7 +157,7 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
             SqlCommand DbCommand = new SqlCommand();
             try
             {
-                DbCommand.Connection = (SqlConnection)GetConnection();
+                DbCommand.Connection = (SqlConnection)Connect();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqlParameter)p);
@@ -189,7 +189,7 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
             SqlCommand DbCommand = new SqlCommand();
             try
             {
-                DbCommand.Connection = (SqlConnection)GetConnection();
+                DbCommand.Connection = (SqlConnection)Connect();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqlParameter)p);

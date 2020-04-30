@@ -46,7 +46,7 @@ namespace Wunion.DataAdapter.Kernel
         private void InitCommander()
         {
             commander = Engine.DBA.CreateDbCommand();
-            commander.Connection = Engine.DBA.GetConnection();
+            commander.Connection = Engine.DBA.Connect();
             commander.Connection.Open();
         }
 

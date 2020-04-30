@@ -68,7 +68,7 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
         /// 连接数据库，并返回一个 DbConnection 对象。
         /// </summary>
         /// <returns></returns>
-        public virtual IDbConnection GetConnection()
+        public virtual IDbConnection Connect()
         {
             return null;
         }

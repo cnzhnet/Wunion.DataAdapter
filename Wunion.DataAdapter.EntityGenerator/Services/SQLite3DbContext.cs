@@ -36,7 +36,7 @@ namespace Wunion.DataAdapter.EntityGenerator.Services
             List<TableInfoModel> Result = null;
             using (SqliteCommand Command = (SqliteCommand)DbEngine.DBA.CreateDbCommand())
             {
-                Command.Connection = (SqliteConnection)DbEngine.DBA.GetConnection();
+                Command.Connection = (SqliteConnection)DbEngine.DBA.Connect();
                 List<dynamic> tables = GetTableNames(Command);
                 Result = new List<TableInfoModel>();
                 for (int i = 0; i < tables.Count; ++i)

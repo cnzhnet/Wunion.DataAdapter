@@ -41,7 +41,7 @@ namespace Wunion.DataAdapter.EntityGenerator.Services
             List<TableInfoModel> Result = null;
             using (NpgsqlCommand Command = (NpgsqlCommand)DbEngine.DBA.CreateDbCommand())
             {
-                Command.Connection = (NpgsqlConnection)DbEngine.DBA.GetConnection();
+                Command.Connection = (NpgsqlConnection)DbEngine.DBA.Connect();
                 Command.CommandText = commandText;
                 Command.CommandType = CommandType.Text;
                 Command.Connection.Open();

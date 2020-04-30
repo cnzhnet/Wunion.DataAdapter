@@ -36,7 +36,7 @@ namespace Wunion.DataAdapter.EntityGenerator.Services
             List <TableInfoModel> Result = null;
             using (SqlCommand Command = (SqlCommand)DbEngine.DBA.CreateDbCommand())
             {
-                Command.Connection = (SqlConnection)DbEngine.DBA.GetConnection();
+                Command.Connection = (SqlConnection)DbEngine.DBA.Connect();
                 Command.CommandText = commandText;
                 Command.CommandType = CommandType.Text;
                 Command.Connection.Open();
