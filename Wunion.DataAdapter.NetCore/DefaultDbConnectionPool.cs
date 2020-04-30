@@ -100,7 +100,7 @@ namespace Wunion.DataAdapter.Kernel
                     break;
                 }
                 Thread.Sleep(1);
-            } while ((DateTime.Now - timeMemory).TotalMinutes < RequestTimeout.TotalMinutes);
+            } while ((DateTime.Now - timeMemory).TotalSeconds < RequestTimeout.TotalSeconds);
             if (poolItem == null)
                 throw new Exception("从数据库连接池中获取连接时超时. Timeout while getting connection from connection pool");
             poolItem.LastUsed = DateTime.Now;
