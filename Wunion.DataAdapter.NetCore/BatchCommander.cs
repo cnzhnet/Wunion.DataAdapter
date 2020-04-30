@@ -47,7 +47,6 @@ namespace Wunion.DataAdapter.Kernel
         {
             commander = Engine.DBA.CreateDbCommand();
             commander.Connection = Engine.DBA.Connect();
-            commander.Connection.Open();
         }
 
         /// <summary>
@@ -121,13 +120,20 @@ namespace Wunion.DataAdapter.Kernel
         /// 释放对象所占用的资源.
         /// </summary>
         /// <param name="disposing">手动调用则为 true，由对象终结器调用时则为 false .</param>
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (commander != null)
             {
-                commander.Parameters.Clear();
-                commander.Connection.Close();
-                commander.Connection.Dispose();
+                if (Engine.DBA.ConnectionPool != null && Engine.DBA.ConnectionPool.MaximumConnections > 0)
+                {
+                    Engine.DBA.ConnectionPool.ReleaseConnection(commander.Connection);
+                }
+                else
+                {
+                    commander.Connection.Close();
+                    commander.Connection.Dispose();
+                }
+                commander.Parameters.Clear();                
                 commander.Dispose();
             }
             commander = null;

@@ -50,7 +50,7 @@ namespace Wunion.DataAdapter.Kernel
         /// <summary>
         /// 为该数据库引擎对象配置并使用您自己实现的连接池.
         /// </summary>
-        /// <param name="connectionPool"></param>
+        /// <param name="connectionPool">连接池的对象实例.</param>
         public void UseConnectionPool(IDbConnectionPool connectionPool)
         {
             if (connectionPool == null)
@@ -64,7 +64,7 @@ namespace Wunion.DataAdapter.Kernel
         /// <summary>
         /// 为该数据库引擎对象配置并使用内置的默认连接池.
         /// </summary>
-        /// <param name="configure"></param>
+        /// <param name="configure">用于配置连接池的方法.</param>
         public void UseDefaultConnectionPool(Action<IDbConnectionPool> configure)
         {
             if (configure == null)
