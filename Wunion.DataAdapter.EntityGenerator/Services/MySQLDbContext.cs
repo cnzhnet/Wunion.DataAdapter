@@ -40,7 +40,7 @@ namespace Wunion.DataAdapter.EntityGenerator.Services
             List<TableInfoModel> Result = null;
             using (MySqlCommand Command = (MySqlCommand)DbEngine.DBA.CreateDbCommand())
             {
-                Command.Connection = (MySqlConnection)DbEngine.DBA.Connect();
+                Command.Connection = (MySqlConnection)DbEngine.DBA.GetConnection();
                 Command.CommandText = global::Wunion.DataAdapter.EntityGenerator.Properties.Resources.MySQLDbSchema;
                 Command.CommandType = CommandType.Text;
                 Command.Parameters.Add((MySqlParameter)(DbEngine.DBA.CreateParameter("dbName", GetDbName())));

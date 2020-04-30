@@ -26,7 +26,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
         /// 连接数据库，并返回一个 DbConnection 对象。
         /// </summary>
         /// <returns></returns>
-        public override IDbConnection Connect()
+        public override IDbConnection GetConnection()
         {
             if (string.IsNullOrEmpty(ConnectionString))
                 throw (new Exception("Connection string is invalid."));
@@ -55,7 +55,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
             SqliteCommand DbCommand = new SqliteCommand();
             try
             {
-                DbCommand.Connection = (SqliteConnection)Connect();
+                DbCommand.Connection = (SqliteConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqliteParameter)p);
@@ -132,7 +132,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
             SqliteCommand DbCommand = new SqliteCommand();
             try
             {
-                DbCommand.Connection = (SqliteConnection)Connect();
+                DbCommand.Connection = (SqliteConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqliteParameter)p);
@@ -164,7 +164,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
             SqliteCommand DbCommand = new SqliteCommand();
             try
             {
-                DbCommand.Connection = (SqliteConnection)Connect();
+                DbCommand.Connection = (SqliteConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqliteParameter)p);

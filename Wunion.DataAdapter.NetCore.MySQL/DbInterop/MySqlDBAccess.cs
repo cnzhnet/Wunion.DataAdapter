@@ -26,7 +26,7 @@ namespace Wunion.DataAdapter.Kernel.MySQL
         /// 连接数据库，并返回一个 DbConnection 对象。
         /// </summary>
         /// <returns></returns>
-        public override IDbConnection Connect()
+        public override IDbConnection GetConnection()
         {
             if (string.IsNullOrEmpty(ConnectionString))
                 throw (new Exception("Connection string is invalid."));
@@ -55,7 +55,7 @@ namespace Wunion.DataAdapter.Kernel.MySQL
             MySqlCommand DbCommand = new MySqlCommand();
             try
             {
-                DbCommand.Connection = (MySqlConnection)Connect();
+                DbCommand.Connection = (MySqlConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((MySqlParameter)p);
@@ -132,7 +132,7 @@ namespace Wunion.DataAdapter.Kernel.MySQL
             MySqlCommand DbCommand = new MySqlCommand();
             try
             {
-                DbCommand.Connection = (MySqlConnection)Connect();
+                DbCommand.Connection = (MySqlConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((MySqlParameter)p);
@@ -164,7 +164,7 @@ namespace Wunion.DataAdapter.Kernel.MySQL
             MySqlCommand DbCommand = new MySqlCommand();
             try
             {
-                DbCommand.Connection = (MySqlConnection)Connect();
+                DbCommand.Connection = (MySqlConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((MySqlParameter)p);

@@ -33,7 +33,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL
         /// 连接数据库，并返回一个 DbConnection 对象。
         /// </summary>
         /// <returns></returns>
-        public override IDbConnection Connect()
+        public override IDbConnection GetConnection()
         {
             if (string.IsNullOrEmpty(ConnectionString))
                 throw (new Exception("Connection string is invalid."));
@@ -65,7 +65,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL
             NpgsqlCommand DbCommand = new NpgsqlCommand();
             try
             {
-                DbCommand.Connection = (NpgsqlConnection)Connect();
+                DbCommand.Connection = (NpgsqlConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((NpgsqlParameter)p);
@@ -100,7 +100,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL
             if (!typeof(T).Equals(typeof(DataTable)))
                 throw (new Exception("目标类型只能是 System.Data.DataTable."));
             ClearError();
-            NpgsqlDataAdapter DbAdapter = new NpgsqlDataAdapter(Command.Parsing(parserAdapter), (NpgsqlConnection)Connect());
+            NpgsqlDataAdapter DbAdapter = new NpgsqlDataAdapter(Command.Parsing(parserAdapter), (NpgsqlConnection)GetConnection());
             try
             {
                 foreach (object p in Command.CommandParameters)
@@ -135,7 +135,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL
             NpgsqlCommand DbCommand = new NpgsqlCommand();
             try
             {
-                DbCommand.Connection = (NpgsqlConnection)Connect();
+                DbCommand.Connection = (NpgsqlConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((NpgsqlParameter)p);
@@ -167,7 +167,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL
             NpgsqlCommand DbCommand = new NpgsqlCommand();
             try
             {
-                DbCommand.Connection = (NpgsqlConnection)Connect();
+                DbCommand.Connection = (NpgsqlConnection)GetConnection();
                 DbCommand.CommandText = Command.Parsing(parserAdapter);
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((NpgsqlParameter)p);

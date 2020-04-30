@@ -119,7 +119,7 @@ namespace Wunion.DataAdapter.Kernel
         {
             if (DBA == null || CommandParserAdapter == null)
                 throw (new Exception("无法开启事务，因为尚未初始化 DBA 或 CommandParserAdapter 对象。"));
-            IDbConnection DbConnection = DBA.Connect();
+            IDbConnection DbConnection = DBA.GetConnection();
             DbConnection.Open();
             IDbTransaction Trans;
             if (il == null)
