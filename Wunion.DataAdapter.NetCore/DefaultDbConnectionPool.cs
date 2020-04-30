@@ -13,7 +13,13 @@ namespace Wunion.DataAdapter.Kernel
     /// </summary>
     public class DefaultDbConnectionPool : IDbConnectionPool
     {
+        /// <summary>
+        /// 空闲连接池.
+        /// </summary>
         private List<ConnectionPoolItem> IdlePool;
+        /// <summary>
+        /// 正在占用的连接池.
+        /// </summary>
         private List<ConnectionPoolItem> usingPool;
         private object poolLocked;
         private object forcedReleaseRunning;
@@ -120,7 +126,7 @@ namespace Wunion.DataAdapter.Kernel
                 return;
             lock (poolLocked)
             {
-                IEnumerable<ConnectionPoolItem> items = usingPool.Where(p => connection.Equals(p.Connection));
+                IEnumerable<ConnectionPoolItem> items = usingPool.Where(p => Object.ReferenceEquals(connection, p.Connection));
                 if (items != null && items.Count() > 0)
                 {
                     ConnectionPoolItem item = items.First();

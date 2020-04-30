@@ -29,10 +29,10 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
         }
 
         /// <summary>
-        /// 连接数据库，并返回一个 DbConnection 对象。
+        /// 用于创建数据库连接.
         /// </summary>
         /// <returns></returns>
-        public override IDbConnection Connect()
+        protected override IDbConnection CreateConnection()
         {
             if (string.IsNullOrEmpty(ConnectionString))
                 throw (new Exception("Connection string is invalid."));
@@ -64,14 +64,20 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
                 DbCommand.Connection = (SqlConnection)Connect();
                 DbCommand.CommandText = string.Format("SET IDENTITY_INSERT [{0}] {1}", table, enabled ? "ON" : "OFF");
                 DbCommand.CommandType = CommandType.Text;
-                DbCommand.Connection.Open();
                 DbCommand.ExecuteNonQuery();
             }
             catch { }
             finally
             {
-                DbCommand.Connection.Close();
-                DbCommand.Connection.Dispose();
+                if (ConnectionPoolAvailable) 
+                {
+                    ConnectionPool.ReleaseConnection(DbCommand.Connection);
+                }
+                else
+                {
+                    DbCommand.Connection.Close();
+                    DbCommand.Connection.Dispose();
+                }
                 DbCommand.Dispose();
             }
         }
@@ -92,7 +98,6 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqlParameter)p);
                 DbCommand.CommandType = Command.CommandType;
-                DbCommand.Connection.Open();
                 int result = DbCommand.ExecuteNonQuery();
                 if (result > 0)
                     QueryLastIdentity(DbCommand);
@@ -105,8 +110,15 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
             }
             finally
             {
-                DbCommand.Connection.Close();
-                DbCommand.Connection.Dispose();
+                if (ConnectionPoolAvailable)
+                {
+                    ConnectionPool.ReleaseConnection(DbCommand.Connection);
+                }
+                else
+                {
+                    DbCommand.Connection.Close();
+                    DbCommand.Connection.Dispose();
+                }
                 DbCommand.Parameters.Clear();
                 DbCommand.Dispose();
             }
@@ -117,10 +129,8 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
         /// </summary>
         /// <param name="Command">要执行的查询。</param>
         /// <returns></returns>
-        public override T ExecuteQuery<T>(CommandBuilder Command)
+        public override DataTable QueryDataTable(CommandBuilder Command)
         {
-            if (!typeof(T).Equals(typeof(DataTable)))
-                throw (new Exception("目标类型只能是 System.Data.DataTable."));
             ClearError();
             SqlDataAdapter DbAdapter = new SqlDataAdapter(Command.Parsing(parserAdapter), (SqlConnection)Connect());
             try
@@ -130,7 +140,7 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
                 DbAdapter.SelectCommand.CommandType = Command.CommandType;
                 DataTable dt = new DataTable();
                 DbAdapter.Fill(dt);
-                return (T)dt;
+                return dt;
             }
             catch (Exception Ex)
             {
@@ -139,8 +149,15 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
             }
             finally
             {
-                DbAdapter.SelectCommand.Connection.Close();
-                DbAdapter.SelectCommand.Connection.Dispose();
+                if (ConnectionPoolAvailable)
+                {
+                    ConnectionPool.ReleaseConnection(DbAdapter.SelectCommand.Connection);
+                }
+                else
+                {
+                    DbAdapter.SelectCommand.Connection.Close();
+                    DbAdapter.SelectCommand.Connection.Dispose();
+                }
                 DbAdapter.SelectCommand.Parameters.Clear();
                 DbAdapter.Dispose();
             }
@@ -162,9 +179,13 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqlParameter)p);
                 DbCommand.CommandType = Command.CommandType;
-                DbCommand.Connection.Open();
-                SqlDataReader DbReader = DbCommand.ExecuteReader(CommandBehavior.CloseConnection);
-                return DbReader;
+                if (ConnectionPoolAvailable)
+                {
+                    DbaDataReader DbReader = new DbaDataReader(DbCommand.ExecuteReader(), DbCommand.Connection);
+                    DbReader.Closed += (IDbConnection conn) => { ConnectionPool.ReleaseConnection(conn); };
+                    return DbReader;
+                }
+                return DbCommand.ExecuteReader(CommandBehavior.CloseConnection);
             }
             catch (Exception Ex)
             {
@@ -194,7 +215,6 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqlParameter)p);
                 DbCommand.CommandType = Command.CommandType;
-                DbCommand.Connection.Open();
                 object result = DbCommand.ExecuteScalar();
                 return result;
             }
@@ -205,8 +225,15 @@ namespace Wunion.DataAdapter.Kernel.SQLServer
             }
             finally
             {
-                DbCommand.Connection.Close();
-                DbCommand.Connection.Dispose();
+                if (ConnectionPoolAvailable)
+                {
+                    ConnectionPool.ReleaseConnection(DbCommand.Connection);
+                }
+                else
+                {
+                    DbCommand.Connection.Close();
+                    DbCommand.Connection.Dispose();
+                }
                 DbCommand.Parameters.Clear();
                 DbCommand.Dispose();
             }

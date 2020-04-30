@@ -48,6 +48,35 @@ namespace Wunion.DataAdapter.Kernel
         }
 
         /// <summary>
+        /// 为该数据库引擎对象配置并使用您自己实现的连接池.
+        /// </summary>
+        /// <param name="connectionPool"></param>
+        public void UseConnectionPool(IDbConnectionPool connectionPool)
+        {
+            if (connectionPool == null)
+                return;
+            if (DBA == null)
+                throw new Exception("The connection pool can't be configured when the DBA object is null （DBA 对象为空时无法配置连接池）.");
+
+            DBA.ConnectionPool = connectionPool;
+        }
+
+        /// <summary>
+        /// 为该数据库引擎对象配置并使用内置的默认连接池.
+        /// </summary>
+        /// <param name="configure"></param>
+        public void UseDefaultConnectionPool(Action<IDbConnectionPool> configure)
+        {
+            if (configure == null)
+                throw new ArgumentNullException(nameof(configure));
+            if (DBA == null)
+                throw new Exception("The connection pool can't be configured when the DBA object is null （DBA 对象为空时无法配置连接池）.");
+
+            DBA.ConnectionPool = new DefaultDbConnectionPool();
+            configure(DBA.ConnectionPool);
+        }
+
+        /// <summary>
         /// 执行指定的 SQL 命令，并返回受影响的记录数。
         /// </summary>
         /// <param name="Command">CommandBuilder对象。</param>
@@ -62,10 +91,9 @@ namespace Wunion.DataAdapter.Kernel
         /// </summary>
         /// <param name="Command">CommandBuilder对象。</param>
         /// <returns></returns>
-        public T ExecuteQuery<T>(CommandBuilder Command) where T : DataTable
+        public DataTable QueryDataTable(CommandBuilder Command)
         {
-            DataTable dt = DBA.ExecuteQuery<DataTable>(Command);
-            return (T)dt;
+            return DBA.QueryDataTable(Command);
         }
 
         /// <summary>
@@ -120,7 +148,7 @@ namespace Wunion.DataAdapter.Kernel
             if (DBA == null || CommandParserAdapter == null)
                 throw (new Exception("无法开启事务，因为尚未初始化 DBA 或 CommandParserAdapter 对象。"));
             IDbConnection DbConnection = DBA.Connect();
-            DbConnection.Open();
+            //DbConnection.Open();
             IDbTransaction Trans;
             if (il == null)
                 Trans = DbConnection.BeginTransaction();
@@ -131,7 +159,7 @@ namespace Wunion.DataAdapter.Kernel
             DbCommand.Transaction = Trans;
             TransactionDbAccess transDBA = new TransactionDbAccess(DbCommand, this);
             DBTransactionController TransController = new DBTransactionController(Trans, transDBA, new ReleaseTransHandler(ReleaseTransaction));
-            TransactionConnectionCache.RegisterValidTransaction(TransController.UniqueId, DbConnection);
+            TransactionConnectionCache.RegisterValidTransaction(TransController.UniqueId, DBA, DbConnection);
             return TransController;
         }
 

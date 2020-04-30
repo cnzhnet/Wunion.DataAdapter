@@ -20,7 +20,9 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
         /// 创建对象实例。
         /// </summary>
         protected DbAccess()
-        { }
+        {
+            ConnectionPool = null;
+        }
 
         /// <summary>
         /// 获取或设置数据库连接字符串。
@@ -29,6 +31,15 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
         {
             set;
             get;
+        }
+
+        /// <summary>
+        /// 表示数据库连接池.
+        /// </summary>
+        public IDbConnectionPool ConnectionPool
+        {
+            get;
+            internal set;
         }
 
         /// <summary>
@@ -65,12 +76,36 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
         }
 
         /// <summary>
+        /// 连接池可时返回 true，否则返回 false.
+        /// </summary>
+        protected bool ConnectionPoolAvailable
+        {
+            get { return ConnectionPool != null && ConnectionPool.MaximumConnections > 0; }
+        }
+
+        /// <summary>
+        /// 用于创建数据库连接.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract IDbConnection CreateConnection();
+
+        /// <summary>
         /// 连接数据库，并返回一个 DbConnection 对象。
         /// </summary>
         /// <returns></returns>
-        public virtual IDbConnection Connect()
+        public IDbConnection Connect()
         {
-            return null;
+            IDbConnection connection = null;
+            if (ConnectionPoolAvailable)
+            {
+                connection = ConnectionPool.GetConnection(CreateConnection);
+            }
+            else
+            {
+                connection = CreateConnection();
+                connection.Open();
+            }
+            return connection;
         }
 
         /// <summary>
@@ -162,10 +197,9 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
         /// <summary>
         /// 指行指定的查询命令，并返回一个 DataTable 数据集。
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="Command">要执行的命令。</param>
         /// <returns></returns>
-        public virtual T ExecuteQuery<T>(CommandBuilder Command) where T : DataTable
+        public virtual DataTable QueryDataTable(CommandBuilder Command)
         {
             return null;
         }

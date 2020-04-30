@@ -23,10 +23,10 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
         }
 
         /// <summary>
-        /// 连接数据库，并返回一个 DbConnection 对象。
+        /// 用于创建数据库连接.
         /// </summary>
         /// <returns></returns>
-        public override IDbConnection Connect()
+        protected override IDbConnection CreateConnection()
         {
             if (string.IsNullOrEmpty(ConnectionString))
                 throw (new Exception("Connection string is invalid."));
@@ -60,7 +60,6 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqliteParameter)p);
                 DbCommand.CommandType = Command.CommandType;
-                DbCommand.Connection.Open();
                 int result = DbCommand.ExecuteNonQuery();
                 if (result > 0)
                     QueryLastIdentity(DbCommand);
@@ -73,8 +72,15 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
             }
             finally
             {
-                DbCommand.Connection.Close();
-                DbCommand.Connection.Dispose();
+                if (ConnectionPoolAvailable)
+                {
+                    ConnectionPool.ReleaseConnection(DbCommand.Connection);
+                }
+                else
+                {
+                    DbCommand.Connection.Close();
+                    DbCommand.Connection.Dispose();
+                }
                 DbCommand.Parameters.Clear();
                 DbCommand.Dispose();
             }
@@ -85,40 +91,38 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
         /// </summary>
         /// <param name="Command">要执行的查询。</param>
         /// <returns></returns>
-        public override T ExecuteQuery<T>(CommandBuilder Command)
+        public override DataTable QueryDataTable(CommandBuilder Command)
         {
-            if (!typeof(T).Equals(typeof(DataTable)))
-                throw (new Exception("目标类型只能是 System.Data.DataTable."));
             ClearError();
             IDataReader Rd = ExecuteReader(Command);
             if (Rd == null)
                 return null;
-            DataTable dt = new DataTable();
-            string FieldName;
-            int i = 0;
-            // 创建列集合。
-            if (Rd.FieldCount > 0)
-            {
-                for (; i < Rd.FieldCount; ++i)
+            DataTable table = new DataTable();
+            using (Rd)
+            {                
+                string FieldName;
+                int i = 0;
+                // 创建列集合。
+                if (Rd.FieldCount > 0)
                 {
-                    FieldName = Rd.GetName(i);
-                    dt.Columns.Add(FieldName, Rd.GetFieldType(i));
+                    for (; i < Rd.FieldCount; ++i)
+                    {
+                        FieldName = Rd.GetName(i);
+                        table.Columns.Add(FieldName, Rd.GetFieldType(i));
+                    }
                 }
-            }
-            //dt.AcceptChanges();
-
-            // 填充所有行。
-            while (Rd.Read())
-            {
-                DataRow Row = dt.NewRow();
-                for (i = 0; i < Rd.FieldCount; ++i)
-                    Row[i] = Rd.GetValue(i);
-                dt.Rows.Add(Row);
-            }
-            Rd.Close();
-            Rd.Dispose();
-            dt.AcceptChanges();
-            return (T)dt;
+                // 填充所有行。
+                while (Rd.Read())
+                {
+                    DataRow Row = table.NewRow();
+                    for (i = 0; i < Rd.FieldCount; ++i)
+                        Row[i] = Rd.GetValue(i);
+                    table.Rows.Add(Row);
+                }
+                Rd.Close();
+                table.AcceptChanges();
+            }            
+            return table;
         }
 
         /// <summary>
@@ -137,9 +141,13 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqliteParameter)p);
                 DbCommand.CommandType = Command.CommandType;
-                DbCommand.Connection.Open();
-                SqliteDataReader DbReader = DbCommand.ExecuteReader(CommandBehavior.CloseConnection);
-                return DbReader;
+                if (ConnectionPoolAvailable)
+                {
+                    DbaDataReader DbReader = new DbaDataReader(DbCommand.ExecuteReader(), DbCommand.Connection);
+                    DbReader.Closed += (IDbConnection conn) => { ConnectionPool.ReleaseConnection(conn); };
+                    return DbReader;
+                }
+                return DbCommand.ExecuteReader(CommandBehavior.CloseConnection);
             }
             catch (Exception Ex)
             {
@@ -169,7 +177,6 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
                 foreach (object p in Command.CommandParameters)
                     DbCommand.Parameters.Add((SqliteParameter)p);
                 DbCommand.CommandType = Command.CommandType;
-                DbCommand.Connection.Open();
                 object result = DbCommand.ExecuteScalar();
                 return result;
             }
@@ -180,8 +187,15 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
             }
             finally
             {
-                DbCommand.Connection.Close();
-                DbCommand.Connection.Dispose();
+                if (ConnectionPoolAvailable)
+                {
+                    ConnectionPool.ReleaseConnection(DbCommand.Connection);
+                }
+                else
+                {
+                    DbCommand.Connection.Close();
+                    DbCommand.Connection.Dispose();
+                }
                 DbCommand.Parameters.Clear();
                 DbCommand.Dispose();
             }

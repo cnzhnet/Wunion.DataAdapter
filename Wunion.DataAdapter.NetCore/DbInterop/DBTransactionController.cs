@@ -87,8 +87,8 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
                 throw new Exception("在回滚事务时产生错误：事务控制器为空或已释放。");
             TransOper.Rollback();
             _IsCommit = true;
-            if (ReleaseTrans != null)
-                ReleaseTrans(this);
+            //if (ReleaseTrans != null)
+            //    ReleaseTrans(this);
             return true;
         }
 
