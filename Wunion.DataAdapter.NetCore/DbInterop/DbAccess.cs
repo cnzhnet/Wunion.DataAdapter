@@ -169,28 +169,30 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
             if (Rd == null)
                 return null;
             SpeedDataTable dt = new SpeedDataTable();
-            string FieldName;
-            int i = 0;
-            // 创建列集合。
-            if (Rd.FieldCount > 0)
+            using (Rd)
             {
-                for (; i < Rd.FieldCount; ++i)
+                string FieldName;
+                int i = 0;
+                // 创建列集合。
+                if (Rd.FieldCount > 0)
                 {
-                    FieldName = Rd.GetName(i);
-                    dt.Columns.Add(FieldName, Rd.GetFieldType(i));
+                    for (; i < Rd.FieldCount; ++i)
+                    {
+                        FieldName = Rd.GetName(i);
+                        dt.Columns.Add(FieldName, Rd.GetFieldType(i));
+                    }
                 }
-            }
 
-            // 填充所有行。
-            while (Rd.Read())
-            {
-                SpeedDataRow Row = new SpeedDataRow(dt);
-                for (i = 0; i < Rd.FieldCount; ++i)
-                    Row[i] = Rd.GetValue(i);
-                dt.Add(Row);
+                // 填充所有行。
+                while (Rd.Read())
+                {
+                    SpeedDataRow Row = new SpeedDataRow(dt);
+                    for (i = 0; i < Rd.FieldCount; ++i)
+                        Row[i] = Rd.GetValue(i);
+                    dt.Add(Row);
+                }
+                Rd.Close();
             }
-            Rd.Close();
-            Rd.Dispose();
             return dt;
         }
 
@@ -223,17 +225,19 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
                 throw new Exception(error);
             }
             List<dynamic> dataCollection = new List<dynamic>();
-            DynamicEntity entity;
-            int i = 0;
-            while (Rd.Read())
+            using (Rd)
             {
-                entity = new DynamicEntity();
-                for (i = 0; i < Rd.FieldCount; ++i)
-                    entity.SetPropertyValue(Rd.GetName(i), Rd.GetValue(i), Rd.GetFieldType(i));
-                dataCollection.Add(entity);
+                DynamicEntity entity;
+                int i = 0;
+                while (Rd.Read())
+                {
+                    entity = new DynamicEntity();
+                    for (i = 0; i < Rd.FieldCount; ++i)
+                        entity.SetPropertyValue(Rd.GetName(i), Rd.GetValue(i), Rd.GetFieldType(i));
+                    dataCollection.Add(entity);
+                }
+                Rd.Close();
             }
-            Rd.Close();
-            Rd.Dispose();
             return dataCollection;
         }
 
