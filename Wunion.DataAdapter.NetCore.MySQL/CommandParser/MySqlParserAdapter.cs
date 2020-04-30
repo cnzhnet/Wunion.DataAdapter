@@ -41,6 +41,7 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
         {
             base.InitializeParsers();
             Put(typeof(FunDescription), new MySqlFunParser(this));
+            Put(typeof(LikeDescription), new MySqlLikeParser(this));
             Put(typeof(SelectBlock), new MySqlSelectBlockParser(this));
         }
 

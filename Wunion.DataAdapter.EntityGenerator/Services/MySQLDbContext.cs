@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Data;
 using System.ComponentModel;
-using Pomelo.Data.MySql;
+using MySql.Data.MySqlClient;
 using Wunion.DataAdapter.Kernel;
 using Wunion.DataAdapter.Kernel.DataCollection;
 using Wunion.DataAdapter.Kernel.CommandBuilders;

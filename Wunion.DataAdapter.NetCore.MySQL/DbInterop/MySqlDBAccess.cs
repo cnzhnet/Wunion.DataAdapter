@@ -9,6 +9,9 @@ using Wunion.DataAdapter.Kernel.CommandBuilders;
 
 namespace Wunion.DataAdapter.Kernel.MySQL
 {
+    /// <summary>
+    /// MySQL 的数据访问器实现.
+    /// </summary>
     public class MySqlDBAccess : DbAccess
     {
         /// <summary>

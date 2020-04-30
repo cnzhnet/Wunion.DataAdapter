@@ -5,6 +5,7 @@ using System.Data;
 using Npgsql;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
 using Wunion.DataAdapter.Kernel.CommandParser;
+using Wunion.DataAdapter.NetCore.PostgreSQL.CommandParser;
 
 namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
 {
@@ -38,6 +39,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
         {
             base.InitializeParsers();
             Put(typeof(FunDescription), new NpgsqlFunParser(this));
+            Put(typeof(LikeDescription), new NpgsqlLikeParser(this));
             Put(typeof(SelectBlock), new NpgsqlSelectBlockParser(this));
         }
 

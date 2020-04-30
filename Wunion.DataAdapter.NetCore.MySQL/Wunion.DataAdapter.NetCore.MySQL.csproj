@@ -12,14 +12,15 @@
     <RootNamespace>Wunion.DataAdapter.Kernel.MySQL</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Wunion.DataAdapter.NetCore 的 MySQL 数据库支持包。
+1.0.3、更新 MySql.Data 官方包、更新 Like 子句的解释器实现，新增连接池的支持.
 1.0.2、更进Wunion.DataAdapter.NetCore 1.0.3解释适配器的新模式支持</Description>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
     <Copyright>cnzhnet</Copyright>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <FileVersion>1.0.3.0</FileVersion>
+    <Version>1.0.3</Version>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
   </PropertyGroup>
 
