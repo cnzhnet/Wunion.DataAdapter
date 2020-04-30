@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
-using Pomelo.Data.MySql;
+using MySql.Data.MySqlClient;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
 using Wunion.DataAdapter.Kernel.CommandParser;
 
