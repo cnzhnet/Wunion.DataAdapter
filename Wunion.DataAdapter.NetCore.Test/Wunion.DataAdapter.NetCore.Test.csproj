@@ -5,13 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\main-page.ts" />
+    <None Remove="Scripts\web-app.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\images\" />
-    <Folder Include="wwwroot\styles\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +59,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
 
 </Project>

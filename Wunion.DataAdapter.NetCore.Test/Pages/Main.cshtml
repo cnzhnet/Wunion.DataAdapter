@@ -1,0 +1,24 @@
+﻿@page
+@model MainPageModel
+@{
+    ViewBag.Title = "Wunion.DataAdapter.NetCore - 演示项目";
+}
+@section OwnStyles {
+    <link rel="stylesheet" href="~/lib/jquery/css/easyui.css" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/styles/app.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/styles/app.css" />
+    </environment>
+}
+@section OwnScripts {
+    <script src="~/lib/jquery/dist/jquery.easyui.min.js"></script>
+    <environment include="Development">
+        <script src="~/js/web-app.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/web-app.js"></script>
+    </environment>
+}
+<div>此乃主界面.</div>

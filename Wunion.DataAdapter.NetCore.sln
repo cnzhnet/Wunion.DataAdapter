@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.EntityGe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.PostgreSQL", "Wunion.DataAdapter.NetCore.PostgreSQL\Wunion.DataAdapter.NetCore.PostgreSQL.csproj", "{72D72501-EEB4-4C69-831A-0322B014BA23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wunion.DataAdapter.NetCore.Test", "Wunion.DataAdapter.NetCore.Test\Wunion.DataAdapter.NetCore.Test.csproj", "{0433AD4D-E6E7-4F84-887B-9770B17EADDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wunion.DataAdapter.NetCore.Test", "Wunion.DataAdapter.NetCore.Test\Wunion.DataAdapter.NetCore.Test.csproj", "{0433AD4D-E6E7-4F84-887B-9770B17EADDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

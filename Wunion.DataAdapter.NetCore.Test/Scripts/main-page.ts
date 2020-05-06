@@ -1,3 +1,0 @@
-﻿class MainPage {
-    constructor() { }
-}
