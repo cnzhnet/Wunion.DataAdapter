@@ -1,6 +1,7 @@
 ﻿## 本项目要忽略的文件及目录.
 ## Files and directories to be ignored by this project.
 # TypeScript 的编译目录忽略
+/node_modules/
 /wwwroot/js/
 /Scripts/*.js
 /Scripts/*.map
