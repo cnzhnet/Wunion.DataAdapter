@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Wunion.DataAdapter.NetCore.Test.Pages
 {
-    public class MainPageModel : PageModel
+    public class IndexPageModel : PageModel
     {
         public void OnGet()
         {

@@ -62,4 +62,18 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.MySQL\Wunion.DataAdapter.NetCore.MySQL.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.PostgreSQL\Wunion.DataAdapter.NetCore.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.SQLite3\Wunion.DataAdapter.NetCore.SQLite3.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.SQLServer\Wunion.DataAdapter.NetCore.SQLServer.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore\Wunion.DataAdapter.NetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="db_sqlite\wdak.sqlite3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

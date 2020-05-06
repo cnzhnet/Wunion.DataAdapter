@@ -11,27 +11,58 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Wunion.DataAdapter.NetCore.Test.Pages;
+using Microsoft.AspNetCore.Http.Features;
+using Wunion.DataAdapter.Kernel;
 
 namespace Wunion.DataAdapter.NetCore.Test
 {
     public class Startup
     {
         internal IConfiguration Configuration { get; set; }
+        private IWebHostEnvironment hostEnvironment;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             this.Configuration = configuration;
+            this.hostEnvironment = env;
         }
+
+        /// <summary>
+        /// 配置数据库.
+        /// </summary>
+        /// <param name="services"></param>
+        private void ConfigureDatabase(IServiceCollection services)
+        {
+            DatabaseCollection database = new DatabaseCollection();
+            IConfigurationSection section = Configuration.GetSection("Database").GetSection("SQLServer");
+            database.UseSqlserver(section.GetValue<string>("ConnectionString"), section.GetValue<int>("ConnectionPool", 0));
+            
+            section = Configuration.GetSection("Database").GetSection("MySQL");
+            database.UseMySql(section.GetValue<string>("ConnectionString"), section.GetValue<int>("ConnectionPool", 0));
+
+            section = Configuration.GetSection("Database").GetSection("PostgreSQL");
+            database.UsePostgreSQL(section.GetValue<string>("ConnectionString"), section.GetValue<int>("ConnectionPool", 0));
+
+            section = Configuration.GetSection("Database").GetSection("SQLite3");
+            string sqliteConnectionString = section.GetValue<string>("ConnectionString");
+            sqliteConnectionString = sqliteConnectionString.Replace("{contentroot}", hostEnvironment.ContentRootPath);
+            database.UseSQLite3(sqliteConnectionString);
+            database.SetActive("sqlite3");
+
+            services.AddSingleton<DatabaseCollection>(database);
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddJsonOptions((options) => {
+            services.AddMvc((option) => {
+                option.EnableEndpointRouting = false;
+            }).AddJsonOptions((options) => {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+                options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
+                options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
             });
             // 配置反向代理转接，以确保获得的客户端地址信息的正确性.
             services.Configure<ForwardedHeadersOptions>(options => {
@@ -49,12 +80,22 @@ namespace Wunion.DataAdapter.NetCore.Test
                     }
                 }
             });
+            // 配置 http POST 最大上传限制
+            services.Configure<FormOptions>(options => {
+                long lengthLimit = 1024000000;
+                IConfigurationSection frmOptions = Configuration.GetSection("FormOptions");
+                if (frmOptions != null)
+                    lengthLimit = frmOptions.GetValue<long>("MultipartBodyLengthLimit");
+                options.MultipartBodyLengthLimit = lengthLimit;
+            });
             services.AddSession((configure) => {
                 configure.IdleTimeout = TimeSpan.FromMinutes(45);
                 configure.IOTimeout = TimeSpan.FromMinutes(45);
             });
             services.AddHttpContextAccessor();
             services.AddSingleton(typeof(HtmlEncoder), HtmlEncoder.Create(UnicodeRanges.All)); // cshtml 视图的 Unicode 编码处理.
+            services.AddScoped<WebApiExceptionFilter>();
+            ConfigureDatabase(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,11 +110,7 @@ namespace Wunion.DataAdapter.NetCore.Test
             app.UseCookiePolicy();
             app.UseSession();
             app.UseRouting();
-            app.UseEndpoints((endpoints) => { endpoints.MapRazorPages(); });
-            app.Run(async (context) => {
-                context.Response.Redirect("/main");
-                await Task.FromResult(0);
-            });
+            app.UseMvc();
         }
     }
 }
