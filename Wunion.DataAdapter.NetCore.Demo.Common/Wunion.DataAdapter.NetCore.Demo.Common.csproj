@@ -70,4 +70,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\_sgbak\" />
+  </ItemGroup>
+
 </Project>

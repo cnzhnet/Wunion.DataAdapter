@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
 
 namespace Wunion.DataAdapter.EntityUtils
@@ -49,5 +50,31 @@ namespace Wunion.DataAdapter.EntityUtils
         /// <returns></returns>
         public virtual TableMapper CreateContext()
         { return null; }
+
+        /// <summary>
+        /// 获取所有要查询的字段信息的数组.
+        /// </summary>
+        /// <returns></returns>
+        internal IDescription[] GetFieldsArray()
+        {
+            List<IDescription> fields = new List<IDescription>();
+            PropertyInfo[] ps = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            if (ps != null && ps.Length > 0)
+            {
+                IDescription buffer = null;
+                foreach (PropertyInfo pi in ps)
+                {
+                    if (pi.PropertyType.IsValueType)
+                        continue;
+                    buffer = pi.GetValue(this) as IDescription;
+                    if (buffer == null)
+                        continue;
+                    fields.Add(buffer);
+                }
+            }
+            if (fields.Count < 1)
+                fields.Add(td.Field("*"));
+            return fields.ToArray();
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Wunion.DataAdapter.Kernel
         /// <summary>
         /// 空闲连接池.
         /// </summary>
-        private List<ConnectionPoolItem> IdlePool;
+        private Queue<ConnectionPoolItem> IdlePool;
         /// <summary>
         /// 正在占用的连接池.
         /// </summary>
@@ -29,7 +29,7 @@ namespace Wunion.DataAdapter.Kernel
         /// </summary>
         internal DefaultDbConnectionPool()
         {
-            IdlePool = new List<ConnectionPoolItem>();
+            IdlePool = new Queue<ConnectionPoolItem>();
             usingPool = new List<ConnectionPoolItem>();
             poolLocked = new object();
             forcedReleaseRunning = false;
@@ -91,22 +91,32 @@ namespace Wunion.DataAdapter.Kernel
                     connection.Open();
                 return connection;
             }
+            Exception tmpEx = null;
             DateTime timeMemory = DateTime.Now;
             ConnectionPoolItem poolItem = null;
             do
             {
                 if (IdlePool.Count > 0)
                 {
-                    poolItem = IdlePool.First();
                     lock (poolLocked)
                     {
-                        usingPool.Add(poolItem);
-                        IdlePool.Remove(poolItem);
+                        try
+                        {
+                            poolItem = IdlePool.Dequeue();
+                            usingPool.Add(poolItem);
+                        }
+                        catch (Exception Ex)
+                        {
+                            tmpEx = Ex;
+                            break;
+                        }
                     }
                     break;
                 }
                 Thread.Sleep(1);
             } while ((DateTime.Now - timeMemory).TotalSeconds < RequestTimeout.TotalSeconds);
+            if (tmpEx != null)
+                throw tmpEx;
             if (poolItem == null)
                 throw new Exception("从数据库连接池中获取连接时超时. Timeout while getting connection from connection pool");
             poolItem.LastUsed = DateTime.Now;
@@ -131,7 +141,7 @@ namespace Wunion.DataAdapter.Kernel
                 {
                     ConnectionPoolItem item = items.First();
                     usingPool.Remove(item);
-                    IdlePool.Add(item);
+                    IdlePool.Enqueue(item);
                 }
             }
             RunForcedRelease();
@@ -159,7 +169,7 @@ namespace Wunion.DataAdapter.Kernel
                         {
                             usingPool.RemoveAt(i--);
                             item.Connection.Close();
-                            IdlePool.Add(item);
+                            IdlePool.Enqueue(item);
                         }
                     }
                 }

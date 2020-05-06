@@ -201,9 +201,9 @@ namespace Wunion.DataAdapter.EntityUtils
             agent.TableContext = this;
             object Conditions = selector(agent);
             if (Conditions == null)
-                Command.Select(td.Field("*")).From(entityTable.TableName);
+                Command.Select(agent.GetFieldsArray()).From(entityTable.TableName);
             else
-                Command.Select(td.Field("*")).From(entityTable.TableName).Where(Conditions);
+                Command.Select(agent.GetFieldsArray()).From(entityTable.TableName).Where(Conditions);
             return ExecuteQuery<TEntity>(Command);
         }
 
@@ -216,10 +216,10 @@ namespace Wunion.DataAdapter.EntityUtils
         protected List<TEntity> Select<TEntity>(Action<TEntityAgent, SelectBlock> action) where TEntity : DataEntity, new()
         {
             EntityTableAttribute entityTable = GetTableAttribute();
-            DbCommandBuilder Command = new DbCommandBuilder();
-            SelectBlock select = Command.Select(td.Field("*")).From(entityTable.TableName);
             TEntityAgent agent = new TEntityAgent();
             agent.TableContext = this;
+            DbCommandBuilder Command = new DbCommandBuilder();
+            SelectBlock select = Command.Select(agent.GetFieldsArray()).From(entityTable.TableName);
             action(agent, select);
             return ExecuteQuery<TEntity>(Command);
         }

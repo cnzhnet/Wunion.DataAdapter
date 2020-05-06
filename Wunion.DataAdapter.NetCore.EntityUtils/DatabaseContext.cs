@@ -30,6 +30,15 @@ namespace Wunion.DataAdapter.EntityUtils
         protected DatabaseContext() { }
 
         /// <summary>
+        /// 使用数据库连接池.
+        /// </summary>
+        /// <param name="configure">用于实现数据库连接池配置的方法.</param>
+        public void UseConnectionPool(ConnectionPoolConfigureHandler configure)
+        {
+            configure(ReadEngine, WriteEngine);
+        }
+
+        /// <summary>
         /// 获取指定的数据表上下文对象.
         /// </summary>
         /// <typeparam name="TContext"></typeparam>
@@ -171,4 +180,10 @@ namespace Wunion.DataAdapter.EntityUtils
             public ParserAdapter Parser { get; set; }
         }
     }
+    /// <summary>
+    /// 用于执行配置 <see cref="DatabaseContext"/> 对象的连接池的委托.
+    /// </summary>
+    /// <param name="read">读访问的数据库引擎对象实例.</param>
+    /// <param name="write">写访问的数据库引擎.</param>
+    public delegate void ConnectionPoolConfigureHandler(DataEngine read, DataEngine write);
 }
