@@ -3,14 +3,21 @@
 @{ 
     Layout = null;
 }
-<div class="container">
+<div class="layui-form container" lay-filter="dlist_view">
+    <div class="custom-toolsbar">
+        <div class="dropdown-list" style="margin-left: 12px; width: 162px;">
+            <database-collection http-context="@Model.Context" lay-filter="target_database">
+                <item-database db-kind="ms-sql" text="SQL Server 2012+" />
+                <item-database db-kind="mysql" text="MySQL数据库" />
+                <item-database db-kind="npgsql" text="PostgreSQL数据库" />
+                <item-database db-kind="sqlite3" text="SQLite数据库" />
+            </database-collection>
+        </div>
+    </div>
     <div id="data-listView" style="width: 100%;">
         正在加载请稍候......
     </div>
-    <div class="status-bar">
-        <div class="custom-toolbox">自定义工具栏.</div>
-        <div class="pagination-box" id="list-pagination"></div>
-        <div style="clear: both;"></div>
+    <div class="pagination-bar" id="pagination">
     </div>
 </div>
 <script src="~/js/module-views/data-listview.js"></script>

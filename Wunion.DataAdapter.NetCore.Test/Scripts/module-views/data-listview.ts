@@ -9,6 +9,7 @@ class DataListModuleView implements IModuleView {
     constructor() { }
     /** 初始化客户端脚本对象. */
     public init(options?: any): void {
+        layui.form.render("select", "dlist_view");
         this.$datalistView = $("#data-listView");
         this.$datalistView.html('数据列表 田田田');
     }

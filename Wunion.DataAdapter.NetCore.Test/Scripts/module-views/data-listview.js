@@ -2,6 +2,7 @@ var DataListModuleView = (function () {
     function DataListModuleView() {
     }
     DataListModuleView.prototype.init = function (options) {
+        layui.form.render("select", "dlist_view");
         this.$datalistView = $("#data-listView");
         this.$datalistView.html('数据列表 田田田');
     };

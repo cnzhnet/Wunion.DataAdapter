@@ -40,6 +40,11 @@ namespace Wunion.DataAdapter.NetCore.Test
         public DataEngine Current { get; private set; }
 
         /// <summary>
+        /// 获取当前引擎的数据库类型.
+        /// </summary>
+        public string CurrentDbType { get; private set; }
+
+        /// <summary>
         /// 表示 SQLite3 数据库引擎.
         /// </summary>
         public DataEngine SQLite3 { get; private set; }
@@ -117,19 +122,24 @@ namespace Wunion.DataAdapter.NetCore.Test
         {
             if (string.IsNullOrEmpty(dbType))
                 return;
-            switch (dbType.ToLower())
+            string typeName = dbType.ToLower();
+            switch (typeName)
             {
                 case "ms-sql":
                     Current = Mssql;
+                    CurrentDbType = typeName;
                     break;
                 case "mysql":
                     Current = MySql;
+                    CurrentDbType = typeName;
                     break;
                 case "npgsql":
                     Current = PostgreSQL;
+                    CurrentDbType = typeName;
                     break;
                 case "sqlite3":
                     Current = SQLite3;
+                    CurrentDbType = typeName;
                     break;
             }
         }

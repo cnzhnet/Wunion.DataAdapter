@@ -8,10 +8,10 @@
                 .page-view header .top-navbar > li .item-active { background-color: #e8f0fe; color: #1a73e8; }
 
     .page-view .module-view { width: calc(100% - 22px); min-height: 100%; height: 100%; margin: 0px auto; padding: 62px 0px 0px 0px; }
-        .page-view .module-view .container { width: 100%; height: auto; overflow: hidden; }
-        .page-view .module-view .status-bar { width: 100%; position: relative; }
-            .page-view .module-view .status-bar .custom-toolbox { float: left; }
-            .page-view .module-view .status-bar .pagination-box { float: right; }
+        .page-view .module-view .container { width: 100%; height: calc(100vh - 72px); overflow: auto; }
+        .page-view .module-view .custom-toolsbar { width: 100%; height: 45px; max-height: 45px; }
+            .page-view .module-view .custom-toolsbar .dropdown-list { display: inline-block; }
+        .page-view .module-view .pagination-bar { width: 100%; position: relative; }
 
 .card { position: relative; display: flex; flex-direction: column; background-color: #fff; background-clip: border-box; border: 1px solid #d8e0ec; border-radius: 0; }
     .card .card-body { padding: 1.4rem 1.875rem; }
