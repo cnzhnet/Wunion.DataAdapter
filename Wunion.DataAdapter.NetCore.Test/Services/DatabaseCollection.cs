@@ -141,6 +141,8 @@ namespace Wunion.DataAdapter.NetCore.Test
                     Current = SQLite3;
                     CurrentDbType = typeName;
                     break;
+                default:
+                    throw new NotSupportedException(string.Format("Unsupported database: {0}\r\n不支持的数据库.", dbType));
             }
         }
     }

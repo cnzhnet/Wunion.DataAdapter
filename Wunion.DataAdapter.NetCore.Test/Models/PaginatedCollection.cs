@@ -10,15 +10,15 @@ namespace Wunion.DataAdapter.NetCore.Test.Models
     /// </summary>
     /// <typeparam name="TEntity">数据集的元素类型名称.</typeparam>
     [Serializable()]
-    public class PaginatedDataCollection<TEntity> where TEntity : class
+    public class PaginatedCollection<TEntity> where TEntity : class
     {
         /// <summary>
-        /// 创建一个 <see cref="PaginatedDataCollection{TEntity}"/> 的对象实例.
+        /// 创建一个 <see cref="PaginatedCollection{TEntity}"/> 的对象实例.
         /// </summary>
         /// <param name="total">数据的总页数.</param>
         /// <param name="page">当前页.</param>
         /// <param name="dataItems">数据集合.</param>
-        public PaginatedDataCollection(int total, int page, List<TEntity> dataItems) 
+        public PaginatedCollection(int total, int page, List<TEntity> dataItems) 
         {
             this.Total = total;
             this.Page = page;

@@ -32,7 +32,7 @@ namespace Wunion.DataAdapter.NetCore.Test.Services
         /// <param name="pageSize">每页数据条数.</param>
         /// <param name="group">分组ID（为 null 时查所有数据）.</param>
         /// <returns></returns>
-        public PaginatedDataCollection<dynamic> Query(int page, int pageSize, int? group)
+        public PaginatedCollection<dynamic> Query(int page, int pageSize, int? group)
         {
             DbCommandBuilder cb = new DbCommandBuilder();
             SelectBlock sb = cb.Select(Fun.Count("*")).From(
@@ -62,7 +62,7 @@ namespace Wunion.DataAdapter.NetCore.Test.Services
                 sb.Where(condition.ToArray());
             sb.OrderBy(td.Field("itm", "TestId"), OrderByMode.DESC).Paging(pageSize, page);
             List<dynamic> entities = db.ExecuteDynamicEntity(cb);
-            return new PaginatedDataCollection<dynamic>(total, page, entities);
+            return new PaginatedCollection<dynamic>(total, page, entities);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Wunion.DataAdapter.NetCore.Test.Services
         /// <param name="pageSize">每页数据条数.</param>
         /// <param name="group">分组ID（为 null 时搜索所有数据）.</param>
         /// <returns></returns>
-        public PaginatedDataCollection<dynamic> Search(string keywords, int page, int pageSize, int? group = null)
+        public PaginatedCollection<dynamic> Search(string keywords, int page, int pageSize, int? group = null)
         {
             DbCommandBuilder cb = new DbCommandBuilder();
             object[] condition;
@@ -108,7 +108,7 @@ namespace Wunion.DataAdapter.NetCore.Test.Services
                      fm.LeftJoin(GROUP_TABLE, "grp").ON(td.Field("itm", "GroupId") == td.Field("grp", "GroupId"))
               ).Where(condition).OrderBy(td.Field("itm", "TestId"), OrderByMode.DESC).Paging(pageSize, page);
             List<dynamic> entities = db.ExecuteDynamicEntity(cb);
-            return new PaginatedDataCollection<dynamic>(total, page, entities);
+            return new PaginatedCollection<dynamic>(total, page, entities);
         }
     }
 }

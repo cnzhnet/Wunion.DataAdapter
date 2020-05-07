@@ -45,13 +45,20 @@ namespace Wunion.DataAdapter.NetCore.Test.Controllers
                     groupId = tmp;
             }
             TestDataItemService service = DataService.Get<TestDataItemService>(dbCollection.Current);
-            PaginatedDataCollection<dynamic> queryResult = service.Query(page, pagesize, groupId);
+            PaginatedCollection<dynamic> queryResult = service.Query(page, pagesize, groupId);
             if (queryResult == null)
                 return Json(new WebApiResult<object> { code = ResultCode.STATE_FAIL, message = "还没有测试数据." });
-            return Json(new WebApiResult<PaginatedDataCollection<dynamic>> { 
+            return Json(new WebApiResult<PaginatedCollection<dynamic>> { 
                 code = ResultCode.STATE_OK,
                 data = queryResult
             });
+        }
+
+        [HttpPost]
+        public IActionResult ChangeDataBase([FromForm] string kind)
+        {
+            dbCollection.SetActive(kind);
+            return Json(new WebApiResult<object> { code = ResultCode.STATE_OK, message = string.Empty });
         }
     }
 }

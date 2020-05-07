@@ -18,6 +18,9 @@ interface IWebApp {
      * @param viewName 视图名称.
      * @param options 该视图可能需要的参数. */
     changeView(viewName: string, options?: any): void;
+    /** 用于请求切换数据库.
+     * @param kind 数据库类型. */
+    changeDatabase(kind: string): void;
     /** 登出(注销)当前登录的用户账户.
      * @param confirm 在注销时是否弹出确认框. */
     userLogout(confirm?: boolean): void;
@@ -48,3 +51,5 @@ interface Window {
     /** 表示对主界面视图控制脚本对象的扩展. */
     mainApp: IWebApp;
 }
+
+declare var service: ServiceRequest;

@@ -64,6 +64,24 @@ class WebApp implements IWebApp {
                 me.getActiveView().init(urlQuery.getParams());
         });
     }
+    /** 用于请求切换数据库.
+     * @param kind 数据库类型. */
+    public changeDatabase(kind: string): void {
+        if (!kind)
+            return;
+        let me: WebApp = this;
+        let index: number = layer.load();
+        service.post("/api/data/ChangeDataBase", { kind: kind }, function (result: IWebApiResult): void {
+            layer.close(index);
+            if (result.code === 0x00) {
+                if (me.getActiveView())
+                    me.getActiveView().reload();
+            }
+            else {
+                layer.alert(result.message, { icon: 2, title: "错误信息" });
+            }
+        });
+    }
     /** 用于处理顶部导航元素的点击事件.
      * @param target 被点击的导航元素. */
     private topNavbarItem_Click(target: HTMLElement): void {
