@@ -1,2 +1,20 @@
 ﻿html, body, form { margin: 0px; padding: 0px; width: 100%; height: 100%; }
 .page-view { margin: 0px; padding: 0px; width: 100%; height: 100%; background-color: #fff; }
+    .page-view header { margin: 0px; padding: 0px; width: 100%; height: 48px; max-height: 48px; background-color: #fff; position: fixed; left: 0px; top: 0px; z-index: 200; display: block; }
+        .page-view header .app-caption { font-size: 1.12rem; padding: 12px; float: left; display: block; }
+        .page-view header .top-navbar { margin: 0px 22px 0px 0px; padding: 0px; list-style: none; float: right; display: block; }
+            .page-view header .top-navbar > li { margin: 0px; padding: 0px; display: inline-block; list-style: none; }
+                .page-view header .top-navbar > li > a { padding: 14px 8px; text-decoration: none; background-color: transparent; display:block; cursor: pointer; }
+                .page-view header .top-navbar > li .item-active { background-color: #e8f0fe; color: #1a73e8; }
+
+    .page-view .module-view { width: calc(100% - 22px); min-height: 100%; height: 100%; margin: 0px auto; padding: 62px 0px 0px 0px; }
+        .page-view .module-view .container { width: 100%; height: auto; overflow: hidden; }
+        .page-view .module-view .status-bar { width: 100%; position: relative; }
+            .page-view .module-view .status-bar .custom-toolbox { float: left; }
+            .page-view .module-view .status-bar .pagination-box { float: right; }
+
+.card { position: relative; display: flex; flex-direction: column; background-color: #fff; background-clip: border-box; border: 1px solid #d8e0ec; border-radius: 0; }
+    .card .card-body { padding: 1.4rem 1.875rem; }
+    .card .card-title { color: #001737; margin-bottom: .6rem; /*text-transform: capitalize;*/ font-size: 1rem; font-weight: 600; }
+    .card .card-description { margin-bottom: .875rem; font-weight: 400; }
+.error-view { margin: 22px; }

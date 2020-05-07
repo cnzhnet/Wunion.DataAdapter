@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Scripts\module-views\data-listview.ts" />
     <None Remove="Scripts\web-app.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Remove="Scripts\url-querystring.ts" />
   </ItemGroup>
 
   <ItemGroup>
