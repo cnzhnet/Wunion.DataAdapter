@@ -34,13 +34,13 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
             switch (ld.Match)
             {
                 case LikeMatch.Left:
-                    keywords = Adapter.CreateDbParameter("LikeKeywords", string.Format("'{1}{0}'", FormatKeywords(ld.Content), MatchChar));
+                    keywords = Adapter.CreateDbParameter("LikeKeywords", string.Format("{1}{0}", FormatKeywords(ld.Content), MatchChar));
                     break;
                 case LikeMatch.Right:
-                    keywords = Adapter.CreateDbParameter("LikeKeywords", string.Format("'{0}{1}'", FormatKeywords(ld.Content), MatchChar));
+                    keywords = Adapter.CreateDbParameter("LikeKeywords", string.Format("{0}{1}", FormatKeywords(ld.Content), MatchChar));
                     break;
                 default: // 默认为中间匹配。
-                    keywords = Adapter.CreateDbParameter("LikeKeywords", string.Format("'{1}{0}{1}'", FormatKeywords(ld.Content), MatchChar));
+                    keywords = Adapter.CreateDbParameter("LikeKeywords", string.Format("{1}{0}{1}", FormatKeywords(ld.Content), MatchChar));
                     break;
             }
             AddDbParameter(ref DbParameters, keywords);

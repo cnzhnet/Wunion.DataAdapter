@@ -5,7 +5,7 @@
 }
 <div class="layui-form container" lay-filter="dlist_view">
     <div class="custom-toolsbar">
-        <div class="dropdown-list" style="margin-left: 12px; width: 162px; margin-right: 3px;">
+        <div class="dropdown-list" style="width: 162px; margin-right: 3px;">
             <database-collection http-context="@Model.Context" lay-filter="ch_database">
                 <item-database db-kind="ms-sql" text="SQL Server 2012+" />
                 <item-database db-kind="mysql" text="MySQL数据库" />
@@ -17,7 +17,7 @@
             <select lay-filter="group_dropdown" id="group-dropdown"></select>
         </div>
         <group style="float: right;">
-            <input type="text" class="tool-textbox" style="text-align: right;" placeholder="在此输入关键字搜索" autocomplete="off" />
+            <input type="text" class="tool-textbox" style="text-align: right;" placeholder="在此输入关键字搜索" autocomplete="off" id="search-keywords" />
             <button type="button" class="tool-button" event-name="search">
                 <i class="layui-icon">&#xe615;</i>搜索
             </button>
@@ -30,7 +30,6 @@
     <div id="data-listView" style="width: 100%;">
         正在加载请稍候......
     </div>
-    <div class="pagination-bar" id="pagination">
-    </div>
+    <div class="pagination-bar" id="pagination"></div>
 </div>
 <script src="~/js/module-views/data-listview.js"></script>

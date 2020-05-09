@@ -54,6 +54,37 @@ namespace Wunion.DataAdapter.NetCore.Test.Controllers
             });
         }
 
+        /// <summary>
+        /// 用于搜索数据.
+        /// </summary>
+        /// <param name="keywords">搜索关键字.</param>
+        /// <param name="page">当前页.</param>
+        /// <param name="pagesize">每页的数据条数.</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Search([FromForm] string keywords, [FromForm] int page, [FromForm] int pagesize)
+        {
+            if (string.IsNullOrEmpty(keywords))
+                return Json(new WebApiResult<object> { code = ResultCode.STATE_FAIL, message = "未指定搜索关键字." });
+            int? groupId = null;
+            if (HttpContext.Request.Form.ContainsKey("group"))
+            {
+                int tmp = -1;
+                if (int.TryParse(HttpContext.Request.Form["group"].ToString(), out tmp))
+                    groupId = tmp;
+            }
+            TestDataItemService service = DataService.Get<TestDataItemService>(dbCollection.Current);
+            PaginatedCollection<dynamic> queryResult = service.Search(keywords, page, pagesize, groupId);
+            if (queryResult == null)
+                return Json(new WebApiResult<object> { code = ResultCode.STATE_FAIL, message = string.Format("未搜索到“{0}”相关的结果.", keywords) });
+            return Json(new WebApiResult<PaginatedCollection<dynamic>> { code = ResultCode.STATE_OK, data = queryResult });
+        }
+
+        /// <summary>
+        /// 切换数据库.
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult ChangeDataBase([FromForm] string kind)
         {

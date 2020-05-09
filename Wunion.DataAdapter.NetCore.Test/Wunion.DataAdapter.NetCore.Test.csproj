@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Remove="Scripts\module-views\data-listview.ts" />
+    <None Remove="Scripts\module-views\group-listview.ts" />
     <None Remove="Scripts\web-app.ts" />
   </ItemGroup>
 
