@@ -96,7 +96,12 @@ var DataListModuleView = (function () {
             autoRowHeight: false, striped: true, rowStyler: function (index, row) { return "height: 32px;"; },
             selectOnCheck: false, checkOnSelect: false, rownumbers: true, data: data.Items, columns: [[
                     { title: "编号", field: "TestId", width: 75, align: "center", halign: "center" },
-                    { title: "名称", field: "TestName", width: 210, align: "left", halign: "center" },
+                    {
+                        title: "名称", field: "TestName", width: 210, align: "left", halign: "center", formatter: function (value, row, index) {
+                            var version = Math.floor(Math.random() * 1000000);
+                            return '<a href="/api/data/' + row.TestId + '/picture?v=' + version + '" target="_blank" title="点击查看图片.">' + value + '</a>';
+                        }
+                    },
                     { title: "分组", field: "GroupName", width: 160, align: "left", halign: "center" },
                     { title: "龄", field: "TestAge", width: 52, align: "center", halign: "center" },
                     { title: "性征", field: "TestSex", width: 60, align: "center", halign: "center" },
@@ -116,6 +121,7 @@ var DataListModuleView = (function () {
         });
         layui.laypage.render({
             elem: "pagination", count: data.Total, limit: this.pageSize, curr: data.Page,
+            first: "|&lt;", prev: "&lt;", next: "&gt;", last: "&gt;|", groups: 12,
             limits: [3, 5, 10, 15, 20], layout: ["count", "limit", "prev", "page", "next"],
             jump: function (arg, first) {
                 if (first)

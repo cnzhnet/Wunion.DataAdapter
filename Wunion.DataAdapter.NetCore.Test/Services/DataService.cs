@@ -52,7 +52,7 @@ namespace Wunion.DataAdapter.NetCore.Test.Services
         {
             QuickDataChanger dc = new QuickDataChanger(trans, db);
             ThrowDbException(dc.SaveToDataBase(tableName, data, false), trans);
-            if (trans == null)
+            if (trans != null)
                 return trans.DBA.SCOPE_IDENTITY;
             return db.DBA.SCOPE_IDENTITY;
         }

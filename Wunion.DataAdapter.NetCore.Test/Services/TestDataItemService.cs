@@ -110,5 +110,18 @@ namespace Wunion.DataAdapter.NetCore.Test.Services
             List<dynamic> entities = db.ExecuteDynamicEntity(cb);
             return new PaginatedCollection<dynamic>(total, page, entities);
         }
+
+        /// <summary>
+        /// 获取指定记录的图片数据.
+        /// </summary>
+        /// <param name="dataId">记录ID.</param>
+        /// <returns></returns>
+        public byte[] GetPictureData(int dataId)
+        {
+            DbCommandBuilder cb = new DbCommandBuilder();
+            cb.Select(td.Field("TestPhoto")).From(ItemsTable).Where(td.Field("TestId") == dataId);
+            byte[] result = db.ExecuteScalar(cb) as byte[];
+            return (result == null) ? new byte[0] : result;
+        }
     }
 }

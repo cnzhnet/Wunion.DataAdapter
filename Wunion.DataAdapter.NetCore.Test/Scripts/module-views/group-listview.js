@@ -53,10 +53,45 @@ var GroupListView = (function () {
         });
     };
     GroupListView.prototype.delete = function (gid) {
-        layer.alert("删除" + gid);
+        var me = this;
+        layer.confirm("是否要删除此分组？", { title: '<strong>分组删除确认</strong>' }, function (index, layero) {
+            layer.close(index);
+            service.get("/api/group/" + gid + "/delete", function (result) {
+                if (result.code === 0x00)
+                    me.reload();
+                else
+                    layer.alert(result.message, { icon: 2, title: "错误信息" });
+                ;
+            });
+        });
     };
     GroupListView.prototype.fitScreen = function () { };
+    GroupListView.prototype.showAddDialog = function () {
+        var ui = '<div style="margin: 0px; padding: 12px;"><h4 style="margin-bottom: 8px;">请输入分组名称：</h4>';
+        ui += '<div><input type="text" class="layui-input" style="width: 210px;" id="group-name" autocomplete="off" />';
+        ui += '</div></div>';
+        var me = this;
+        layer.open({
+            type: 1, title: '<strong>添加分组对话框</strong>', btn: ["确认", "取消"], content: ui,
+            yes: function (index, layero) {
+                layer.close(index);
+                var loading = layer.load();
+                service.post("/api/group/add", { name: layero.find("#group-name").val() }, function (result) {
+                    layer.close(loading);
+                    if (result.code === 0x00)
+                        me.reload();
+                    else
+                        layer.alert(result.message, { icon: 2, title: "错误信息" });
+                });
+            }
+        });
+    };
     GroupListView.prototype.toolstripItemClick = function ($target) {
+        switch ($target.attr("event-name")) {
+            case "add":
+                this.showAddDialog();
+                break;
+        }
     };
     return GroupListView;
 }());

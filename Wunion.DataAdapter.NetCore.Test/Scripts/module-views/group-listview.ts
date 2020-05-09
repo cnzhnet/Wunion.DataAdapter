@@ -60,14 +60,50 @@ class GroupListView implements IModuleView {
     }
     /** 删除指定的分组信息. */
     private delete(gid: number): void {
-        layer.alert("删除" + gid);
+        let me: GroupListView = this;
+        layer.confirm("是否要删除此分组？", { title: '<strong>分组删除确认</strong>' },
+            function (index: number, layero: JQuery<HTMLElement>): void {
+                layer.close(index);
+                service.get("/api/group/" + gid + "/delete", function (result: IWebApiResult): void {
+                    if (result.code === 0x00)
+                        me.reload();
+                    else
+                        layer.alert(result.message, { icon: 2, title: "错误信息" });;
+                });
+            }
+        );
     }
     /** 未使用的方法. */
     public fitScreen(): void { }
+    /** 显示分组添加对话框. */
+    private showAddDialog(): void {
+        let ui: string = '<div style="margin: 0px; padding: 12px;"><h4 style="margin-bottom: 8px;">请输入分组名称：</h4>';
+        ui += '<div><input type="text" class="layui-input" style="width: 210px;" id="group-name" autocomplete="off" />';
+        ui += '</div></div>';
+        let me: GroupListView = this;
+        layer.open({
+            type: 1, title: '<strong>添加分组对话框</strong>', btn: ["确认", "取消"], content: ui,
+            yes: function (index: number, layero: JQuery<HTMLElement>): void {
+                layer.close(index);
+                let loading: number = layer.load();
+                service.post("/api/group/add", { name: layero.find("#group-name").val() }, function (result: IWebApiResult): void {
+                    layer.close(loading);
+                    if (result.code === 0x00)
+                        me.reload();
+                    else
+                        layer.alert(result.message, { icon: 2, title: "错误信息" });
+                });
+            }
+        });
+    }
     /** 工具栏按钮事件处理程序.
      * @param $target 被点击的工具栏按钮. */
     public toolstripItemClick($target: JQuery<HTMLElement>): void {
-        //
+        switch ($target.attr("event-name")) {
+            case "add":
+                this.showAddDialog();
+                break;
+        }
     }
 }
 

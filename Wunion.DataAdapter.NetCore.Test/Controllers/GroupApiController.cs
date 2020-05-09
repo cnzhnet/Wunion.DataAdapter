@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
-using Wunion.DataAdapter.Kernel;
+using Wunion.DataAdapter.Kernel.DbInterop;
+using Wunion.DataAdapter.Kernel.CommandBuilders;
 using Wunion.DataAdapter.NetCore.Test.Models;
 using Wunion.DataAdapter.NetCore.Test.Services;
 
@@ -41,6 +42,47 @@ namespace Wunion.DataAdapter.NetCore.Test.Controllers
                 code = ResultCode.STATE_OK,
                 data = queryResult
             });
+        }
+
+        /// <summary>
+        /// 用于添加分组信息.
+        /// </summary>
+        /// <param name="name">分组名称.</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Add([FromForm] string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return Json(new WebApiResult<object> { code = ResultCode.STATE_FAIL, message = "未指定分组名称." });
+            GroupDataService service = DataService.Get<GroupDataService>(dbCollection.Current);
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data.Add("GroupName", name);
+            service.Add(data, service.tableName);
+            return Json(new WebApiResult<object> { code = ResultCode.STATE_OK, message = string.Empty });
+        }
+
+        /// <summary>
+        /// 用于删除分组信息.
+        /// </summary>
+        /// <param name="Id">分组ID.</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/api/group/{Id:int}/delete")]
+        public IActionResult Delete([FromRoute] int Id)
+        {
+            int count = 0;
+            using (DBTransactionController trans = dbCollection.Current.BeginTrans())
+            {
+                GroupDataService groupService = DataService.Get<GroupDataService>(dbCollection.Current);
+                TestDataItemService itemService = DataService.Get<TestDataItemService>(dbCollection.Current);
+                itemService.Delete(itemService.ItemsTable, new object[] { td.Field("GroupId") == Id }, trans);
+                count = groupService.Delete(groupService.tableName, new object[] { td.Field("GroupId") == Id }, trans);
+                if (count > 0)
+                    trans.Commit();
+            }
+            if (count < 1)
+                return Json(new WebApiResult<object> { code = ResultCode.STATE_FAIL, message = "删除信息删除失败！" });
+            return Json(new WebApiResult<object> { code = ResultCode.STATE_OK, message = string.Empty });
         }
     }
 }
