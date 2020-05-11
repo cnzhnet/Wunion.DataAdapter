@@ -159,6 +159,7 @@ class DataListModuleView implements IModuleView {
     private cellLinkEvent(dataId: number, event: string): void {
         switch (event) {
             case "edit":
+                window.mainApp.changeView("Shared/DataEditor?id=" + dataId + "");
                 break;
             case "delete":
                 break;
@@ -180,7 +181,7 @@ class DataListModuleView implements IModuleView {
         let eventName: string = $target.attr("event-name");
         switch (eventName) {
             case "add":
-                layer.alert("添加功能！");
+                window.mainApp.changeView("Shared/DataEditor");
                 break;
             case "search":
                 this.search();

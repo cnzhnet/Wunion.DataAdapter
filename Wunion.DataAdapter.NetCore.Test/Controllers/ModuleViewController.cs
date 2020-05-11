@@ -50,7 +50,16 @@ namespace Wunion.DataAdapter.NetCore.Test.Controllers
                 for (int i = 0; i < array.Length - 1; ++i)
                     viewPath.AppendFormat("{0}/", array[i]);
                 viewPath.AppendFormat("_{0}.cshtml", array.Last());
-                ModuleViewModel model = new ModuleViewModel { Context = HttpContext, Name = name };
+                ModuleViewModel model;
+                switch (name.ToLower())
+                {
+                    case "shared/dataeditor":
+                        model = new DataEditorViewModel { Context = HttpContext, Name = name };
+                        break;
+                    default:
+                        model = new ModuleViewModel { Context = HttpContext, Name = name };
+                        break;
+                }
                 return View(viewPath.ToString(), model);
             }
             catch (Exception Ex)

@@ -1,0 +1,80 @@
+﻿@using Wunion.DataAdapter.NetCore.Test.Models;
+@model DataEditorViewModel;
+@{
+    Layout = null;
+}
+@if (Model.Load())
+{
+    <div class="container" style="width: 640px; max-width: 640px; margin: 0px auto;">
+        <div class="custom-toolsbar">
+            <group style="float: left">
+                <button type="button" class="tool-button" event-name="goback">
+                    <i class="layui-icon">&#xe65c;</i>返回列表
+                </button>
+                <button type="button" class="tool-button" event-name="accept" id="tool-accept">
+                    <i class="layui-icon">&#xe605;</i>提交并保存
+                </button>
+                <button type="button" class="tool-button" event-name="reset">
+                    <i class="layui-icon">&#xe669;</i>重置/清除
+                </button>
+            </group>
+            <div style="clear: both;"></div>
+        </div>
+        <div class="layui-form data-editor" lay-filter="data_editor">
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="TestName" value="@Model.EntityItem("TestName")" autocomplete="off" placeholder="该项必填." required />
+                    <input type="hidden" id="data-entity" value="@Model.EntityToBase64()" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">分组：</label>
+                <div class="layui-input-inline">
+                    @Model.RenderGroupDropdown()
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">年限：</label>
+                <div class="layui-input-inline">
+                    <input type="number" class="layui-input" name="TestAge" value="@Model.EntityItem("TestAge")" autocomplete="off" placeholder="必填项（只能输入数字）." required />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性征：</label>
+                <div class="layui-input-inline">
+                    <select name="TestSex" id="test-sex" required>
+                        <option value="未知">未知</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                        <option value="雄性">雄性</option>
+                        <option value="雌性">雌性</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">照片：</label>
+                <div class="layui-input-inline">
+                    <ul class="photo-toolbox">
+                        <li><a href="javascript:;" id="see-picture">查看照片</a></li>
+                        <li>
+                            <label class="upload-btn" for="upload-file">上传本地照片</label>
+                            <input type="file" id="upload-file" style="display: none;" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/crypto-js/core.js"></script>
+    <script src="~/lib/crypto-js/enc-base64.js"></script>
+    <script src="~/js/module-views/data-editorview.js"></script>
+}
+else
+{
+    @await Html.PartialAsync("", new ErrorViewModel { 
+        Context = Model.Context, 
+        Title = "抱歉，出了点小问题", 
+        Message = Model.Error
+    })
+}

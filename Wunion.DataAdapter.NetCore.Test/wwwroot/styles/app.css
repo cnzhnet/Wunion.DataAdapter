@@ -34,3 +34,13 @@
     .card .card-title { color: #001737; margin-bottom: .6rem; /*text-transform: capitalize;*/ font-size: 1rem; font-weight: 600; }
     .card .card-description { margin-bottom: .875rem; font-weight: 400; }
 .error-view { margin: 22px; }
+
+.data-editor { width: 100%; height: auto; margin: 32px auto 12px auto; padding: 0px; }
+    .data-editor .layui-input-inline { width: calc(100% - 90px); }
+    .data-editor .photo-toolbox { margin: 0px; padding: 0px; list-style: none; }
+        .data-editor .photo-toolbox > li { margin: 0px; padding: 12px 8px; list-style: none; display: inline-block; }
+        .data-editor .photo-toolbox .upload-btn { font-weight: normal; text-decoration:none; cursor: pointer; }
+            .data-editor .photo-toolbox .upload-btn:hover, .data-editor .photo-toolbox .upload-btn:active {
+                text-decoration: underline;
+            }
+        .data-editor .photo-toolbox .show-file { display: block; }

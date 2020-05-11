@@ -112,6 +112,38 @@ namespace Wunion.DataAdapter.NetCore.Test.Services
         }
 
         /// <summary>
+        /// 获取指定记录的详细信息.
+        /// </summary>
+        /// <param name="dataId">记录ID.</param>
+        /// <returns></returns>
+        public Dictionary<string, object> Details(int dataId)
+        {
+            DbCommandBuilder cb = new DbCommandBuilder();
+            cb.Select(td.Field("TestId"), td.Field("GroupId"), td.Field("TestName"), td.Field("TestAge"), td.Field("TestSex"))
+              .From(ItemsTable).Where(td.Field("TestId") == dataId);
+            IDataReader Rd = db.ExecuteReader(cb);
+            if (Rd == null)
+                throw new Exception(db.DBA.Error != null ? db.DBA.Error.Message : "读取数据是产生了未知的错误.");
+            Dictionary<string, object> data = null;
+            using (Rd)
+            {
+                object tmp = null;
+                if (Rd.Read())
+                {
+                    data = new Dictionary<string, object>();
+                    data.Add("TestId", Convert.ToInt32(Rd["TestId"]));
+                    data.Add("GroupId", Convert.ToInt32(Rd["GroupId"]));
+                    data.Add("TestName", Rd["TestName"] as string);
+                    tmp = Rd["TestAge"];
+                    data.Add("TestAge", (tmp == null || tmp == DBNull.Value) ? 0f : Convert.ToSingle(tmp));
+                    data.Add("TestSex", Rd["TestSex"] as string);
+                }
+                Rd.Close();
+            }
+            return data;
+        }
+
+        /// <summary>
         /// 获取指定记录的图片数据.
         /// </summary>
         /// <param name="dataId">记录ID.</param>
