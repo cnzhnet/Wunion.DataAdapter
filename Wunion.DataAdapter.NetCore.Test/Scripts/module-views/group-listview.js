@@ -61,7 +61,6 @@ var GroupListView = (function () {
                     me.reload();
                 else
                     layer.alert(result.message, { icon: 2, title: "错误信息" });
-                ;
             });
         });
     };

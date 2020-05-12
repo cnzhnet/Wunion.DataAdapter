@@ -24,7 +24,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">名称：</label>
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input" name="TestName" value="@Model.EntityItem("TestName")" autocomplete="off" placeholder="该项必填." required />
+                    <input type="text" class="layui-input" name="TestName" value="@Model.EntityItem("TestName")" autocomplete="off" placeholder="该项必填." required data-prompt="名称不允许为空!" />
                     <input type="hidden" id="data-entity" value="@Model.EntityToBase64()" />
                 </div>
             </div>
@@ -37,13 +37,13 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">年限：</label>
                 <div class="layui-input-inline">
-                    <input type="number" class="layui-input" name="TestAge" value="@Model.EntityItem("TestAge")" autocomplete="off" placeholder="必填项（只能输入数字）." required />
+                    <input type="number" class="layui-input" name="TestAge" value="@Model.EntityItem("TestAge")" autocomplete="off" placeholder="必填项（只能输入数字）." required data-prompt="年限不允许为空!" />
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">性征：</label>
                 <div class="layui-input-inline">
-                    <select name="TestSex" id="test-sex" required>
+                    <select name="TestSex" id="test-sex" required data-prompt="请选择一个性征!">
                         <option value="未知">未知</option>
                         <option value="男">男</option>
                         <option value="女">女</option>

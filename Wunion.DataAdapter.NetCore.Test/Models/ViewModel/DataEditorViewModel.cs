@@ -103,7 +103,7 @@ namespace Wunion.DataAdapter.NetCore.Test.Models
         public IHtmlContent RenderGroupDropdown()
         {
             HtmlContentBuilder builder = new HtmlContentBuilder();
-            builder.AppendHtml("<select name=\"GroupId\" id=\"group-id\" required>");
+            builder.AppendHtml("<select name=\"GroupId\" id=\"group-id\" required data-prompt=\"请选择分组！\">");
             GroupDataService gservice = DataService.Get<GroupDataService>(service.db);
             List<dynamic> groups = gservice.Query();
             int? groupId = null;

@@ -68,7 +68,7 @@ class GroupListView implements IModuleView {
                     if (result.code === 0x00)
                         me.reload();
                     else
-                        layer.alert(result.message, { icon: 2, title: "错误信息" });;
+                        layer.alert(result.message, { icon: 2, title: "错误信息" });
                 });
             }
         );

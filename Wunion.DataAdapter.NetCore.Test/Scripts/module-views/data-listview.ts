@@ -153,6 +153,22 @@ class DataListModuleView implements IModuleView {
         });
         this.fitScreen();
     }
+    /** 用于删除指定的记录.
+     * @param dataId 要删除的记录ID. */
+    private delete(dataId: number): void {
+        let me: DataListModuleView = this;
+        layer.confirm("要删除该记录吗，无法撤销哦！！", { title: "删除确认", btn: ["是的，删除", "手滑了 !(-_-)"] }, function (index: number, layero: JQuery<HTMLElement>): void {
+            layer.close(index);
+            let loading: number = layer.load();
+            service.get("/api/data/" + dataId + "/delete", function (result: IWebApiResult): void {
+                layer.close(loading);
+                if (result.code === 0x00)
+                    me.loadData();
+                else
+                    layer.alert(result.message, { icon: 2, title: "错误信息" });
+            });
+        });
+    }
     /** 数据网格的管理单元格连接点击事件处理.
      * @param dataId 相关的数据ID.
      * @param event 事件名称. */
@@ -162,6 +178,7 @@ class DataListModuleView implements IModuleView {
                 window.mainApp.changeView("Shared/DataEditor?id=" + dataId + "");
                 break;
             case "delete":
+                this.delete(dataId);
                 break;
         }
     }

@@ -43,4 +43,6 @@
             .data-editor .photo-toolbox .upload-btn:hover, .data-editor .photo-toolbox .upload-btn:active {
                 text-decoration: underline;
             }
-        .data-editor .photo-toolbox .show-file { display: block; }
+        .data-editor .photo-toolbox .show-file { display: block; background-color: transparent; border-radius: 3px; border-bottom: 1px solid #d8e0ec; position:relative; }
+            .data-editor .photo-toolbox .show-file .remove-lnk { display: block; position: absolute; right: 0px; top: 20px; cursor: pointer; }
+                .data-editor .photo-toolbox .show-file .remove-lnk > i { color: #FF5722; font-size: 1.0rem; font-weight: 600; }

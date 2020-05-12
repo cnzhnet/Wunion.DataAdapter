@@ -133,12 +133,27 @@ var DataListModuleView = (function () {
         });
         this.fitScreen();
     };
+    DataListModuleView.prototype.delete = function (dataId) {
+        var me = this;
+        layer.confirm("要删除该记录吗，无法撤销哦！！", { title: "删除确认", btn: ["是的，删除", "手滑了 !(-_-)"] }, function (index, layero) {
+            layer.close(index);
+            var loading = layer.load();
+            service.get("/api/data/" + dataId + "/delete", function (result) {
+                layer.close(loading);
+                if (result.code === 0x00)
+                    me.loadData();
+                else
+                    layer.alert(result.message, { icon: 2, title: "错误信息" });
+            });
+        });
+    };
     DataListModuleView.prototype.cellLinkEvent = function (dataId, event) {
         switch (event) {
             case "edit":
                 window.mainApp.changeView("Shared/DataEditor?id=" + dataId + "");
                 break;
             case "delete":
+                this.delete(dataId);
                 break;
         }
     };

@@ -133,7 +133,7 @@ namespace Wunion.DataAdapter.NetCore.Test.Controllers
                 data = new Dictionary<string, object>();
                 foreach (KeyValuePair<string, StringValues> item in HttpContext.Request.Form)
                 {
-                    switch (item.Key.ToLower())
+                    switch (item.Key)
                     {
                         case "TestId":
                         case "TestPhoto":
