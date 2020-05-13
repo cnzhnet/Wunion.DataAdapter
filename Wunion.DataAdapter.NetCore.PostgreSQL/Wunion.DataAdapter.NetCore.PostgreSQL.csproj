@@ -16,6 +16,7 @@
     <Copyright>cnzhnet</Copyright>
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
