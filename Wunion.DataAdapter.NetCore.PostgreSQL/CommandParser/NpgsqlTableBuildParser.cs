@@ -34,7 +34,6 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
             StringBuilder uniqueBuffers = new StringBuilder();
             tableBuffers.AppendFormat("{0}{1}{2} (", ElemIdentifierL, tableBuild.Name, ElemIdentifierR);
             string columnType = null, seqName = null;
-            int pk_count = tableBuild.ColumnDefinitions.Count(def => def.PrimaryKey == true);
             DbTableColumnDefinition definition = null;
             for (int i = 0; i < tableBuild.ColumnDefinitions.Count; ++i)
             {
@@ -84,8 +83,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
                 tableBuffers.AppendFormat("\tCONSTRAINT {0}UK_{1}_UNIQUE{2}", ElemIdentifierL, tableBuild.Name, ElemIdentifierR);
                 tableBuffers.AppendFormat(" UNIQUE ({0})", uniqueBuffers.ToString());
             }
-            tableBuffers.AppendLine();
-            tableBuffers.Append(");");
+            tableBuffers.AppendLine().Append(");");
             return sequnceBuffers.AppendLine().Append(tableBuffers.ToString()).ToString();
         }
 
