@@ -27,8 +27,9 @@ namespace Wunion.DataAdapter.Kernel.SQLServer.CommandParser
         protected override void InitializeParsers()
         {
             base.InitializeParsers();
-            Put(typeof(FunDescription), new SqlServerFunParser(this));
-            Put(typeof(SelectBlock), new SqlServerSelectBlockParser(this));
+            RegisterParser(typeof(FunDescription), new SqlServerFunParser(this));
+            RegisterParser(typeof(SelectBlock), new SqlServerSelectBlockParser(this));
+            RegisterParser(typeof(TableBuildDescription), new SqlServerTableBuildParser(this));
         }
 
         /// <summary>

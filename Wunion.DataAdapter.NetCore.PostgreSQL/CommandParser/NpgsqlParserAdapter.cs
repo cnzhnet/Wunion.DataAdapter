@@ -38,9 +38,10 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
         protected override void InitializeParsers()
         {
             base.InitializeParsers();
-            Put(typeof(FunDescription), new NpgsqlFunParser(this));
-            Put(typeof(LikeDescription), new NpgsqlLikeParser(this));
-            Put(typeof(SelectBlock), new NpgsqlSelectBlockParser(this));
+            RegisterParser(typeof(FunDescription), new NpgsqlFunParser(this));
+            RegisterParser(typeof(LikeDescription), new NpgsqlLikeParser(this));
+            RegisterParser(typeof(SelectBlock), new NpgsqlSelectBlockParser(this));
+            RegisterParser(typeof(TableBuildDescription), new NpgsqlTableBuildParser(this));
         }
 
         /// <summary>

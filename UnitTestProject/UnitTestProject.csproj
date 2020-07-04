@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.MySQL\Wunion.DataAdapter.NetCore.MySQL.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.PostgreSQL\Wunion.DataAdapter.NetCore.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.SQLite3\Wunion.DataAdapter.NetCore.SQLite3.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore.SQLServer\Wunion.DataAdapter.NetCore.SQLServer.csproj" />
+    <ProjectReference Include="..\Wunion.DataAdapter.NetCore\Wunion.DataAdapter.NetCore.csproj" />
+  </ItemGroup>
+
+</Project>

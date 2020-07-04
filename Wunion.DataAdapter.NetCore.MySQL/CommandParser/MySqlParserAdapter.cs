@@ -14,10 +14,13 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
     public class MySqlParserAdapter : ParserAdapter
     {
         /// <summary>
-        /// 创建一个 <see cref="Wunion.DataAdapter.Kernel.MySQL.CommandParser.MySqlParserAdapter"/> 的对象实例.
+        /// 创建一个 <see cref="MySqlParserAdapter"/> 的对象实例.
         /// </summary>
-        public MySqlParserAdapter() : base()
-        { }
+        /// <param name="engine">MySQL 使用的引擎设置.</param>
+        public MySqlParserAdapter(string engine = "INNODB") : base()
+        {
+            MysqlEngine = engine;
+        }
 
         public override string ElemIdentifierL
         {
@@ -35,14 +38,20 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
         }
 
         /// <summary>
+        /// 表示 MySQL 使用的引擎设置.
+        /// </summary>
+        internal string MysqlEngine { get; private set; }
+
+        /// <summary>
         /// 初始化所有命令解释器.
         /// </summary>
         protected override void InitializeParsers()
         {
             base.InitializeParsers();
-            Put(typeof(FunDescription), new MySqlFunParser(this));
-            Put(typeof(LikeDescription), new MySqlLikeParser(this));
-            Put(typeof(SelectBlock), new MySqlSelectBlockParser(this));
+            RegisterParser(typeof(FunDescription), new MySqlFunParser(this));
+            RegisterParser(typeof(LikeDescription), new MySqlLikeParser(this));
+            RegisterParser(typeof(SelectBlock), new MySqlSelectBlockParser(this));
+            RegisterParser(typeof(TableBuildDescription), new MySqlTableBuildParser(this));
         }
 
         /// <summary>

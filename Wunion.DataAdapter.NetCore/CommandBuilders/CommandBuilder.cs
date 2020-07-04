@@ -91,5 +91,9 @@ namespace Wunion.DataAdapter.Kernel.CommandBuilders
             _IsParsed = true;
             return CommandText;
         }
+
+#if DEBUG
+        public void Clean() => ResetCommandBuilder();
+#endif
     }
 }

@@ -47,11 +47,11 @@ namespace Wunion.DataAdapter.Kernel.CommandParser
         }
 
         /// <summary>
-        /// 向适配器中压入一个解释器映射.
+        /// 注册命令解释器.
         /// </summary>
-        /// <param name="forDescription"></param>
-        /// <param name="parser"></param>
-        protected void Put(Type forDescription, ParserBase parser)
+        /// <param name="forDescription">解释器所针对的命令描述对象.</param>
+        /// <param name="parser">注册该命令解释器的对象实例.</param>
+        protected void RegisterParser(Type forDescription, ParserBase parser)
         {
             if (Parsers.ContainsKey(forDescription))
                 Parsers[forDescription] = parser;
@@ -77,26 +77,26 @@ namespace Wunion.DataAdapter.Kernel.CommandParser
         /// </summary>
         protected virtual void InitializeParsers()
         {
-            Put(typeof(FieldDescription), new FieldParser(this));
-            Put(typeof(TableDescription), new TableParser(this));
-            Put(typeof(LeftJoinDescription), new LeftJoinParser(this));
-            Put(typeof(ExpDescription), new ExpParser(this));
-            Put(typeof(LogicAndDescription), new LogicAndParser(this));
-            Put(typeof(LogicOrDescription), new LogicOrParser(this));
-            Put(typeof(LogicNotDescription), new LogicNotParser(this));
-            Put(typeof(LikeDescription), new LikeParser(this));
-            Put(typeof(FunDescription), new FunParser(this));
-            Put(typeof(AsElementDecsription), new AsElementParser(this));
-            Put(typeof(DeleteBlock), new DeleteBlockParser(this));
-            Put(typeof(FromBlock), new FromBlockParser(this));
-            Put(typeof(GroupByBlock), new GroupByBlockParser(this));
-            Put(typeof(InsertBlock), new InsertBlockParser(this));
-            Put(typeof(OrderByBlock), new OrderByBlockParser(this));
-            Put(typeof(SelectBlock), new SelectBlockParser(this));
-            Put(typeof(SetBlock), new SetBlockParser(this));
-            Put(typeof(UpdateBlock), new UpdateBlockParser(this));
-            Put(typeof(WhereBlock), new WhereBlockParser(this));
-            Put(typeof(GroupDescription), new GroupElementParser(this));
+            RegisterParser(typeof(FieldDescription), new FieldParser(this));
+            RegisterParser(typeof(TableDescription), new TableParser(this));
+            RegisterParser(typeof(LeftJoinDescription), new LeftJoinParser(this));
+            RegisterParser(typeof(ExpDescription), new ExpParser(this));
+            RegisterParser(typeof(LogicAndDescription), new LogicAndParser(this));
+            RegisterParser(typeof(LogicOrDescription), new LogicOrParser(this));
+            RegisterParser(typeof(LogicNotDescription), new LogicNotParser(this));
+            RegisterParser(typeof(LikeDescription), new LikeParser(this));
+            RegisterParser(typeof(FunDescription), new FunParser(this));
+            RegisterParser(typeof(AsElementDecsription), new AsElementParser(this));
+            RegisterParser(typeof(DeleteBlock), new DeleteBlockParser(this));
+            RegisterParser(typeof(FromBlock), new FromBlockParser(this));
+            RegisterParser(typeof(GroupByBlock), new GroupByBlockParser(this));
+            RegisterParser(typeof(InsertBlock), new InsertBlockParser(this));
+            RegisterParser(typeof(OrderByBlock), new OrderByBlockParser(this));
+            RegisterParser(typeof(SelectBlock), new SelectBlockParser(this));
+            RegisterParser(typeof(SetBlock), new SetBlockParser(this));
+            RegisterParser(typeof(UpdateBlock), new UpdateBlockParser(this));
+            RegisterParser(typeof(WhereBlock), new WhereBlockParser(this));
+            RegisterParser(typeof(GroupDescription), new GroupElementParser(this));
         }
 
         /// <summary>

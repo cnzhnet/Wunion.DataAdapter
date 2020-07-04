@@ -33,9 +33,10 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
         protected override void InitializeParsers()
         {
             base.InitializeParsers();
-            Put(typeof(FunDescription), new SqliteFunParser(this));
-            Put(typeof(LikeDescription), new SqliteLikeParser(this));
-            Put(typeof(SelectBlock), new SqliteSelectBlockParser(this));
+            RegisterParser(typeof(FunDescription), new SqliteFunParser(this));
+            RegisterParser(typeof(LikeDescription), new SqliteLikeParser(this));
+            RegisterParser(typeof(SelectBlock), new SqliteSelectBlockParser(this));
+            RegisterParser(typeof(TableBuildDescription), new SqliteTableBuildParser(this));
         }
 
         /// <summary>

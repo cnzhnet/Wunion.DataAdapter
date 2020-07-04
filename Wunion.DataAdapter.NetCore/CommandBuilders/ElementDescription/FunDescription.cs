@@ -299,7 +299,7 @@ namespace Wunion.DataAdapter.Kernel.CommandBuilders
         /// </summary>
         /// <param name="parameter">函数参数。</param>
         /// <returns></returns>
-        public static FunDescription Now(object parameter)
+        public static FunDescription Now(object parameter = null)
         {
             FunDescription f = new FunDescription();
             f.FunctionName = "NOW";

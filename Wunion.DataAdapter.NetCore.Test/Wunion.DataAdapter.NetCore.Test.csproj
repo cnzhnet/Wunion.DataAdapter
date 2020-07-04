@@ -19,6 +19,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="UnitTests\" />
   </ItemGroup>
 
   <ItemGroup>

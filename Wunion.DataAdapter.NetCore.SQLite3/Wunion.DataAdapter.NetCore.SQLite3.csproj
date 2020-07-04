@@ -11,7 +11,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.SQLite3</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Description>Wunion.DataAdapter.NetCore 的 SQLite 数据库支持包。
 1.0.3、更新 Like 子句的解释器实现，新增连接池的支持.
 1.0.2、更进Wunion.DataAdapter.NetCore 1.0.3解释适配器的新模式支持</Description>
@@ -19,8 +19,8 @@
     <Company />
     <Copyright>cnzhnet</Copyright>
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
   </PropertyGroup>
 

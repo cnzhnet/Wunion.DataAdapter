@@ -25,6 +25,21 @@ namespace Wunion.DataAdapter.Kernel.CommandBuilders
         }
 
         /// <summary>
+        /// 用于构建创建表 CREATE TABLE 命令.
+        /// </summary>
+        /// <param name="name">表名.</param>
+        /// <returns></returns>
+        public TableBuildDescription CreateTable(string name)
+        {
+            if (IsParsed)
+                ResetCommandBuilder();
+
+            TableBuildDescription tableBuild = new TableBuildDescription(name);
+            CommandDescription = tableBuild;
+            return tableBuild;
+        }
+
+        /// <summary>
         /// 开始构建 INSERT 命令。
         /// </summary>
         /// <param name="table">表信息。</param>
