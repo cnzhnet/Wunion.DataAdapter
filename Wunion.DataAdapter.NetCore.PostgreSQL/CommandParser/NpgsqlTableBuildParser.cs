@@ -32,6 +32,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
             StringBuilder sequnceBuffers = new StringBuilder();
             StringBuilder pkBuffers = new StringBuilder();
             StringBuilder uniqueBuffers = new StringBuilder();
+            StringBuilder fkBuffers = new StringBuilder();
             tableBuffers.AppendFormat("{0}{1}{2} (", ElemIdentifierL, tableBuild.Name, ElemIdentifierR);
             string columnType = null, seqName = null;
             DbTableColumnDefinition definition = null;
@@ -43,8 +44,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
                 columnType = ParseDbType(definition);
                 if (string.IsNullOrEmpty(columnType))
                     throw new NoNullAllowedException(string.Format("Type of undefined column: {0}", definition.Name));
-                tableBuffers.AppendLine();
-                tableBuffers.AppendFormat("\t{0}{1}{2}", ElemIdentifierL, definition.Name, ElemIdentifierR);
+                tableBuffers.AppendLine().AppendFormat("\t{0}{1}{2}", ElemIdentifierL, definition.Name, ElemIdentifierR);
                 tableBuffers.AppendFormat(" {0} {1}", columnType, definition.NotNull ? "NOT NULL" : "NULL");
                 if (definition.Default != null && definition.Identity == null)
                     tableBuffers.AppendFormat(" {0}", ParseDefaultValue(definition, ref DbParameters));
@@ -68,6 +68,8 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
                     else
                         pkBuffers.AppendFormat("{0}{1}{2}", ElemIdentifierL, definition.Name, ElemIdentifierR);
                 }
+                if (definition.ForeignKey != null)
+                    ParseForeignKey(tableBuild.Name, definition, fkBuffers);
                 if (i < (tableBuild.ColumnDefinitions.Count - 1))
                     tableBuffers.Append(",");
             }
@@ -83,6 +85,8 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
                 tableBuffers.AppendFormat("\tCONSTRAINT {0}UK_{1}_UNIQUE{2}", ElemIdentifierL, tableBuild.Name, ElemIdentifierR);
                 tableBuffers.AppendFormat(" UNIQUE ({0})", uniqueBuffers.ToString());
             }
+            if (fkBuffers.Length > 0)
+                tableBuffers.Append(",").AppendLine().Append(fkBuffers.ToString());
             tableBuffers.AppendLine().Append(");");
             return sequnceBuffers.AppendLine().Append(tableBuffers.ToString()).ToString();
         }
@@ -182,6 +186,22 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
             }
             valueDes.DescriptionParserAdapter = this.Adapter;
             return string.Format("DEFAULT {0}", valueDes.GetParser().Parsing(ref DbParameters));
+        }
+
+        /// <summary>
+        /// 解析列的外键设置.
+        /// </summary>
+        /// <param name="table">当前表名.</param>
+        /// <param name="definition">列定义信息.</param>
+        /// <param name="writer">将外键命令段写入该缓冲区.</param>
+        /// <returns></returns>
+        private void ParseForeignKey(string table, DbTableColumnDefinition definition, StringBuilder writer)
+        {
+            if (writer.Length > 0)
+                writer.Append(",").AppendLine();
+            writer.AppendFormat("\tCONSTRAINT {2}FK_{0}_{1}{3} FOREIGN KEY ({2}{1}{3})", table, definition.Name, ElemIdentifierL, ElemIdentifierR);
+            writer.AppendFormat(" REFERENCES {0}{2}{1} ({0}{3}{1})", ElemIdentifierL, ElemIdentifierR, definition.ForeignKey.Table, definition.ForeignKey.Column);
+            writer.AppendFormat(" ON DELETE {0} ON UPDATE {1}", definition.ForeignKey.OnDelete, definition.ForeignKey.OnUpdate);
         }
     }
 }

@@ -36,12 +36,73 @@ namespace Wunion.DataAdapter.Kernel.MySQL
         }
 
         /// <summary>
+        /// 用于获取删除表的命令.
+        /// </summary>
+        /// <param name="tableName">要删除的表名.</param>
+        /// <param name="command">用于执行在获取删除表命令时可能需要进行的查询（如删除表后相关的约束残留信息的删除命令）.</param>
+        /// <returns></returns>
+        protected override string DropTableCommandText(string tableName, IDbCommand command)
+        {
+            return string.Format("DROP TABLE `{0}`", tableName);
+        }
+
+        /// <summary>
         /// 创建要对数据库执行 SQL 命令或存储过程的对象。
         /// </summary>
         /// <returns></returns>
         public override IDbCommand CreateDbCommand()
         {
             return new MySqlCommand();
+        }
+
+        /// <summary>
+        /// 若指定名称的表在数据库中存在则返回 true，否则返回 false .
+        /// </summary>
+        /// <param name="tableName">表名称.</param>
+        /// <param name="commander">在该 DbCommand 上执行查询（为空时则自动创建，默认值 null）.</param>
+        /// <returns></returns>
+        public override bool TableExists(string tableName, IDbCommand commander = null)
+        {
+            bool releaseCommander = false;
+            if (commander == null)
+            {
+                commander = CreateDbCommand();
+                commander.Connection = Connect();
+                releaseCommander = true;
+            }
+            ClearError();
+            try
+            {
+                commander.CommandText = "SELECT COUNT(1) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ?tableName";
+                commander.CommandType = CommandType.Text;
+                commander.Parameters.Add(CreateParameter("tableName", tableName));
+                object result = commander.ExecuteScalar();
+                if (result == null)
+                    return false;
+                return Convert.ToInt32(result) > 0;
+            }
+            catch (Exception Ex)
+            {
+                _Error = new DbError(Ex.Message, commander.CommandText, commander.Connection.ConnectionString);
+                return false;
+            }
+            finally
+            {
+                if (releaseCommander)
+                {
+                    if (ConnectionPoolAvailable)
+                    {
+                        ConnectionPool.ReleaseConnection(commander.Connection);
+                    }
+                    else
+                    {
+                        commander.Connection.Close();
+                        commander.Connection.Dispose();
+                    }
+                    commander.Parameters.Clear();
+                    commander.Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -63,7 +124,7 @@ namespace Wunion.DataAdapter.Kernel.MySQL
                 int result = DbCommand.ExecuteNonQuery();
                 if (result > 0)
                     QueryLastIdentity(DbCommand);
-                return result;
+                return result <= 0 ? 1 : result;
             }
             catch (Exception Ex)
             {

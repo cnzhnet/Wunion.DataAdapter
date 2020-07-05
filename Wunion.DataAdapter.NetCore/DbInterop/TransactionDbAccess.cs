@@ -106,6 +106,8 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
                         DbCommand.Parameters.Add(p);
                 }
                 result = DbCommand.ExecuteNonQuery();
+                if (result <= 0)
+                    result = 1;
             }
             catch (Exception Ex)
             {
@@ -116,6 +118,44 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
                 DbCommand.Parameters.Clear();
             }
             return result;
+        }
+
+        /// <summary>
+        /// 若指定的表在数据库中存在则返回 true，否则返回 false .
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public bool TableExists(string tableName)
+        {
+            try
+            {
+                DbCommand.Parameters.Clear();
+                return Engine.DBA.TableExists(tableName, DbCommand);
+            }
+            catch (Exception Ex)
+            {
+                _Errors.Add(new DbError(Ex.Message, DbCommand.CommandText, DbCommand.Connection.ConnectionString));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 从数据库中删除指定的表.
+        /// </summary>
+        /// <param name="tableName">表名称.</param>
+        /// <returns></returns>
+        public bool DropTable(string tableName)
+        {
+            try
+            {
+                Engine.DBA.DropTable(tableName, DbCommand);
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                _Errors.Add(new DbError(Ex.Message, DbCommand.CommandText, DbCommand.Connection.ConnectionString));
+                return false;
+            }
         }
 
         /// <summary>

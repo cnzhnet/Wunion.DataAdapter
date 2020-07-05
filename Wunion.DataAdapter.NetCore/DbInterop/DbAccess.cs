@@ -262,6 +262,72 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
         }
 
         /// <summary>
+        /// 从数据库中删除指定名称的表，删除成功则返回 true 否则返回 false .
+        /// </summary>
+        /// <param name="tableName">要删除的表名称.</param>
+        /// <param name="commander">在该 DbCommand 上执行表删除操作（为空时则自动创建，默认值 null）.</param>
+        /// <returns>删除成功则返回 true 否则返回 false .</returns>
+        /// <exception cref="Exception">删表出错时引发异常.</exception>
+        public void DropTable(string tableName, IDbCommand commander = null)
+        {
+            if (string.IsNullOrEmpty(tableName))
+                return;
+
+            bool result = false, releaseCommander = false;
+            if (commander == null)
+            {
+                commander = CreateDbCommand();
+                commander.Connection = Connect();
+                releaseCommander = true;
+            }
+            Exception tmpException = null;
+            try
+            {
+                string sql = DropTableCommandText(tableName, commander);
+                commander.Parameters.Clear();
+                commander.CommandText = sql;
+                commander.CommandType = CommandType.Text;                
+                result = commander.ExecuteNonQuery() > 0;
+            }
+            catch (Exception Ex)
+            {
+                tmpException = Ex;
+            }
+            if (releaseCommander)
+            {
+                if (ConnectionPoolAvailable)
+                {
+                    ConnectionPool.ReleaseConnection(commander.Connection);
+                }
+                else
+                {
+                    commander.Connection.Close();
+                    commander.Connection.Dispose();
+                }
+                commander.Parameters.Clear();
+                commander.Dispose();
+            }
+            if (tmpException != null)
+                throw tmpException;
+        }
+
+        /// <summary>
+        /// 用于获取删除表的命令.
+        /// </summary>
+        /// <param name="tableName">要删除的表名.</param>
+        /// <param name="command">用于执行在获取删除表命令时可能需要进行的查询（如删除表后相关的约束残留信息的删除命令）.</param>
+        /// <returns></returns>
+        protected abstract string DropTableCommandText(string tableName, IDbCommand command);
+
+        /// <summary>
+        /// 若指定名称的表在数据库中存在则返回 true，否则返回 false .
+        /// </summary>
+        /// <param name="tableName">表名称.</param>
+        /// <param name="commander">在该 DbCommand 上执行查询（为空时则自动创建，默认值 null）.</param>
+        /// <returns></returns>
+        public abstract bool TableExists(string tableName, IDbCommand commander = null);
+
+        /// <summary>
         /// 创建SQL命令参数。
         /// </summary>
         /// <param name="parameterName">参数名称。</param>

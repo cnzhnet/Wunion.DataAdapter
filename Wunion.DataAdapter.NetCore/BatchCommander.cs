@@ -67,7 +67,9 @@ namespace Wunion.DataAdapter.Kernel
             commander.CommandText = command.Parsing(Engine.CommandParserAdapter);
             foreach (IDbDataParameter p in command.CommandParameters)
                 commander.Parameters.Add(p);
-            int result = commander.ExecuteNonQuery();            
+            int result = commander.ExecuteNonQuery();
+            if (result <= 0)
+                return 1;
             return result;
         }
 
@@ -112,6 +114,31 @@ namespace Wunion.DataAdapter.Kernel
             foreach (IDbDataParameter p in command.CommandParameters)
                 commander.Parameters.Add(p);
             return commander.ExecuteReader();
+        }
+
+        /// <summary>
+        /// 若指定名称的表在数据库中存在则返回 true，否则返回 false.
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public bool TableExists(string tableName)
+        {
+            if (commander == null)
+                InitCommander();
+            else
+                commander.Parameters.Clear();
+            return Engine.DBA.TableExists(tableName, commander);
+        }
+
+        /// <summary>
+        /// 从数据库中删除指定的表.
+        /// </summary>
+        /// <param name="tableName">表名称.</param>
+        public void DropTable(string tableName)
+        {
+            if (commander == null)
+                InitCommander();
+            Engine.DBA.DropTable(tableName, commander);
         }
 
         #region IDisposable成员实现

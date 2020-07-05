@@ -12,7 +12,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Description>Wunion.DataAdapter.NetCore 的 PostgreSQL 数据库支持包。
-该包在 PostgreSQL 10 环境测试通过.</Description>
+1.0.4更新说明（Update Logs）
+1.  新增 Create Table命令构建器的 PostgreSQL 解释器实现.
+2.  新增 DropTable 及 TableExists 方法.
+1.  Add PostgreSQL interpreter implementation of the create table command builder.
+2.  Add DropTable and TableExists methods.</Description>
     <Copyright>cnzhnet</Copyright>
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>

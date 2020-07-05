@@ -102,6 +102,11 @@ namespace Wunion.DataAdapter.Kernel.CommandBuilders
         public object Default { get; set; }
 
         /// <summary>
+        /// 外键设置.
+        /// </summary>
+        public DbForeignKey ForeignKey { get; set; }
+
+        /// <summary>
         /// 创建一个新的列定义.
         /// </summary>
         /// <param name="name">列名称.</param>
@@ -112,8 +117,9 @@ namespace Wunion.DataAdapter.Kernel.CommandBuilders
         /// <param name="pk">该列是否为主键（将多个列设定为主键时将自动产生联合主键）.</param>
         /// <param name="Default">列的默认值（要指定当前日期时间为默认值时可使用 Fun.Now() 函数，若为所有二进制类型的列指定默认值将引发异常）.</param>
         /// <param name="identity">自动增长设置.</param>
+        /// <param name="fk">外键设置.</param>
         /// <returns></returns>
-        public static DbTableColumnDefinition New(string name, GenericDbType dataType, int size = 0, bool notNull = false, bool unique = false, bool pk = false, object Default = null, DbColumnIdentity identity = null)
+        public static DbTableColumnDefinition New(string name, GenericDbType dataType, int size = 0, bool notNull = false, bool unique = false, bool pk = false, object Default = null, DbColumnIdentity identity = null, DbForeignKey fk = null)
         {
             return new DbTableColumnDefinition { 
                 Name = name, 
@@ -123,6 +129,7 @@ namespace Wunion.DataAdapter.Kernel.CommandBuilders
                 Default = Default, 
                 Identity = identity, 
                 PrimaryKey = pk, 
+                ForeignKey = fk,
                 Unique = unique 
             };
         }
@@ -153,5 +160,46 @@ namespace Wunion.DataAdapter.Kernel.CommandBuilders
         /// 自动增长的增量值.
         /// </summary>
         public int Increment { get; private set; }
+    }
+
+    /// <summary>
+    /// 表示数据库的外键约束信息.
+    /// </summary>
+    public class DbForeignKey
+    {
+        /// <summary>
+        /// 创建一个 <see cref="DbForeignKey"/> 的对象实例.
+        /// </summary>
+        /// <param name="table">外键关联的表名.</param>
+        /// <param name="column">外键关联表的字段名.</param>
+        /// <param name="update">主表字段更新时的处理行为（具体设置请参考各类数据库的外键设置料资）.</param>
+        /// <param name="delete">主表字段删除时的处理行为（具体设置请参考各类数据库的外键设置料资）.</param>
+        public DbForeignKey(string table, string column, string update = "CASCADE", string delete = "CASCADE")
+        {
+            this.Table = table;
+            this.Column = column;
+            OnUpdate = update;
+            OnDelete = delete;
+        }
+
+        /// <summary>
+        /// 外键关联的表名.
+        /// </summary>
+        public string Table { get; set; }
+
+        /// <summary>
+        /// 外键关联表的字段名.
+        /// </summary>
+        public string Column { get; set; }
+
+        /// <summary>
+        /// 字段更新时的处理行为.
+        /// </summary>
+        public string OnUpdate { get; set; }
+
+        /// <summary>
+        /// 字段删除时的处理行为.
+        /// </summary>
+        public string OnDelete { get; set; }
     }
 }

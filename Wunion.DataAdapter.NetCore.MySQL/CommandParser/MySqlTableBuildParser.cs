@@ -30,6 +30,7 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
             TableBuildDescription tableBuild = (TableBuildDescription)this.Description;
             StringBuilder buffers = new StringBuilder("CREATE TABLE ");
             StringBuilder multiPk = new StringBuilder();
+            StringBuilder fkBuffers = new StringBuilder();
             buffers.AppendFormat("{0}{1}{2} (", ElemIdentifierL, tableBuild.Name, ElemIdentifierR);
             string columnType = null;
             int pk_count = tableBuild.ColumnDefinitions.Count(def => def.PrimaryKey == true);
@@ -69,6 +70,8 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
                         buffers.Append(" PRIMARY KEY");
                     }
                 }
+                if (definition.ForeignKey != null)
+                    ParseForeignKey(tableBuild.Name, definition, fkBuffers);
                 if (i < (tableBuild.ColumnDefinitions.Count - 1))
                     buffers.Append(",");
             }
@@ -77,6 +80,8 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
                 buffers.Append(",").AppendLine();
                 buffers.AppendFormat("\tPRIMARY KEY ({0})", multiPk.ToString());
             }
+            if (fkBuffers.Length > 0)
+                buffers.Append(",").AppendLine().Append(fkBuffers.ToString());
             buffers.AppendLine();
             buffers.AppendFormat(") ENGINE={0} AUTO_INCREMENT={1} DEFAULT CHARSET=utf8;", ((MySqlParserAdapter)Adapter).MysqlEngine, identity.InitValue);
             return buffers.ToString();
@@ -163,6 +168,22 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
             }
             valueDes.DescriptionParserAdapter = this.Adapter;
             return string.Format("DEFAULT {0}", valueDes.GetParser().Parsing(ref DbParameters));
+        }
+
+        /// <summary>
+        /// 解析列的外键设置.
+        /// </summary>
+        /// <param name="table">当前表名.</param>
+        /// <param name="definition">列定义信息.</param>
+        /// <param name="writer">将外键命令段写入该缓冲区.</param>
+        /// <returns></returns>
+        private void ParseForeignKey(string table, DbTableColumnDefinition definition, StringBuilder writer)
+        {
+            if (writer.Length > 0)
+                writer.Append(",").AppendLine();
+            writer.AppendFormat("\tFOREIGN KEY FK_{0}_{1} ({2}{1}{3})", table, definition.Name, ElemIdentifierL, ElemIdentifierR);
+            writer.AppendFormat(" REFERENCES {0}{2}{1} ({0}{3}{1})", ElemIdentifierL, ElemIdentifierR, definition.ForeignKey.Table, definition.ForeignKey.Column);
+            writer.AppendFormat(" ON DELETE {0} ON UPDATE {1}", definition.ForeignKey.OnDelete, definition.ForeignKey.OnUpdate);
         }
     }
 }

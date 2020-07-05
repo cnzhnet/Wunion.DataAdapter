@@ -42,8 +42,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
                 columnType = ParseDbType(definition);
                 if (string.IsNullOrEmpty(columnType))
                     throw new NoNullAllowedException(string.Format("Type of undefined column: {0}", definition.Name));
-                buffers.AppendLine();
-                buffers.AppendFormat("\t{0}{1}{2}", ElemIdentifierL, definition.Name, ElemIdentifierR);
+                buffers.AppendLine().AppendFormat("\t{0}{1}{2}", ElemIdentifierL, definition.Name, ElemIdentifierR);
                 buffers.AppendFormat(" {0} {1}", columnType, definition.NotNull ? "NOT NULL" : "NULL");
                 if (definition.Unique)
                     buffers.Append(" UNIQUE");
@@ -62,7 +61,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
                     {
                         buffers.Append(" PRIMARY KEY");
                     }
-                }
+                }                
                 if (definition.Identity != null)
                 {
                     if (!definition.PrimaryKey)
@@ -70,17 +69,17 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
                     if (pk_count > 1)
                         throw new NotSupportedException(string.Format("AUTOINCREMENT can't be applied to multi-primary key columns.", definition.Name));
                     buffers.Append(" AUTOINCREMENT");
-                }                               
+                }
+                if (definition.ForeignKey != null)
+                    ParseForeignKey(definition, buffers);
                 if (i < (tableBuild.ColumnDefinitions.Count - 1))
                     buffers.Append(",");
             }
             if (pk_count > 1)
             {
-                buffers.Append(",").AppendLine();
-                buffers.AppendFormat("\tPRIMARY KEY ({0})", multiPk.ToString());
+                buffers.Append(",").AppendLine().AppendFormat("\tPRIMARY KEY ({0})", multiPk.ToString());
             }
-            buffers.AppendLine();
-            buffers.Append(");");
+            buffers.AppendLine().Append(");");
             return buffers.ToString();
         }
 
@@ -164,6 +163,19 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
             }
             valueDes.DescriptionParserAdapter = this.Adapter;
             return string.Format("DEFAULT({0})", valueDes.GetParser().Parsing(ref DbParameters));
+        }
+
+        /// <summary>
+        /// 解析列的外键设置.
+        /// </summary>
+        /// <param name="definition">列定义信息.</param>
+        /// <param name="writer">将外键命令段写入该缓冲区.</param>
+        /// <returns></returns>
+        private void ParseForeignKey(DbTableColumnDefinition definition, StringBuilder writer)
+        {
+            writer.AppendFormat(" REFERENCES {0}{1}{2}", ElemIdentifierL, definition.ForeignKey.Table, ElemIdentifierR);
+            writer.AppendFormat(" ({0}{1}{2})", ElemIdentifierL, definition.ForeignKey.Column, ElemIdentifierR);
+            writer.AppendFormat(" ON DELETE {0} ON UPDATE {1}", definition.ForeignKey.OnDelete, definition.ForeignKey.OnUpdate);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Wunion.DataAdapter.Kernel
         private List<ConnectionPoolItem> usingPool;
         private object poolLocked;
         private object forcedReleaseRunning;
+        private bool IsDisposed;
 
         /// <summary>
         /// 创建一个 <see cref="DefaultDbConnectionPool"/> 的对象实列.
@@ -33,6 +34,7 @@ namespace Wunion.DataAdapter.Kernel
             usingPool = new List<ConnectionPoolItem>();
             poolLocked = new object();
             forcedReleaseRunning = false;
+            IsDisposed = false;
         }
 
         /// <summary>
@@ -81,6 +83,8 @@ namespace Wunion.DataAdapter.Kernel
         {
             if (makeFactory == null)
                 throw new ArgumentNullException(nameof(makeFactory));
+            if (IsDisposed)
+                throw new Exception("连接池已被释放.");
 
             IDbConnection connection = null;
             if (Count < MaximumConnections && IdlePool.Count < 1) // 当连接池中无闲置连接，并且连接数未达上限时创建新的连接.
@@ -96,6 +100,11 @@ namespace Wunion.DataAdapter.Kernel
             ConnectionPoolItem poolItem = null;
             do
             {
+                if (IsDisposed)
+                {
+                    tmpEx = new Exception("连接池已被释放.");
+                    break;
+                }
                 if (IdlePool.Count > 0)
                 {
                     lock (poolLocked)
@@ -187,8 +196,34 @@ namespace Wunion.DataAdapter.Kernel
         /// <param name="disposing">手动释放则为 true，否则为 false.</param>
         protected void Dispose(bool disposing)
         {
+            Action<ConnectionPoolItem> freePoolItem = (item) => {
+                if (item.Connection.State == ConnectionState.Open)
+                    item.Connection.Close();
+                item.Connection.Dispose();
+            };
+            if (IdlePool != null)
+            {
+                lock (IdlePool)
+                {
+                    while (IdlePool.Count > 0)
+                        freePoolItem(IdlePool.Dequeue());
+                }
+            }
+            if (usingPool != null)
+            {
+                lock (usingPool)
+                {
+                    foreach (ConnectionPoolItem item in usingPool)
+                        freePoolItem(item);
+                    usingPool.Clear();
+                }
+            }
             if (disposing)
-            { }
+            {
+                IdlePool = null;
+                usingPool = null;
+            }
+            IsDisposed = true;
         }
 
         /// <summary>

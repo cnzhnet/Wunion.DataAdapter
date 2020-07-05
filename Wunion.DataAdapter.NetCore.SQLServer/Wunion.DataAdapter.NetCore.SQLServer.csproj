@@ -14,7 +14,11 @@
     <FileVersion>1.0.4.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Wunion.DataAdapter.NetCore 的 Microsoft SQL Server 2008 R2 SP3及以上版本数据库支持包。
-1.0.2、更进Wunion.DataAdapter.NetCore 1.0.3解释适配器的新模式支持</Description>
+1.0.4更新说明（Update Logs）
+1.  新增 Create Table命令构建器的 SQL Server 解释器实现.
+2.  新增 DropTable 及 TableExists 方法.
+1.  Add SQL Server interpreter implementation of the create table command builder.
+2.  Add DropTable and TableExists methods.</Description>
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />

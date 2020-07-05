@@ -14,10 +14,11 @@
     <FileVersion>1.0.4.1</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.4.1</Version>
-    <Description>轻量级源数据库访问框架：稳定可靠！DBHelper的性能，如ORM框架般的便利！
-1.0.4 更新说明( Update Description)：
--- 新增数据库连接池的支持.
--- Added support for database connection pool.</Description>
+    <Description>1.0.4.1 更新说明（Update Logs）
+1.   新增 Create Table命令构建器、DropTable 及 TableExists 方法，现在可以轻松的创建删除表以及判断特定的表在数据库中是否存在.
+2.  在上一个版本中忘了实现 DefaultDbConnectionPool 类的 Dispose 方法，此版已修复  (~_~)!
+1.  New Create Table command builder, DropTable and TableExists methods, now you can now easily create and delete tables and determine whether a specific table exists in the database.
+2.  Forgot to implement the Dispose method of the DefaultDbConnectionPool class in the previous version, this version has been fixed it (~_~)!</Description>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <Copyright>cnzhnet</Copyright>
