@@ -32,17 +32,17 @@ namespace UnitTestProject
             {
                 case "ms-sql":
                     dba = new SqlServerDbAccess();
-                    dba.ConnectionString = "Server=(local);Database=Wunion.DataAdapter.NetCore.Demo;User ID=sa;Password=kcbg7-hb8x2;";
+                    dba.ConnectionString = "Server=(local);Database=Wunion.DataAdapter.NetCore.Demo;User ID=sa;Password=ms-sql@(*~-^*);";
                     adapter = new SqlServerParserAdapter();
                     break;
                 case "mysql":
                     dba = new MySqlDBAccess();
-                    dba.ConnectionString = "Data Source=app01.ksdemo.cn;Database=ksdatab;User ID=ksdatab;Password=ksdatab123;";
+                    dba.ConnectionString = "Data Source=192.168.1.106;Database=ksdatab;User ID=cnzhnet;Password=mysql@(*~-^*);";
                     adapter = new MySqlParserAdapter();
                     break;
                 case "npgsql":
                     dba = new NpgsqlDbAccess();
-                    dba.ConnectionString = "Host=192.168.1.106;Username=postgres;Password=kcbg7-hb8x2;Database=Wunion.DataAdapter.NetCore.Demo;";
+                    dba.ConnectionString = "Host=192.168.1.106;Username=postgres;Password=npgsql@(*~-^*);Database=Wunion.DataAdapter.NetCore.Demo;";
                     adapter = new NpgsqlParserAdapter();
                     break;
                 case "sqlite3":
