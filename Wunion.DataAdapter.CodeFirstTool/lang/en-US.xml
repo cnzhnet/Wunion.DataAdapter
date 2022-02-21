@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+  <string name="region-name" value="English (US)" />
+  <string name="app-name" value="Wunion.DataAdapter CodeFirst Tool" />
+  <string name="version" value="version: {0}" />
+  <string name="copyright" value="Copyright (C) cnzhnet all rights reserved." />
+  <string name="use-locale" value="Use locale: {0}" />
+  <string name="no_project" value="No recognized project found in this directory." />
+  <string name="analyzing_target_project" value="Analyzing target project ..." />
+  <string name="target_framework_missing" value="The target framework for this project is unknown." />
+  <string name="target_framework_not_supported" value="The target framework &quot;{0}&quot; is not supported, please modify the target framework to netcoreapp3.1, net5.0, net6.0" />
+  <string name="dll_not_found_exception" value="Not found the dll: {0}. Please use Debug|AnyCPU mode to compile the target project first!" />
+  <string name="analyzing_target_dll" value="Analyzing target assembly {0} ..." />
+  <string name="database_context_found" value="Database context definition found: {0}" />
+  <string name="database_not_supported" value="Database not supported: {0}" />
+  <string name="dbconn_missing_exception" value="You must override the OnBeforeGenerating method of {0}, and correctly implement the configuration of the database connection" />
+  <string name="dao_namespace_missing_exception" value="Please use options.DaoGenerateNamespace in the {0}.OnBeforeGenerating method to set the namespace of the entity query DAO class to generate!" />
+  <string name="dao_output_missing_exception" value="Please use options.DaoGenerateDirectory in the {0}.OnBeforeGenerating method to set the relative path of the entity query DAO class to be generated in the target project!" />
+  <string name="database_generating" value="Generating database schema for {0} ..." />
+  <string name="upgrade_database_schema" value="Upgrading from existing version {0} to {1} ..." />
+  <string name="no_need_upgrade_database" value="No need to upgrade the database schema." />
+  <string name="skip_generate_table" value="Skip generating existing table {0}" />
+  <string name="generating_table" value="Generating table {0}" />
+  <string name="backing_up_table" value="Backing up data for table {0} ..." />
+  <string name="drop_table" value="Drop table {0} ..." />
+  <string name="create_table" value="Creating table {0} ..." />
+  <string name="database_generate_completed" value="Generated database schema for {0}: skip table {1}, rebuild table {2}, create table {3}" />
+  <string name="dao_code_generating" value="Generating the DAO query data access class for entity ..." />
+  <string name="dao_code_generate_completed" value="Done." />
+  <string name="code_first_completed" value="All generate tasks is completed." />
+</strings>

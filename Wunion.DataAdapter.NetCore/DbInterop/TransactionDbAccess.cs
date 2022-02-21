@@ -121,6 +121,52 @@ namespace Wunion.DataAdapter.Kernel.DbInterop
         }
 
         /// <summary>
+        /// 执行指定的查询命令，并返回相应的数据读取器。
+        /// </summary>
+        /// <param name="command">要执行的查询的命令构建器.</param>
+        /// <returns></returns>
+        public IDataReader ExecuteReader(CommandBuilder command)
+        {
+            IDataReader reader = null;
+            try
+            {
+                DbCommand.CommandText = command.Parsing(parserAdapter);
+                DbCommand.CommandType = command.CommandType;
+                foreach (IDbDataParameter p in command.CommandParameters)
+                    DbCommand.Parameters.Add(p);
+                reader = DbCommand.ExecuteReader();
+            }
+            finally
+            {
+                DbCommand.Parameters.Clear();
+            }
+            return reader;
+        }
+
+        /// <summary>
+        /// 执行查询，并返回查询所返回的结果集中第一行的第一列。所有其他的列和行将被忽略。
+        /// </summary>
+        /// <param name="command">要执行的查询。</param>
+        /// <returns></returns>
+        public object ExecuteScalar(CommandBuilder command)
+        {
+            object result = null;
+            try
+            {
+                DbCommand.CommandText = command.Parsing(parserAdapter);
+                DbCommand.CommandType = command.CommandType;
+                foreach (IDbDataParameter p in command.CommandParameters)
+                    DbCommand.Parameters.Add(p);
+                result = DbCommand.ExecuteScalar();
+            }
+            finally
+            {
+                DbCommand.Parameters.Clear();
+            }
+            return result;
+        }
+
+        /// <summary>
         /// 若指定的表在数据库中存在则返回 true，否则返回 false .
         /// </summary>
         /// <param name="tableName"></param>

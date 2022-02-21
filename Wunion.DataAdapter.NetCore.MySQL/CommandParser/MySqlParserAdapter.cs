@@ -17,7 +17,7 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
         /// 创建一个 <see cref="MySqlParserAdapter"/> 的对象实例.
         /// </summary>
         /// <param name="engine">MySQL 使用的引擎设置.</param>
-        public MySqlParserAdapter(string engine = "INNODB") : base()
+        public MySqlParserAdapter(string engine = StorageEngine.INNODB) : base()
         {
             MysqlEngine = engine;
         }

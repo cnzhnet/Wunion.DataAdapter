@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+  <string name="region-name" value="简体中文（中国）" />
+  <string name="app-name" value="Wunion.DataAdapter CodeFirst 工具" />
+  <string name="version" value="版本：{0}" />
+  <string name="copyright" value="Copyright (C) 巽翎君保留所有权利." />
+  <string name="use-locale" value="语言环境：{0}" />
+  <string name="no_project" value="此目录中未发现可识别的项目." />
+  <string name="analyzing_target_project" value="正在分析目标项目..." />
+  <string name="target_framework_missing" value="未能检测到此项目的目标框架." />
+  <string name="target_framework_not_supported" value="不支持目标框架“{0}”，请将目标框架修改为 netcoreapp3.1、net5.0、net6.0" />
+  <string name="dll_not_found_exception" value="未找到程序集：{0}。请先使用 Debug|AnyCPU 模式编译目标项目!" />
+  <string name="analyzing_target_dll" value="正在分析目标程序集 {0} ..." />
+  <string name="database_context_found" value="发现数据库上下文定义：{0}" />
+  <string name="database_not_supported" value="不支持数据库：{0}" />
+  <string name="db_connection_missing_exception" value="您必须重写 {0} 的 OnBeforeGenerating 方法，并正确实现数据库连接的配置." />
+  <string name="dao_namespace_missing_exception" value="请在 {0}.OnBeforeGenerating 方法中使用 options.DaoGenerateNamespace 设置要生成的实体查询 DAO 类的命名空间!" />
+  <string name="dao_output_missing_exception" value="请在 {0}.OnBeforeGenerating 方法中使用 options.DaoGenerateDirectory 设置要生成的实体查询 DAO 类在目标项目中的相对路径!" />
+  <string name="database_generating" value="正在为 {0} 生成数据库架构 ..." />
+  <string name="upgrade_database_schema" value="正在从现有版本 {0} 升级到 {1} ..." />
+  <string name="no_need_upgrade_database" value="无需升级数据库架构." />
+  <string name="skip_generate_table" value="跳过生成已存在的表 {0}" />
+  <string name="generating_table" value="正在生成表 {0}" />
+  <string name="backing_up_table" value="正在备份表 {0} 的数据 ..." />
+  <string name="drop_table" value="删除表 {0}" />
+  <string name="create_table" value="正在创建表 {0} ..." />
+  <string name="database_generate_completed" value="已成功生成 {0} 的数据库架构：跳过表 {1}，重建表 {2}，新建表 {3}" />
+  <string name="dao_code_generating" value="正在生成实体的 DAO 查询数据访问类 ..." />
+  <string name="dao_code_generate_completed" value="完成." />
+  <string name="code_first_completed" value="已完成所有生成任务." />
+</strings>

@@ -10,10 +10,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.Kernel</RootNamespace>
-    <AssemblyVersion>1.0.4.1</AssemblyVersion>
-    <FileVersion>1.0.4.1</FileVersion>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.4.1</Version>
+    <Version>1.0.5</Version>
     <Description>1.0.4.1 更新说明（Update Logs）
 1.   新增 Create Table命令构建器、DropTable 及 TableExists 方法，现在可以轻松的创建删除表以及判断特定的表在数据库中是否存在。请用方法请参见单该项目的单元测试项目：https://github.com/cnzhnet/LingOpenSource/tree/master/UnitTestProject
 2.  在上一个版本中忘了实现 DefaultDbConnectionPool 类的 Dispose 方法，此版已修复  (~_~)!

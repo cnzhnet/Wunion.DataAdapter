@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Wunion.DataAdapter.CodeFirstTool": {
+      "commandName": "Project",
+      "commandLineArgs": "sqlite3",
+      "environmentVariables": {
+        "Path": "值"
+      }
+    }
+  }
+}

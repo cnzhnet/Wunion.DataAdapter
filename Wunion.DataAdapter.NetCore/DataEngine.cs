@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Data;
+using System.Reflection;
 using Wunion.DataAdapter.Kernel.DbInterop;
 using Wunion.DataAdapter.Kernel.DataCollection;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
 using Wunion.DataAdapter.Kernel.CommandParser;
+using Wunion.DataAdapter.Kernel.CodeFirst;
 
 namespace Wunion.DataAdapter.Kernel
 {
@@ -16,6 +19,10 @@ namespace Wunion.DataAdapter.Kernel
     {
         private DbAccess _DBA;
         private ParserAdapter _CommandParserAdapter;
+        /// <summary>
+        /// 用于存储数据库值的转换器支持.
+        /// </summary>
+        private DbValueConverterOptions ConverterOptions;
 
         /// <summary>
         /// 创建一个 <see cref="Wunion.DataAdapter.Kernel.DataEngine"/> 的对象实例。
@@ -29,6 +36,8 @@ namespace Wunion.DataAdapter.Kernel
 
             if (DBA != null)
                 DBA.parserAdapter = parserAdapter;
+            ConverterOptions = new DbValueConverterOptions();
+            DbConversionPool = new ConcurrentDictionary<Type, List<DbConversionMapping>>();
         }
 
         /// <summary>
@@ -46,6 +55,11 @@ namespace Wunion.DataAdapter.Kernel
         {
             get { return _CommandParserAdapter; }
         }
+
+        /// <summary>
+        /// 实体对象的数据映射缓存池.
+        /// </summary>
+        public ConcurrentDictionary<Type, List<DbConversionMapping>> DbConversionPool { get; private set; }
 
         /// <summary>
         /// 为该数据库引擎对象配置并使用您自己实现的连接池.
@@ -75,6 +89,24 @@ namespace Wunion.DataAdapter.Kernel
             DBA.ConnectionPool = new DefaultDbConnectionPool();
             configure(DBA.ConnectionPool);
         }
+
+        /// <summary>
+        /// 配置该数据库引擎实例在执行查询时要使用的值转换器.
+        /// </summary>
+        /// <param name="configure">用于配置值转换器选项的方法.</param>
+        public void ConfigureValueConverter(Action<DbValueConverterOptions> configure)
+        {
+            if (configure == null)
+                throw new ArgumentNullException(nameof(configure));
+            configure(ConverterOptions);
+        }
+
+        /// <summary>
+        /// 获取指定类型的值在该数据库引擎中配置的转换器.
+        /// </summary>
+        /// <param name="type">转换器的作用数据类库.</param>
+        /// <returns></returns>
+        public IDbValueConverter GetValueConverter(Type type) => ConverterOptions.Get(type);
 
         /// <summary>
         /// 执行指定的 SQL 命令，并返回受影响的记录数。
@@ -142,8 +174,9 @@ namespace Wunion.DataAdapter.Kernel
         /// 开启事务处理。
         /// </summary>
         /// <param name="il">事务锁定行为（即隔离级别）.</param>
+        /// <param name="commandTimeout">事务执行命令的超时时间.</param>
         /// <returns></returns>
-        public DBTransactionController BeginTrans(IsolationLevel? il = null)
+        public DBTransactionController BeginTrans(IsolationLevel? il = null, int commandTimeout = 30)
         {
             if (DBA == null || CommandParserAdapter == null)
                 throw (new Exception("无法开启事务，因为尚未初始化 DBA 或 CommandParserAdapter 对象。"));
@@ -157,6 +190,7 @@ namespace Wunion.DataAdapter.Kernel
             IDbCommand DbCommand = DBA.CreateDbCommand();
             DbCommand.Connection = DbConnection;
             DbCommand.Transaction = Trans;
+            DbCommand.CommandTimeout = commandTimeout;
             TransactionDbAccess transDBA = new TransactionDbAccess(DbCommand, this);
             DBTransactionController TransController = new DBTransactionController(Trans, transDBA, new ReleaseTransHandler(ReleaseTransaction));
             TransactionConnectionCache.RegisterValidTransaction(TransController.UniqueId, DBA, DbConnection);
