@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -7,12 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 using Wunion.DataAdapter.CodeFirstDemo.Data;
+using Wunion.DataAdapter.CodeFirstDemo.Data.Domain;
+using Wunion.DataAdapter.CodeFirstDemo.Data.Security;
 
 namespace Wunion.DataAdapter.CodeFirstDemo
 {
@@ -58,16 +60,43 @@ namespace Wunion.DataAdapter.CodeFirstDemo
             services.AddControllers().AddJsonOptions((options) => {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+                options.JsonSerializerOptions.Converters.Add(new DateTimeJsonConverter());
+                options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+                options.JsonSerializerOptions.Converters.Add(new UserAccountStatusJsonConverter());
             });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Wunion.DataAdapter.CodeFirstDemo", Version = "v1" });
+                // 增加 swagger 的 token 授权.
+                OpenApiSecurityScheme securityScheme = new OpenApiSecurityScheme { 
+                    Description = "请先调用 /UserAccount/LogIn 然后复制返回的 Token 粘至此处：",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT"
+                };
+                OpenApiSecurityRequirement requirement = new OpenApiSecurityRequirement();
+                requirement.Add(new OpenApiSecurityScheme { 
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "WebApiAuth" }
+                }, new string[] { });
+                c.AddSecurityDefinition("WebApiAuth", securityScheme);
+                c.AddSecurityRequirement(requirement);
+
+                // 设置注释文件的路径.
                 string basePath = System.IO.Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 c.IncludeXmlComments(System.IO.Path.Combine(basePath, "Wunion.DataAdapter.CodeFirstDemo.xml"));
             });
             services.AddDbContainer((container) => {
                 container.DbKind = "sqlite3";
             });
+            services.AddDbConverterOptions((options) => {
+                options.Add(typeof(UserAccountStatus), new UserAccountStatusConverter());
+                options.Add(typeof(List<int>), new UserPermissionsConverter());
+            });
+            services.AddSingleton<IDataProtection>(new RsaDataProtection());
+            services.AddScoped<WebApiExceptionFilter>();
+            services.AddScoped<AuthorizationAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,6 +116,12 @@ namespace Wunion.DataAdapter.CodeFirstDemo
             app.UseSqlite3((c) => {
                 IConfigurationSection section = GetDbSettings(c.Kind);
                 c.DbEngine.DBA.ConnectionString = section.GetValue<string>("ConnectionString");
+            });
+            app.UseRsaProtect((dp) => {
+                string pk = null;
+                using (System.IO.TextReader reader = new System.IO.StreamReader(System.IO.Path.Combine(env.ContentRootPath, "Configuration", "rsa.pk")))
+                    pk = reader.ReadToEnd();
+                dp.ImportKey(pk);
             });
 
             app.UseHttpsRedirection();

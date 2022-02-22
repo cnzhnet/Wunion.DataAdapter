@@ -45,7 +45,7 @@ namespace TeleprompterConsole.Generating
                         options.OrderBy(p.First.Version, OrderByMode.DESC);
                         options.Paging(1, 1);
                     })
-                    .ToList<DbSchemaVersion>(trans)
+                    .ToEntityList<DbSchemaVersion>(trans)
                     .FirstOrDefault();
             }
             else

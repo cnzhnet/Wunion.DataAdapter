@@ -190,6 +190,8 @@ namespace Wunion.DataAdapter.Kernel.CodeFirst
                 tmpValue = mp.Property.GetValue(entity);
                 if (string.IsNullOrEmpty(mp.Attribute.Name))
                     mp.Attribute.Name = mp.Property.Name;
+                if (mp.Identity != null)
+                    continue;            // 不插入自动编号字段.
                 fields.Add(td.Field(mp.Attribute.Name));
                 values.Add(ConvertToDbValue(mp, tmpValue));
             }
@@ -229,7 +231,8 @@ namespace Wunion.DataAdapter.Kernel.CodeFirst
                 }
                 else // 非主键则进行更新
                 {
-                    expressions.Add(td.Field(mp.Attribute.Name) == tmpValue);
+                    if (mp.Identity == null) // 仅更新非自动编号字段.
+                        expressions.Add(td.Field(mp.Attribute.Name) == tmpValue);
                 }
             }
             DbCommandBuilder cb = new DbCommandBuilder();

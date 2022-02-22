@@ -102,6 +102,15 @@ namespace Wunion.DataAdapter.Kernel
         }
 
         /// <summary>
+        /// 将默认的数据库值转换器配置为指定的转换器设置.
+        /// </summary>
+        /// <param name="options">新的数据库值转换器设置.</param>
+        public void ConfigureValueConverter(DbValueConverterOptions options)
+        {
+            ConverterOptions = options;
+        }
+
+        /// <summary>
         /// 获取指定类型的值在该数据库引擎中配置的转换器.
         /// </summary>
         /// <param name="type">转换器的作用数据类库.</param>
@@ -322,6 +331,15 @@ namespace Wunion.DataAdapter.Kernel
                 return;
             DataEngine.CurrentEngine = DataEnginePools["Default"];
             _CurrentEngineStatus = ENGINE_IS_DEFAULT;
+        }
+
+        /// <summary>
+        /// 创建数据库的值类型转换器.
+        /// </summary>
+        /// <returns></returns>
+        public static DbValueConverterOptions CreateConverterOptions()
+        {
+            return new DbValueConverterOptions();
         }
 
         #endregion
