@@ -26,13 +26,13 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
         /// 表示用户账户的权限.
         /// </summary>
         [TableField(DbType = GenericDbType.Text, ValueConverter = typeof(UserPermissionsConverter))]
-        public List<string> Permissions { get; set; }
+        public List<int> Permissions { get; set; }
     }
 
     /// <summary>
     /// 表示用户账户权限集合转换器.
     /// </summary>
-    public class UserPermissionsConverter : DbValueConverter<List<string>>
+    public class UserPermissionsConverter : DbValueConverter<List<int>>
     {
         /// <summary>
         /// 转换到数据库支持的值类型.
@@ -40,9 +40,9 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
         /// <param name="value"></param>
         /// <param name="dest"></param>
         /// <param name="buffer"></param>
-        protected override void ConvertTo(List<string> value, Type dest, out object buffer)
+        protected override void ConvertTo(List<int> value, Type dest, out object buffer)
         {
-            buffer = JsonSerializer.Serialize<List<string>>(value, new JsonSerializerOptions { 
+            buffer = JsonSerializer.Serialize<List<int>>(value, new JsonSerializerOptions { 
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All), 
                 PropertyNamingPolicy = null
             });
@@ -53,9 +53,12 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
         /// </summary>
         /// <param name="value"></param>
         /// <param name="buffer"></param>
-        protected override void Parse(object value, ref List<string> buffer)
+        protected override void Parse(object value, ref List<int> buffer)
         {
-            buffer = JsonSerializer.Deserialize<List<string>>(value.ToString(), new JsonSerializerOptions {
+            if (value == null || DBNull.Value.Equals(value))
+                return;
+
+            buffer = JsonSerializer.Deserialize<List<int>>(value.ToString(), new JsonSerializerOptions {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
                 PropertyNamingPolicy = null
             });

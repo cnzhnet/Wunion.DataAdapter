@@ -4,6 +4,26 @@
         <name>Wunion.DataAdapter.CodeFirstDemo</name>
     </assembly>
     <members>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.AuthorizationAccessor">
+            <summary>
+            用于实现授权访问器的接口.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.AuthorizationAccessor.Authorization">
+            <summary>
+            用户权限信息.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.DateTimeJsonConverter">
+            <summary>
+            <see cref="T:System.DateTime"/> 类型的 Json 序列化格式转换控制.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.DateTimeNullableConverter">
+            <summary>
+            <see cref="T:System.DateTime"/> 可空类型的 Json 序列化格式转换控制.
+            </summary>
+        </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.ServiceCollectionExtensions">
             <summary>
             用于扩展 <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 对象的方法.
@@ -15,6 +35,13 @@
             </summary>
             <param name="services"></param>
             <param name="configure">用于设置数据库容器</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ServiceCollectionExtensions.AddDbConverterOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Wunion.DataAdapter.Kernel.DbValueConverterOptions})">
+            <summary>
+            添加数据库值类型转换器的配置.
+            </summary>
+            <param name="services"></param>
+            <param name="configure">用于配置值转换器的方法.</param>
         </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.ApplicationBuilderExtensions">
             <summary>
@@ -49,45 +76,154 @@
             <param name="app"></param>
             <param name="configure">用于配置数据库.</param>
         </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ApplicationBuilderExtensions.UseRsaProtect(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection})">
+            <summary>
+            使用 RSA 数据保护服务.
+            </summary>
+            <param name="app"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute">
+            <summary>
+            用于验证用户账的授权，若不通过则阻断访问.
+            </summary>
+        </member>
+        <member name="F:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.SUPER_USER_UID">
+            <summary>
+            超级用户的 UID.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.RequiredPermission">
+            <summary>
+            获取或设置验证时所需要的权限.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.OnAuthorize(Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization)">
+            <summary>
+            授权通过返回 true，否则应返回 false .
+            </summary>
+            <param name="authorization">授权信息.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.PermissionDenied(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            没有权限时阻断请求.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            执行访问授权的验证.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.WebApiException">
+            <summary>
+            表示 webapi 中触发的异常.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.WebApiException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.WebApiException"/> 的对象实例.
+            </summary>
+            <param name="code">错误代码.</param>
+            <param name="message">错误信息.</param>
+            <param name="innerException">引发当前错误的异常信息.</param>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.WebApiException.Code">
+            <summary>
+            已知错误的异常代码.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter">
+            <summary>
+            用于自动处理 WebApi 的异常.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter.#ctor(Microsoft.Extensions.Logging.ILogger{Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter},Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter"/> 的对象实例.
+            </summary>
+            <param name="_logger"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            WebApi 中产生错误时执行.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController">
+            <summary>
+            用于提供数据保护服务的 WebApi 控制器.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.#ctor(Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection,Wunion.DataAdapter.CodeFirstDemo.AuthorizationAccessor)">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController"/> 控制器实例.
+            </summary>
+            <param name="dp"></param>
+            <param name="accessor"></param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.GenKey">
+            <summary>
+            生成密钥.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.Encrypt(System.String)">
+            <summary>
+            加密保护给定的文本.
+            </summary>
+            <param name="text">要保护的文本.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.Decrypt(System.String)">
+            <summary>
+            解密给定的文本.
+            </summary>
+            <param name="text">待解密的文本.</param>
+            <returns></returns>
+        </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController">
             <summary>
             提供用户账户管理功能的控制器.
             </summary>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Create(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Get">
+            <summary>
+            获取所有用户账户列表.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.GetById(System.Int32)">
+            <summary>
+            获取指定 UID 的用户账户的详细信息.
+            </summary>
+            <param name="uid">用户账户的 UID.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Create(Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel)">
             <summary>
             用于创建用户账户.
             </summary>
-            <param name="account">用户账户信息.</param>
+            <param name="user">用户账户信息.</param>
             <returns></returns>
         </member>
-        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Controllers.WeatherForecastController">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Delete(System.Int32)">
             <summary>
-            自动创建的 webapi 控制器.
+            删除指定 uid 的用户账户.
             </summary>
-        </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.WeatherForecastController.Get">
-            <summary>
-            我肏，用于测试的 Get 请求 api.
-            </summary>
+            <param name="uid">用户账户的 uid</param>
             <returns></returns>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.WeatherForecastController.CustomMethod(System.Int32,System.String)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.LogIn(System.String,System.String)">
             <summary>
-            这是一个在控制器中自定义的方法，传入什么就返回什么.
+            用户账户登录.
             </summary>
-            <param name="code">传入代码.</param>
-            <param name="message">代码所对应的消息.</param>
-            <returns>返回什么值?</returns>
-        </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.WeatherForecastController.IsModTwo(System.Int32)">
-            <summary>
-            用于将指定的整数与 2 求模测试.
-            </summary>
-            <param name="value">测试值.</param>
+            <param name="name">用户账户名或邮箱.</param>
+            <param name="password">登录密码.</param>
             <returns></returns>
-            <response code="200">value 为 2 的倍数.</response>
-            <response code="510">value 不是 2 的倍数.</response>
         </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.IDatabaseContainer">
             <summary>
@@ -326,7 +462,7 @@
             表示用户账户权限集合转换器.
             </summary>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserPermissionsConverter.ConvertTo(System.Collections.Generic.List{System.String},System.Type,System.Object@)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserPermissionsConverter.ConvertTo(System.Collections.Generic.List{System.Int32},System.Type,System.Object@)">
             <summary>
             转换到数据库支持的值类型.
             </summary>
@@ -334,7 +470,7 @@
             <param name="dest"></param>
             <param name="buffer"></param>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserPermissionsConverter.Parse(System.Object,System.Collections.Generic.List{System.String}@)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserPermissionsConverter.Parse(System.Object,System.Collections.Generic.List{System.Int32}@)">
             <summary>
             从数据库中的值转换为集合.
             </summary>
@@ -368,19 +504,376 @@
             用于在表升级重建时迁移数据.
             </summary>
         </member>
-        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Models.ErrorMessage">
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Models.ResultMessage">
             <summary>
             表示错误信息.
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.ErrorMessage.Code">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.ResultMessage.Code">
             <summary>
             错误代码.
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.ErrorMessage.Message">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.ResultMessage.Message">
             <summary>
             错误消息.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization">
+            <summary>
+            表示用户授权信息.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization.Tenant">
+            <summary>
+            租户.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization.UID">
+            <summary>
+            用户账户 ID.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization.Producer">
+            <summary>
+            发行者.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization.Grant">
+            <summary>
+            授权日期.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization.Period">
+            <summary>
+            有效期（以分钟为单位）.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization.Permissions">
+            <summary>
+            权限.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Models.AuthorizationMessage">
+            <summary>
+            用于返回授权消息.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.AuthorizationMessage.Grant">
+            <summary>
+            授权生效日期.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.AuthorizationMessage.Period">
+            <summary>
+            有效期（以分钟为单位）.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Models.AuthorizationMessage.Token">
+            <summary>
+            授权令牌.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel">
+            <summary>
+            用户信息的数据模型.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.#ctor">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel"/> 模型对象.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.UID">
+            <summary>
+            用户账户ID.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Name">
+            <summary>
+            用户账户名称.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Password">
+            <summary>
+            用户密码.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Status">
+            <summary>
+            用户账户的状态.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.User">
+            <summary>
+            该用户账户的使用人.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.PhoneNumber">
+            <summary>
+            手机号.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Email">
+            <summary>
+            电子邮件.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Permissions">
+            <summary>
+            表示用户账户的权限.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Creation">
+            <summary>
+            该用户账户的创建日期.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection">
+            <summary>
+            实现数据保护的接口.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection.GenerateKey">
+            <summary>
+            生成并返回 base64 格式的密钥.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection.ImportKey(System.String)">
+            <summary>
+            从 base64 字符串中导入 key.
+            </summary>
+            <param name="base64">base64 密钥</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection.Encrypt(System.String)">
+            <summary>
+            加密指定的文本并返回加密后的结果.
+            </summary>
+            <param name="text">要加密的文本.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection.Encrypt(System.Byte[])">
+            <summary>
+            加密指定的字节数组，并返回加密后的结果.
+            </summary>
+            <param name="buffer">要加密的字节数组.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection.Decrypt(System.String)">
+            <summary>
+            解密指定的文本并返回解密后的结果.
+            </summary>
+            <param name="text">待解密的文本.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection.Decrypt(System.Byte[])">
+            <summary>
+            解指定的字节数组，并返回加密后的结果.
+            </summary>
+            <param name="buffer">待解密的字节数组.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection">
+            <summary>
+            表示采用 RSA 算法的数据保护.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.#ctor">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection"/> 的对象实例.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.Decrypt(System.String)">
+            <summary>
+            解密指定的文本并返回解密后的结果.
+            </summary>
+            <param name="text">待解密的文本.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.Decrypt(System.Byte[])">
+            <summary>
+            解指定的字节数组，并返回加密后的结果.
+            </summary>
+            <param name="buffer">待解密的字节数组.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.Encrypt(System.String)">
+            <summary>
+            加密指定的文本并返回加密后的结果.
+            </summary>
+            <param name="text">要加密的文本.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.Encrypt(System.Byte[])">
+            <summary>
+            加密指定的字节数组，并返回加密后的结果.
+            </summary>
+            <param name="buffer">要加密的字节数组.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.GenerateKey">
+            <summary>
+            生成并返回 base64 格式的密钥.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.ImportKey(System.String)">
+            <summary>
+            从 base64 字符串中导入 key.
+            </summary>
+            <param name="base64">base64 密钥</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.Dispose(System.Boolean)">
+            <summary>
+            资源对象占用的资源.
+            </summary>
+            <param name="disposing">手动则用时为 true，对象终结器调用时则为 false .</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.Dispose">
+            <summary>
+            释放对象占用的资源.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Security.RsaDataProtection.Finalize">
+            <summary>
+            结象终结器（析构函数）.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1">
+            <summary>
+            应用程序服务的基础实现类型.
+            </summary>
+            <typeparam name="TData">数据实体或模型的类型名称.</typeparam>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1.#ctor(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyDbContext)">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1"/> 的对象实例.
+            </summary>
+            <param name="context">数据库上下文对象.</param>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1.db">
+            <summary>
+            数据库上下文对象.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1.Add(`0)">
+            <summary>
+            添加数据.
+            </summary>
+            <param name="data">要添加的数据.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1.Update(`0)">
+            <summary>
+            更新数据.
+            </summary>
+            <param name="data">要更新的数据.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1.Delete(System.Object)">
+            <summary>
+            删除数据.
+            </summary>
+            <param name="condition">删除条件.</param>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService">
+            <summary>
+            应用程序的用户账户服务.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.#ctor(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyDbContext)">
+            <summary>
+            创建一个应用程序的用户账户服务.
+            </summary>
+            <param name="context">数据库上下文对象.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.ProtectPassword(System.String,System.DateTime)">
+            <summary>
+            保护输入的密码，并返回受保护后的密码.
+            </summary>
+            <param name="input">输入的密码.</param>
+            <param name="creation">用户账户的创建日期.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.GetEntities(Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel,Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount@,Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermission@)">
+            <summary>
+            从数据模型中获取用户及权限实体.
+            </summary>
+            <param name="model"></param>
+            <param name="account"></param>
+            <param name="permission"></param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.Add(Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel)">
+            <summary>
+            添加用户账户.
+            </summary>
+            <param name="data">用户账户数据.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.Delete(System.Object)">
+            <summary>
+            删除用户账户.
+            </summary>
+            <param name="condition">删除条件.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.Update(Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel)">
+            <summary>
+            修改用户账户.
+            </summary>
+            <param name="data">更新的用户数据.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.List">
+            <summary>
+            获取所有用户账户列表.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.GetById(System.Int32)">
+            <summary>
+            获到指定 UID 的用户账户.
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.LogIn(System.String,System.String)">
+            <summary>
+            用户账户登录.
+            </summary>
+            <param name="name">用户名或邮箱号.</param>
+            <param name="password">登录密码.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.SystemPermissions">
+            <summary>
+            应用程序的所有权限定义.
+            </summary>
+        </member>
+        <member name="F:Wunion.DataAdapter.CodeFirstDemo.SystemPermissions.DATA_PROTECTION_USE">
+            <summary>
+            调用数据保护 api 的权限.
+            </summary>
+        </member>
+        <member name="F:Wunion.DataAdapter.CodeFirstDemo.SystemPermissions.DATA_PROTECTION_CK">
+            <summary>
+            创建数据保护服务密钥的权限.
+            </summary>
+        </member>
+        <member name="F:Wunion.DataAdapter.CodeFirstDemo.SystemPermissions.USER_ACCOUNT_RD">
+            <summary>
+            读取用户账户的权限.
+            </summary>
+        </member>
+        <member name="F:Wunion.DataAdapter.CodeFirstDemo.SystemPermissions.USER_ACCOUNT_CT">
+            <summary>
+            创建用户账户的权限.
+            </summary>
+        </member>
+        <member name="F:Wunion.DataAdapter.CodeFirstDemo.SystemPermissions.USER_ACCOUNT_CH">
+            <summary>
+            修改用户账户的权限.
+            </summary>
+        </member>
+        <member name="F:Wunion.DataAdapter.CodeFirstDemo.SystemPermissions.USER_ACCOUNT_RM">
+            <summary>
+            删除用户账户的权限.
             </summary>
         </member>
         <member name="M:Wunion.DataAdapter.CodeFirstDemo.Startup.GetDbSettings(System.String)">

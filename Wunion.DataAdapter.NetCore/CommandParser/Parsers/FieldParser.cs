@@ -29,9 +29,16 @@ namespace Wunion.DataAdapter.Kernel.CommandParser
             FieldDescription fdes = (FieldDescription)this.Description;
             string cBuffer;
             if (string.IsNullOrEmpty(fdes.TableName))
+            {
                 cBuffer = fdes.FieldName == "*" ? "*" : string.Format("{0}{1}{2}", ElemIdentifierL, fdes.FieldName, ElemIdentifierR);
+            }
             else
-                cBuffer = fdes.FieldName == "*" ? string.Format("{0}.*", fdes.TableName) : string.Format("{0}.{1}{2}{3}", fdes.TableName, ElemIdentifierL, fdes.FieldName, ElemIdentifierR);
+            {
+                if (fdes.FieldName == "*")
+                    cBuffer = string.Format("{1}{0}{2}.*", fdes.TableName, ElemIdentifierL, ElemIdentifierR);
+                else
+                    cBuffer = string.Format("{1}{0}{3}.{1}{2}{3}", fdes.TableName, ElemIdentifierL, fdes.FieldName, ElemIdentifierR);
+            }
             return cBuffer;
         }
     }

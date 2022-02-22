@@ -24,6 +24,9 @@
 
   <ItemGroup>
     <Folder Include="Data\Domain\DAO\" />
+    <Folder Include="Data\Dts\" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

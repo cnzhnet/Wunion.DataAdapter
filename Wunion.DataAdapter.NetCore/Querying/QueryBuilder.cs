@@ -43,6 +43,13 @@ namespace Wunion.DataAdapter.Kernel.Querying
             includeQuery = new IncludeQueryBuilder<TDAO>(queryDaos);
         }
 
+        private void GenerateTablesName()
+        {
+            bool yes = contexts.Count > 1;
+            foreach (KeyValuePair<Type, QueryDao> itm in queryDaos)
+                itm.Value.GenerateTableName = yes;
+        }
+
         /// <summary>
         /// 设置查询构建器的关联查询.
         /// </summary>
@@ -56,7 +63,7 @@ namespace Wunion.DataAdapter.Kernel.Querying
             // 外键约束设置正常则继续添加联合表.
             IDbTableContext dbTable = foreignDao.GetTableContext();
             contexts.Add(dbTable);
-            foreignDao.GenerateTableName = contexts.Count > 1;
+            GenerateTablesName();
             froms.Add(fm.LeftJoin(
                 fm.Table(dbTable.tableName))
                   .ON(expression(includeQuery))
@@ -117,7 +124,6 @@ namespace Wunion.DataAdapter.Kernel.Querying
             QueryDao targetDao = null;
             if (!queryDaos.TryGetValue(t, out targetDao))
                 throw new Exception($"{t.Name} is not included in the query.");
-            targetDao.GenerateTableName = contexts.Count > 1; //多表查询时需要在字段前生成表名.
             conditions.Add(condition((TargetDao)targetDao));
             return this;
         }
@@ -134,7 +140,6 @@ namespace Wunion.DataAdapter.Kernel.Querying
             QueryDao targetDao = null;
             if (!queryDaos.TryGetValue(t, out targetDao))
                 throw new Exception($"{t.Name} is not included in the query.");
-            targetDao.GenerateTableName = contexts.Count > 1; //多表查询时需要在字段前生成表名.
             List<object> objects = new List<object>(new object[] { exp.And });
             objects.AddRange(condition((TargetDao)targetDao));
             conditions.Add(objects.ToArray());
@@ -153,7 +158,6 @@ namespace Wunion.DataAdapter.Kernel.Querying
             QueryDao targetDao = null;
             if (!queryDaos.TryGetValue(t, out targetDao))
                 throw new Exception($"{t.Name} is not included in the query.");
-            targetDao.GenerateTableName = contexts.Count > 1; //多表查询时需要在字段前生成表名.
             List<object> objects = new List<object>(new object[] { exp.Or });
             objects.AddRange(condition((TargetDao)targetDao));
             conditions.Add(objects.ToArray());
@@ -193,7 +197,7 @@ namespace Wunion.DataAdapter.Kernel.Querying
         /// </summary>
         /// <param name="options">用于设置更多的查询选项，例如排序、分页等.</param>
         /// <returns></returns>
-        public QueryBuilder<TDAO> Build(Action<IncludeQueryBuilder<TDAO>, SelectBlock> options)
+        public QueryBuilder<TDAO> Build(Action<IncludeQueryBuilder<TDAO>, SelectBlock> options = null)
         {
             if (queryFields == null || queryFields.Length < 1)
                 throw new NullReferenceException("You must be called the method \"Select(...)\" before build the command.");
@@ -204,7 +208,7 @@ namespace Wunion.DataAdapter.Kernel.Querying
                 tmp.AddRange(array);
             if (tmp.Count > 0)
                 sb.Where(tmp.ToArray());
-            options(includeQuery, sb);
+            options?.Invoke(includeQuery, sb);
             return this;
         }
 
@@ -240,18 +244,35 @@ namespace Wunion.DataAdapter.Kernel.Querying
         }
 
         /// <summary>
+        ///  执行查询并将结果返回为非实体对象集合.
+        /// </summary>
+        /// <typeparam name="T">目标对象类型.</typeparam>
+        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
+        /// <returns></returns>
+        public List<T> ToList<T>(object controller = null) where T : class, new()
+        {
+            List<T> queryResult;
+            DataEngine engine = contexts.First().db.DbEngine;
+            using (IDataReader reader = ExecuteReader(engine, controller))
+            {
+                queryResult = reader.ToList<T>(engine);
+            }
+            return queryResult;
+        }
+
+        /// <summary>
         /// 执行查询并将结果返回为实体集合.
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
         /// <returns></returns>
-        public List<TEntity> ToList<TEntity>(object controller = null) where TEntity : class, new()
+        public List<TEntity> ToEntityList<TEntity>(object controller = null) where TEntity : class, new()
         {
             List<TEntity> queryResult = null;
             DataEngine engine = contexts.First().db.DbEngine;
             using (IDataReader reader = ExecuteReader(engine, controller))
             {
-                queryResult = reader.ToList<TEntity>(engine);
+                queryResult = reader.ToEntityList<TEntity>(engine);
             }
             return queryResult;
         }
@@ -268,7 +289,7 @@ namespace Wunion.DataAdapter.Kernel.Querying
             DataEngine engine = contexts.First().db.DbEngine;
             using (IDataReader reader = ExecuteReader(engine, controller))
             {
-                queryResult = reader.ToList(converter);
+                queryResult = reader.ToDynamicList(converter);
             }
             return queryResult;
         }
