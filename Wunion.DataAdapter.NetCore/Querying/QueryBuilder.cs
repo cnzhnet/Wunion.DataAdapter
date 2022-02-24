@@ -23,7 +23,6 @@ namespace Wunion.DataAdapter.Kernel.Querying
         private List<IDescription> froms; 
         private List<object[]> conditions;
         private IncludeQueryBuilder<TDAO> includeQuery;
-        private DbCommandBuilder cb;
 
         /// <summary>
         /// 创建一个查询构建器的对象实例.
@@ -180,16 +179,16 @@ namespace Wunion.DataAdapter.Kernel.Querying
         /// 构建 COUNT 查询命令.
         /// </summary>
         /// <returns></returns>
-        private DbCommandBuilder CountBuild()
+        private QueryCommandExecuter CountBuild()
         {
-            DbCommandBuilder cmdb = new DbCommandBuilder();
-            SelectBlock sb = cmdb.Select(Fun.Count(1)).From(froms.ToArray());
+            DbCommandBuilder cb = new DbCommandBuilder();
+            SelectBlock sb = cb.Select(Fun.Count(1)).From(froms.ToArray());
             List<object> tmp = new List<object>();
             foreach (object[] array in conditions)
                 tmp.AddRange(array);
             if (tmp.Count > 0)
                 sb.Where(tmp.ToArray());
-            return cmdb;
+            return new QueryCommandExecuter(contexts.First().db, cb);
         }
 
         /// <summary>
@@ -197,11 +196,11 @@ namespace Wunion.DataAdapter.Kernel.Querying
         /// </summary>
         /// <param name="options">用于设置更多的查询选项，例如排序、分页等.</param>
         /// <returns></returns>
-        public QueryBuilder<TDAO> Build(Action<IncludeQueryBuilder<TDAO>, SelectBlock> options = null)
+        public QueryCommandExecuter Build(Action<IncludeQueryBuilder<TDAO>, SelectBlock> options = null)
         {
             if (queryFields == null || queryFields.Length < 1)
                 throw new NullReferenceException("You must be called the method \"Select(...)\" before build the command.");
-            cb = new DbCommandBuilder();
+            DbCommandBuilder cb = new DbCommandBuilder();
             SelectBlock sb = cb.Select(queryFields).From(froms.ToArray());
             List<object> tmp = new List<object>();
             foreach (object[] array in conditions)
@@ -209,90 +208,10 @@ namespace Wunion.DataAdapter.Kernel.Querying
             if (tmp.Count > 0)
                 sb.Where(tmp.ToArray());
             options?.Invoke(includeQuery, sb);
-            return this;
+            return new QueryCommandExecuter(contexts.First().db, cb);
         }
 
-        /// <summary>
-        /// 执行命令并返回一个数据读取器.
-        /// </summary>
-        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
-        /// <returns></returns>
-        private IDataReader ExecuteReader(DataEngine engine, object controller = null)
-        {
-            if (cb == null)
-                throw new Exception("The query command has not been build.");
-            if (controller == null)
-            {
-                IDataReader reader = engine.ExecuteReader(cb);
-                if (reader == null)
-                {
-                    string message = (engine.DBA.Error != null) ? engine.DBA.Error.Message : "An unknown error occurred while executing the query.";
-                    throw new Exception(message);
-                }
-                return reader;
-            }
-            // 在事务中执行查询.
-            DBTransactionController trans = controller as DBTransactionController;
-            if (trans != null)
-                return trans.DBA.ExecuteReader(cb);
-            // 在批处理中执行查询.
-            BatchCommander batch = controller as BatchCommander;
-            if (batch != null)
-                return batch.ExecuteReader(cb);
-
-            throw new NotSupportedException("Incorrect parameter type: controller");
-        }
-
-        /// <summary>
-        ///  执行查询并将结果返回为非实体对象集合.
-        /// </summary>
-        /// <typeparam name="T">目标对象类型.</typeparam>
-        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
-        /// <returns></returns>
-        public List<T> ToList<T>(object controller = null) where T : class, new()
-        {
-            List<T> queryResult;
-            DataEngine engine = contexts.First().db.DbEngine;
-            using (IDataReader reader = ExecuteReader(engine, controller))
-            {
-                queryResult = reader.ToList<T>(engine);
-            }
-            return queryResult;
-        }
-
-        /// <summary>
-        /// 执行查询并将结果返回为实体集合.
-        /// </summary>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
-        /// <returns></returns>
-        public List<TEntity> ToEntityList<TEntity>(object controller = null) where TEntity : class, new()
-        {
-            List<TEntity> queryResult = null;
-            DataEngine engine = contexts.First().db.DbEngine;
-            using (IDataReader reader = ExecuteReader(engine, controller))
-            {
-                queryResult = reader.ToEntityList<TEntity>(engine);
-            }
-            return queryResult;
-        }
-
-        /// <summary>
-        /// 执行查询并将结果返回为动态实体集合.
-        /// </summary>
-        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
-        /// <param name="converter">用于转换字段值的数据类型.</param>
-        /// <returns></returns>
-        public List<dynamic> ToDynamicList(object controller = null, Func<string, object, Type, object> converter = null)
-        {
-            List<dynamic> queryResult = null;
-            DataEngine engine = contexts.First().db.DbEngine;
-            using (IDataReader reader = ExecuteReader(engine, controller))
-            {
-                queryResult = reader.ToDynamicList(converter);
-            }
-            return queryResult;
-        }
+       
 
         /// <summary>
         /// 查询符合的记录数量.
@@ -301,31 +220,9 @@ namespace Wunion.DataAdapter.Kernel.Querying
         /// <returns></returns>
         public int Count(object controller = null)
         {
-            DbCommandBuilder ccount = CountBuild();
-            object result;
-            if (controller == null)
-            {
-                DataEngine engine = contexts.First().db.DbEngine;
-                result = engine.ExecuteScalar(ccount);
-                if (engine.DBA.Error != null)
-                    throw new Exception(engine.DBA.Error.Message);
-                return (result == null || result == DBNull.Value) ? 0 : Convert.ToInt32(result);
-            }
-            // 在事务中执行.
-            DBTransactionController trans = controller as DBTransactionController;
-            if (trans != null)
-            {
-                result = trans.DBA.ExecuteScalar(ccount);
-                return (result == null || result == DBNull.Value) ? 0 : Convert.ToInt32(result);
-            }
-            // 在批处理中执行.
-            BatchCommander batch = controller as BatchCommander;
-            if (batch != null)
-            {
-                result = batch.QueryScalar(ccount);
-                return (result == null || result == DBNull.Value) ? 0 : Convert.ToInt32(result);
-            }
-            throw new NotSupportedException("Incorrect parameter type: controller");
+            QueryCommandExecuter executer = CountBuild();
+            object result = executer.ExecuteScalar(controller);
+            return (result == null || result == DBNull.Value) ? 0 : Convert.ToInt32(result);
         }
 
         /// <summary>

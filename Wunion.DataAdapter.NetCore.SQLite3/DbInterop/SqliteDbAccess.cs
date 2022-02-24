@@ -30,7 +30,9 @@ namespace Wunion.DataAdapter.Kernel.SQLite3
         /// <returns></returns>
         protected override string DropTableCommandText(string tableName, IDbCommand command)
         {
-            return string.Format("DROP TABLE [{0}]", tableName);
+            StringBuilder sb = new StringBuilder(string.Format("DROP TABLE [{0}];", tableName));
+            sb.AppendLine(string.Format("DELETE FROM sqlite_sequence WHERE name = '{0}';", tableName));
+            return sb.ToString();
         }
 
         /// <summary>

@@ -11,19 +11,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.SQLite3</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <Description>Wunion.DataAdapter.NetCore 的 SQLite 数据库支持包。
-1.0.4更新说明（Update Logs）
-1.  新增 Create Table命令构建器的 SQLite3 解释器实现.
-2.  新增 DropTable 及 TableExists 方法.
-1.  Add SQLite3 interpreter implementation of the create table command builder.
-2.  Add DropTable and TableExists methods.</Description>
+PostgreSQL database support package for Wunion.DataAdapter
+
+1. 修复删除表时自增长序列未清零的问题.
+   Fix the bug that the auto-increment is not cleared when the table is deleted.</Description>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <Copyright>cnzhnet</Copyright>
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
   </PropertyGroup>
 

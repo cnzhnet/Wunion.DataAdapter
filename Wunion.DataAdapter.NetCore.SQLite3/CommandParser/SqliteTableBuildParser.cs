@@ -34,6 +34,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
             string columnType = null;
             int pk_count = tableBuild.ColumnDefinitions.Count(def => def.PrimaryKey == true);
             DbTableColumnDefinition definition = null;
+            DbColumnIdentity identity = null;
             for (int i = 0; i < tableBuild.ColumnDefinitions.Count; ++i)
             {
                 definition = tableBuild.ColumnDefinitions[i];
@@ -69,6 +70,7 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
                     if (pk_count > 1)
                         throw new NotSupportedException(string.Format("AUTOINCREMENT can't be applied to multi-primary key columns.", definition.Name));
                     buffers.Append(" AUTOINCREMENT");
+                    identity = definition.Identity;
                 }
                 if (definition.ForeignKey != null)
                     ParseForeignKey(definition, buffers);
@@ -79,7 +81,9 @@ namespace Wunion.DataAdapter.Kernel.SQLite3.CommandParser
             {
                 buffers.Append(",").AppendLine().AppendFormat("\tPRIMARY KEY ({0})", multiPk.ToString());
             }
-            buffers.AppendLine().Append(");");
+            buffers.AppendLine().AppendLine(");");
+            if (identity != null)
+                buffers.AppendLine(string.Format("UPDATE sqlite_sequence SET seq = {0} WHERE name = '{1}';", identity.InitValue - 1, tableBuild.Name));
             return buffers.ToString();
         }
 

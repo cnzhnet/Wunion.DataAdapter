@@ -18,7 +18,6 @@ namespace TeleprompterConsole
             if (argIndex != -1)
                 arguments.RemoveAt(argIndex);
             PrintInformation();
-
             CommandLineApplication.Create(Language).Run(arguments.ToArray());
         }
 
@@ -64,10 +63,11 @@ namespace TeleprompterConsole
         /// <returns></returns>
         internal static string GetBasePath()
         {
-            string basePath = string.Empty;
+            return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            /*string basePath = string.Empty;
             using (ProcessModule pm = Process.GetCurrentProcess().MainModule)
                 basePath = Path.GetDirectoryName(pm?.FileName);
-            return basePath;
+            return basePath;*/
         }
     }
 }

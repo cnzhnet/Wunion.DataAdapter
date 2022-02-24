@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Wunion.DataAdapter.Kernel;
 using Wunion.DataAdapter.Kernel.CodeFirst;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
@@ -30,7 +28,7 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
     /// <summary>
     /// 表示用户账户实体.
     /// </summary>
-    public class UserAccount
+    public class UserAccount : WriteDateTime
     {
         /// <summary>
         /// 表示用户账户ID.
@@ -58,6 +56,12 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
         public UserAccountStatus Status { get; set; }
 
         /// <summary>
+        /// 该用户隶属的组.
+        /// </summary>
+        [TableField(DbType = GenericDbType.Text, NotNull = true, ValueConverter = typeof(IntegerCollectionConverter))]
+        public List<int> Groups { get; set; }
+
+        /// <summary>
         /// 该用户账户的使用人.
         /// </summary>
         [TableField(DbType = GenericDbType.VarChar, Size = 32)]
@@ -74,12 +78,6 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
         /// </summary>
         [TableField(DbType = GenericDbType.VarChar, Size = 255)]
         public string Email { get; set; }
-
-        /// <summary>
-        /// 该用户账户的创建日期.
-        /// </summary>
-        [TableField(DbType = GenericDbType.DateTime, NotNull = true)]
-        public DateTime Creation { get; set; }
     }
 
     /// <summary>

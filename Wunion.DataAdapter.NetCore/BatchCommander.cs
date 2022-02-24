@@ -23,6 +23,10 @@ namespace Wunion.DataAdapter.Kernel
         public BatchCommander(DataEngine database)
         {
             Engine = database;
+            commander = Engine.DBA.CreateDbCommand();
+            commander.Connection = Engine.DBA.Connect();
+            if (commander.Connection.State != ConnectionState.Open)
+                commander.Connection.Open();
         }
 
         /// <summary>
@@ -41,15 +45,6 @@ namespace Wunion.DataAdapter.Kernel
         }
 
         /// <summary>
-        /// 初始化 DbCommand 命令执行对象.
-        /// </summary>
-        private void InitCommander()
-        {
-            commander = Engine.DBA.CreateDbCommand();
-            commander.Connection = Engine.DBA.Connect();
-        }
-
-        /// <summary>
         /// 执行命令，并返回受影响记录数.
         /// </summary>
         /// <param name="command">要执行的命令的构建器对象.</param>
@@ -59,10 +54,7 @@ namespace Wunion.DataAdapter.Kernel
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            if (commander == null)
-                InitCommander();
-            else
-                commander.Parameters.Clear();
+            commander.Parameters.Clear();
             commander.CommandType = command.CommandType;
             commander.CommandText = command.Parsing(Engine.CommandParserAdapter);
             foreach (IDbDataParameter p in command.CommandParameters)
@@ -83,10 +75,7 @@ namespace Wunion.DataAdapter.Kernel
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            if (commander == null)
-                InitCommander();
-            else
-                commander.Parameters.Clear();
+            commander.Parameters.Clear();
             commander.CommandType = command.CommandType;
             commander.CommandText = command.Parsing(Engine.CommandParserAdapter);
             foreach (IDbDataParameter p in command.CommandParameters)
@@ -105,10 +94,7 @@ namespace Wunion.DataAdapter.Kernel
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            if (commander == null)
-                InitCommander();
-            else
-                commander.Parameters.Clear();
+            commander.Parameters.Clear();
             commander.CommandType = command.CommandType;
             commander.CommandText = command.Parsing(Engine.CommandParserAdapter);
             foreach (IDbDataParameter p in command.CommandParameters)
@@ -123,10 +109,7 @@ namespace Wunion.DataAdapter.Kernel
         /// <returns></returns>
         public bool TableExists(string tableName)
         {
-            if (commander == null)
-                InitCommander();
-            else
-                commander.Parameters.Clear();
+            commander.Parameters.Clear();
             return Engine.DBA.TableExists(tableName, commander);
         }
 
@@ -136,8 +119,7 @@ namespace Wunion.DataAdapter.Kernel
         /// <param name="tableName">表名称.</param>
         public void DropTable(string tableName)
         {
-            if (commander == null)
-                InitCommander();
+            commander.Parameters.Clear();
             Engine.DBA.DropTable(tableName, commander);
         }
 

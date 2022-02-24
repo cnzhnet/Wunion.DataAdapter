@@ -22,6 +22,11 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
             MysqlEngine = engine;
         }
 
+        public override string IdentityCommand
+        {
+            get { return "SELECT LAST_INSERT_ID()"; }
+        }
+
         public override string ElemIdentifierL
         {
             get

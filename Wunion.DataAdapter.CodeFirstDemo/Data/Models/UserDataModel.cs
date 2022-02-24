@@ -28,14 +28,14 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data
         public string Name { get; set; }
 
         /// <summary>
-        /// 用户密码.
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
         /// 用户账户的状态.
         /// </summary>
         public UserAccountStatus Status { get; set; }
+
+        /// <summary>
+        /// 用户账户组.
+        /// </summary>
+        public List<int> Groups { get; set; }
 
         /// <summary>
         /// 该用户账户的使用人.
@@ -53,13 +53,13 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data
         public string Email { get; set; }
 
         /// <summary>
-        /// 表示用户账户的权限.
+        /// 创建日期.
         /// </summary>
-        public List<int> Permissions { get; set; }
+        public DateTime? Creation { get; set; }
 
         /// <summary>
-        /// 该用户账户的创建日期.
+        /// 最后修改日期.
         /// </summary>
-        public DateTime Creation { get; set; }
+        public DateTime? LastModified { get; set; }
     }
 }

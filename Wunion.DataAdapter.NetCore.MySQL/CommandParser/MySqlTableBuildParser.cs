@@ -83,7 +83,10 @@ namespace Wunion.DataAdapter.Kernel.MySQL.CommandParser
             if (fkBuffers.Length > 0)
                 buffers.Append(",").AppendLine().Append(fkBuffers.ToString());
             buffers.AppendLine();
-            buffers.AppendFormat(") ENGINE={0} AUTO_INCREMENT={1} DEFAULT CHARSET=utf8;", ((MySqlParserAdapter)Adapter).MysqlEngine, identity.InitValue);
+            if (identity == null)
+                buffers.AppendFormat(") ENGINE={0} DEFAULT CHARSET=utf8;", ((MySqlParserAdapter)Adapter).MysqlEngine);
+            else
+                buffers.AppendFormat(") ENGINE={0} AUTO_INCREMENT={1} DEFAULT CHARSET=utf8;", ((MySqlParserAdapter)Adapter).MysqlEngine, identity.InitValue);
             return buffers.ToString();
         }
 

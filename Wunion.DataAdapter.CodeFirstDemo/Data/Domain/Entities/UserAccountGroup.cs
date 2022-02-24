@@ -1,38 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Collections.Generic;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using Wunion.DataAdapter.Kernel;
 using Wunion.DataAdapter.Kernel.CodeFirst;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
 
 namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
 {
     /// <summary>
-    /// 用户账户的权限.
+    /// 表示用户账户表的实体
     /// </summary>
-    public class UserAccountPermission
+    public class UserAccountGroup : WriteDateSoftDelete
     {
         /// <summary>
-        /// 表示用户账户ID.
+        /// 组 ID
         /// </summary>
-        [ForeignKey(TableName = "UserAccounts", Field = "UID")]
+        [Identity(0, 1)]
         [TableField(DbType = GenericDbType.Int, NotNull = true, PrimaryKey = true)]
-        public int UID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// 表示用户账户的权限.
+        /// 组名称.
         /// </summary>
-        [TableField(DbType = GenericDbType.Text, ValueConverter = typeof(UserPermissionsConverter))]
+        [TableField(DbType = GenericDbType.VarChar, Size = 64, NotNull = true, Unique = true)]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 组说明.
+        /// </summary>
+        [TableField(DbType = GenericDbType.VarChar, Size = 255)]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// 该组的权限集.
+        /// </summary>
+        [TableField(DbType = GenericDbType.Text, ValueConverter = typeof(IntegerCollectionConverter))]
         public List<int> Permissions { get; set; }
     }
 
     /// <summary>
     /// 表示用户账户权限集合转换器.
     /// </summary>
-    public class UserPermissionsConverter : DbValueConverter<List<int>>
+    public class IntegerCollectionConverter : DbValueConverter<List<int>>
     {
         /// <summary>
         /// 转换到数据库支持的值类型.
@@ -42,8 +54,8 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
         /// <param name="buffer"></param>
         protected override void ConvertTo(List<int> value, Type dest, out object buffer)
         {
-            buffer = JsonSerializer.Serialize<List<int>>(value, new JsonSerializerOptions { 
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All), 
+            buffer = JsonSerializer.Serialize<List<int>>(value, new JsonSerializerOptions {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
                 PropertyNamingPolicy = null
             });
         }

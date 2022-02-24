@@ -10,8 +10,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.SQLServer</RootNamespace>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Wunion.DataAdapter.NetCore 的 Microsoft SQL Server 2008 R2 SP3及以上版本数据库支持包。
 1.0.4更新说明（Update Logs）
@@ -23,7 +23,7 @@
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <Copyright>cnzhnet</Copyright>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
   </PropertyGroup>
 
@@ -32,7 +32,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>

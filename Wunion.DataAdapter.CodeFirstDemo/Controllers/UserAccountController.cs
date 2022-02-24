@@ -61,29 +61,6 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Controllers
         }
 
         /// <summary>
-        /// 获取指定 UID 的用户账户的详细信息.
-        /// </summary>
-        /// <param name="uid">用户账户的 UID.</param>
-        /// <returns></returns>
-        [HttpGet, Route("/[controller]/{uid:int}/Get")]
-        [UserAuthorize(RequiredPermission = SystemPermissions.USER_ACCOUNT_RD)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserDataModel>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ResultMessage))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ResultMessage))]
-        public IActionResult GetById([FromRoute] int uid)
-        {
-            UserDataModel user = service.GetById(uid);
-            if (user == null)
-            {
-                return new JsonResult(new ResultMessage { Code = 404, Message = "未找到指定的用户" }) { 
-                    StatusCode = StatusCodes.Status404NotFound 
-                };
-            }
-            user.Password = string.Empty;
-            return new JsonResult(user);
-        }
-
-        /// <summary>
         /// 用于创建用户账户.
         /// </summary>
         /// <param name="user">用户账户信息.</param>
@@ -91,15 +68,36 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Controllers
         [HttpPost, Route("/[controller]/Create")]
         [Consumes("application/json", "text/json")]
         [UserAuthorize(RequiredPermission = SystemPermissions.USER_ACCOUNT_CT)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDataModel))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserAccount))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ResultMessage))]
-        public IActionResult Create(UserDataModel user)
+        public IActionResult Create(UserAccount user)
         {
             if (user == null)
                 throw new WebApiException(1002, "No post data or the data is wrong.");
 
+            user.Creation = DateTime.Now;
             service.Add(user);
             return new JsonResult(user);
+        }
+
+        /// <summary>
+        /// 更新指定的用户账户信息.
+        /// </summary>
+        /// <param name="user">用户账户信息.</param>
+        /// <returns></returns>
+        /// <exception cref="WebApiException"></exception>
+        [HttpPatch, Route("/[controller]/Update")]
+        [Consumes("application/json", "text/json")]
+        [UserAuthorize(RequiredPermission = SystemPermissions.USER_ACCOUNT_CH)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultMessage))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ResultMessage))]
+        public IActionResult Update(UserAccount user)
+        {
+            if (user == null)
+                throw new WebApiException(1002, "No post data or the data is wrong.");
+            user.LastModified = DateTime.Now;
+            service.Update(user);
+            return new JsonResult(new ResultMessage { Code = 0x00, Message = "更新成功." });
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
   "profiles": {
     "Wunion.DataAdapter.CodeFirstTool": {
       "commandName": "Project",
-      "commandLineArgs": "sqlite3",
+      "commandLineArgs": "mysql",
       "environmentVariables": {
         "Path": "值"
       }

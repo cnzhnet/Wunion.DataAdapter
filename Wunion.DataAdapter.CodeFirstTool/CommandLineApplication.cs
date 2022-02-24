@@ -42,6 +42,7 @@ namespace TeleprompterConsole
             {
 #if DEBUG
                 string currentDir = @"D:\cnzhnet\Documents\Visual Studio 2019\Projects\Wunion.DataAdapter.NetCore\Wunion.DataAdapter.CodeFirstDemo";
+                
 #else
                 string currentDir = Directory.GetCurrentDirectory();
 #endif
@@ -92,6 +93,9 @@ namespace TeleprompterConsole
                 "mssql", "mysql", "npgsql", "sqlite3"
             });
             string kind = args.FirstOrDefault(p => supportedDb.Count(it => p.ToLower().StartsWith(it)) > 0);
+            if (string.IsNullOrEmpty(kind))
+                throw new Exception(Language.GetString("database_kind_missing"));
+
             DataEngine dbEngine = null;
             if (kind.ToLower().StartsWith("mysql")) // MySQL 数据库引擎的配置.
             {

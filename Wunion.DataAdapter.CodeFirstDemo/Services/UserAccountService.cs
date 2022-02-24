@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
 using System.Linq;
+using Wunion.DataAdapter.Kernel;
 using Wunion.DataAdapter.Kernel.DbInterop;
 using Wunion.DataAdapter.Kernel.Querying;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
 using Wunion.DataAdapter.CodeFirstDemo.Data;
 using Wunion.DataAdapter.CodeFirstDemo.Data.Domain;
 using Wunion.DataAdapter.CodeFirstDemo.Data.Models;
-
-using UPDAO = Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermissionDao;
+using GRPDAO = Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroupDao;
 
 namespace Wunion.DataAdapter.CodeFirstDemo.Services
 {
     /// <summary>
     /// 应用程序的用户账户服务.
     /// </summary>
-    public class UserAccountService : ApplicationService<UserDataModel>
+    public class UserAccountService : ApplicationService<UserAccount>
     {
         /// <summary>
         /// 创建一个应用程序的用户账户服务.
@@ -34,6 +34,7 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Services
         /// <returns></returns>
         public string ProtectPassword(string input, DateTime creation)
         {
+            creation = new DateTime(creation.Year, creation.Month, creation.Day, creation.Hour, creation.Minute, creation.Second); //去掉日期的毫秒部份.
             byte[] buffer = BitConverter.GetBytes(creation.Ticks);
             using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
             {
@@ -48,49 +49,63 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Services
         }
 
         /// <summary>
-        /// 从数据模型中获取用户及权限实体.
+        /// 若指定的字段值已被占用时触发异常.
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="account"></param>
-        /// <param name="permission"></param>
-        private void GetEntities(UserDataModel model, out UserAccount account, out UserAccountPermission permission)
+        /// <param name="field">要检测的字段名称.</param>
+        /// <param name="data">实体对象.</param>
+        /// <param name="batch"></param>
+        /// <exception cref="Exception"></exception>
+        private void ThrowIfFieldOccupied(string field, UserAccount data, BatchCommander batch)
         {
-            account = new UserAccount {
-                UID = model.UID,
-                Name = model.Name,
-                Password = ProtectPassword(model.Password, model.Creation),
-                User = model.User,
-                PhoneNumber = model.PhoneNumber,
-                Email = model.Email,
-                Status = model.Status,
-                Creation = model.Creation
-            };
-
-            permission = new UserAccountPermission {
-                UID = model.UID,
-                Permissions = model.Permissions
-            };
+            int existing = 0;
+            if (field == nameof(data.Name))
+            {
+                if (string.IsNullOrEmpty(data.Name))
+                    throw new Exception($"${nameof(data.Name)} 不能为空.");
+                existing = QueryBuilder<UserAccountDao>.Create(db.UserAccounts)
+                    .Where<UserAccountDao>(p => new object[] { p.Name == data.Name })
+                    .Select(p => new IDescription[] { Fun.Count(1) })
+                    .Count(batch);
+                if (existing > 0)
+                    throw new Exception($"{nameof(data.Name)} 已被占用.");
+                return;
+            }
+            if (field == nameof(data.PhoneNumber) && !string.IsNullOrEmpty(data.PhoneNumber))
+            {
+                existing = QueryBuilder<UserAccountDao>.Create(db.UserAccounts)
+                    .Where<UserAccountDao>(p => new object[] { p.PhoneNumber == data.PhoneNumber })
+                    .Select(p => new IDescription[] { Fun.Count(1) })
+                    .Count(batch);
+                if (existing > 0)
+                    throw new Exception($"{nameof(data.PhoneNumber)} 已被占用.");
+                return;
+            }
+            if (field == nameof(data.Email) && !string.IsNullOrEmpty(data.Email))
+            {
+                existing = QueryBuilder<UserAccountDao>.Create(db.UserAccounts)
+                    .Where<UserAccountDao>(p => new object[] { p.Email == data.Email })
+                    .Select(p => new IDescription[] { Fun.Count(1) })
+                    .Count(batch);
+                if (existing > 0)
+                    throw new Exception($"{nameof(data.Email)} 已被占用.");
+                return;
+            }
         }
 
         /// <summary>
         /// 添加用户账户.
         /// </summary>
         /// <param name="data">用户账户数据.</param>
-        public override void Add(UserDataModel data)
+        public override void Add(UserAccount data)
         {
-            UserAccount ua;
-            UserAccountPermission permission;
-            GetEntities(data, out ua, out permission);
-            // 将用户账户信息写入数据库.
-            using (DBTransactionController trans = db.DbEngine.BeginTrans())
+            using (BatchCommander batch = new BatchCommander(db.DbEngine))
             {
-                db.UserAccounts.Add(ua, trans);
-                ua.UID = Convert.ToInt32(trans.DBA.SCOPE_IDENTITY);
-                permission.UID = ua.UID;
-                db.UserPermissions.Add(permission, trans);
-                trans.Commit();
+                ThrowIfFieldOccupied(nameof(data.Name), data, batch);
+                ThrowIfFieldOccupied(nameof(data.PhoneNumber), data, batch);
+                ThrowIfFieldOccupied(nameof(data.Email), data, batch);
+                data.Password = ProtectPassword(data.Password, data.Creation.Value);
+                db.UserAccounts.Add(data);
             }
-            data.UID = ua.UID;
         }
 
         /// <summary>
@@ -100,32 +115,36 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Services
         public override void Delete(object condition)
         {
             int uid = Convert.ToInt32(condition);
-            using (DBTransactionController trans = db.DbEngine.BeginTrans())
-            {
-                db.UserPermissions.Delete<UPDAO>(p => new object[] { 
-                    p.UID == uid
-                }, trans);
-
-                db.UserAccounts.Delete<UserAccountDao>(p => new object[] { p.UID == uid }, trans);
-                trans.Commit();
-            }
+            Delete<UserAccount, UserAccountDao>(db.UserAccounts, p => new object[] { 
+                p.UID == uid
+            });
         }
 
         /// <summary>
         /// 修改用户账户.
         /// </summary>
         /// <param name="data">更新的用户数据.</param>
-        public override void Update(UserDataModel data)
+        public override void Update(UserAccount data)
         {
-            UserAccount ua;
-            UserAccountPermission permission;
-            GetEntities(data, out ua, out permission);
-
-            using (DBTransactionController trans = db.DbEngine.BeginTrans())
+            using (BatchCommander batch = new BatchCommander(db.DbEngine)) 
             {
-                db.UserAccounts.Update(ua, trans);
-                db.UserPermissions.Update(permission, trans);
-                trans.Commit();
+                UserAccount ua = QueryBuilder<UserAccountDao>.Create(db.UserAccounts)
+                    .Where<UserAccountDao>(p => new object[] { p.UID == data.UID })
+                    .Select(p => p.First.All)
+                    .Build()
+                    .ToEntityList<UserAccount>(batch)
+                    .FirstOrDefault();
+                if (ua == null)
+                    throw new Exception("指定的用户账户已不存在.");
+                if (data.PhoneNumber != ua.PhoneNumber)
+                    ThrowIfFieldOccupied(nameof(data.PhoneNumber), data, batch);
+                if (data.Email != ua.Email)
+                    ThrowIfFieldOccupied(nameof(data.Email), data, batch);
+                if (!string.IsNullOrEmpty(data.Password))
+                    data.Password = ProtectPassword(data.Password, ua.Creation.Value);
+                else
+                    data.Password = ua.Password;
+                db.UserAccounts.Update(data, batch);
             }
         }
 
@@ -136,26 +155,9 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Services
         public List<UserDataModel> List()
         {
             return QueryBuilder<UserAccountDao>.Create(db.UserAccounts)
-                .Include<UPDAO>(p => new object[] { p.First.UID == p.tbl<UPDAO>().UID })
-                .Select(p => p.First.All.Concat(new IDescription[] { p.tbl<UPDAO>().Permissions }).ToArray())
+                .Select(p => p.First.All)
                 .Build((p, options) => { options.OrderBy(p.First.UID, OrderByMode.ASC); })
                 .ToList<UserDataModel>();
-        }
-
-        /// <summary>
-        /// 获到指定 UID 的用户账户.
-        /// </summary>
-        /// <param name="uid"></param>
-        /// <returns></returns>
-        public UserDataModel GetById(int uid)
-        {
-            return QueryBuilder<UserAccountDao>.Create(db.UserAccounts)
-                .Include<UPDAO>(p => new object[] { p.First.UID == p.tbl<UPDAO>().UID })
-                .Where<UserAccountDao>(p => new object[] { p.UID == uid })
-                .Select(p => p.First.All.Concat(new IDescription[] { p.tbl<UPDAO>().Permissions }).ToArray())
-                .Build((p, options) => { options.OrderBy(p.First.UID, OrderByMode.ASC); })
-                .ToList<UserDataModel>()
-                .FirstOrDefault();
         }
 
         /// <summary>
@@ -166,21 +168,42 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Services
         /// <returns></returns>
         public UserAuthorization LogIn(string name, string password)
         {
-            UserDataModel model = QueryBuilder<UserAccountDao>.Create(db.UserAccounts)
-                .Include<UPDAO>(p => new object[] { p.First.UID == p.tbl<UPDAO>().UID })
-                .Where<UserAccountDao>(p => new object[] { 
-                    p.Name == name | p.Email == name
-                })
-                .Select(p => p.First.All.Concat(new IDescription[] { p.tbl<UPDAO>().Permissions }).ToArray())
-                .Build()
-                .ToList<UserDataModel>()
-                .FirstOrDefault();
-            if (model == null)
-                throw new WebApiException(404, "指定的用户不存在.");
-            password = ProtectPassword(password, model.Creation);
-            if (model.Password != password)
-                throw new WebApiException(500, "无效的登录密码.");
-            return new UserAuthorization { UID = model.UID, Permissions = model.Permissions };
+            UserAccount account;
+            List<UserAccountGroup> groups;
+            using (BatchCommander batch = new BatchCommander(db.DbEngine))
+            {
+                account = QueryBuilder<UserAccountDao>.Create(db.UserAccounts)
+                    .Where<UserAccountDao>(p => new object[] { p.Name == name | p.Email == name })
+                    .Select(p => p.First.All)
+                    .Build()
+                    .ToEntityList<UserAccount>()
+                    .FirstOrDefault();
+                if (account == null)
+                    throw new Exception("指定的用户账户不存在.");
+                if (account.Password != ProtectPassword(password, account.Creation.Value))
+                    throw new Exception("无效的登录密码.");
+                if (account.Status != UserAccountStatus.Enabled)
+                    throw new Exception("此用户账户已被锁定或禁用.");
+                // 获取权限.
+                groups = QueryBuilder<GRPDAO>.Create(db.UserAccountGroups)
+                    .Where<GRPDAO>(p => new object[] { p.Id.In(account.Groups.Select(p => (object)p).ToArray()) })
+                    .Select(p => p.First.All)
+                    .Build()
+                    .ToEntityList<UserAccountGroup>();
+            }
+            List<int> permissions = new List<int>();
+            foreach (UserAccountGroup grp in groups)
+            {
+                if (grp.Permissions == null)
+                    continue;
+                if (grp.Permissions.Count < 1)
+                    continue;
+                permissions.AddRange(grp.Permissions);
+            }
+            return new UserAuthorization { 
+                UID = account.UID, 
+                Permissions = permissions.Distinct().ToList() 
+            };
         }
     }
 }

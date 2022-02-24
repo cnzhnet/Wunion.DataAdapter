@@ -12,6 +12,7 @@
   <string name="dll_not_found_exception" value="Not found the dll: {0}. Please use Debug|AnyCPU mode to compile the target project first!" />
   <string name="analyzing_target_dll" value="Analyzing target assembly {0} ..." />
   <string name="database_context_found" value="Database context definition found: {0}" />
+  <string name="database_kind_missing" value="Database kind not specified." />
   <string name="database_not_supported" value="Database not supported: {0}" />
   <string name="dbconn_missing_exception" value="You must override the OnBeforeGenerating method of {0}, and correctly implement the configuration of the database connection" />
   <string name="dao_namespace_missing_exception" value="Please use options.DaoGenerateNamespace in the {0}.OnBeforeGenerating method to set the namespace of the entity query DAO class to generate!" />

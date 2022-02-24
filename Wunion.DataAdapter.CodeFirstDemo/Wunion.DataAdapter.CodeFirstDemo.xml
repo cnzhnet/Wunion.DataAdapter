@@ -158,12 +158,21 @@
             用于提供数据保护服务的 WebApi 控制器.
             </summary>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.#ctor(Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection,Wunion.DataAdapter.CodeFirstDemo.AuthorizationAccessor)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.#ctor(Wunion.DataAdapter.CodeFirstDemo.Data.IDatabaseContainer,Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection,Wunion.DataAdapter.CodeFirstDemo.AuthorizationAccessor)">
             <summary>
             创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController"/> 控制器实例.
             </summary>
+            <param name="container"></param>
             <param name="dp"></param>
             <param name="accessor"></param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.ChangeDatabase(System.String)">
+            <summary>
+            切换当前正在使用的数据库.
+            </summary>
+            <param name="kind">数据库种类（取值范围：mssql, mysql, npgsql, sqlite3）.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
         </member>
         <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.GenKey">
             <summary>
@@ -196,19 +205,20 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.GetById(System.Int32)">
-            <summary>
-            获取指定 UID 的用户账户的详细信息.
-            </summary>
-            <param name="uid">用户账户的 UID.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Create(Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Create(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount)">
             <summary>
             用于创建用户账户.
             </summary>
             <param name="user">用户账户信息.</param>
             <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Update(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount)">
+            <summary>
+            更新指定的用户账户信息.
+            </summary>
+            <param name="user">用户账户信息.</param>
+            <returns></returns>
+            <exception cref="T:Wunion.DataAdapter.CodeFirstDemo.WebApiException"></exception>
         </member>
         <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Delete(System.Int32)">
             <summary>
@@ -322,6 +332,11 @@
             用户账户的状态.
             </summary>
         </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountDao.Groups">
+            <summary>
+            该用户隶属的组.
+            </summary>
+        </member>
         <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountDao.User">
             <summary>
             该用户账户的使用人.
@@ -337,24 +352,64 @@
             电子邮件.
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountDao.Creation">
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroupDao">
             <summary>
-            该用户账户的创建日期.
+            表示用户账户表的实体 DAO .
             </summary>
         </member>
-        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermissionDao">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroupDao.Id">
             <summary>
-            用户账户的权限. DAO .
+            组ID
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermissionDao.UID">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroupDao.Name">
             <summary>
-            表示用户账户ID.
+            组名称.
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermissionDao.Permissions">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroupDao.Description">
             <summary>
-            表示用户账户的权限.
+            组说明.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroupDao.Permissions">
+            <summary>
+            该组的权限集.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.ISoftDelete">
+            <summary>
+            用于实现支持软删除的实体.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.ISoftDelete.IsDeleted">
+            <summary>
+            是否已删除.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.ISoftDelete.DeletionDate">
+            <summary>
+            删除日期.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.SoftDelete">
+            <summary>
+            定义软删除字段的实体基类.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.SoftDelete.IsDeleted">
+            <summary>
+            是否已删除.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.SoftDelete.DeletionDate">
+            <summary>
+            删除日期.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.SoftDelete.#ctor">
+            <summary>
+            创建一个软删除实体字段定义.
             </summary>
         </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountStatus">
@@ -402,6 +457,11 @@
             用户账户的状态.
             </summary>
         </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount.Groups">
+            <summary>
+            该用户隶属的组.
+            </summary>
+        </member>
         <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount.User">
             <summary>
             该用户账户的使用人.
@@ -415,11 +475,6 @@
         <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount.Email">
             <summary>
             电子邮件.
-            </summary>
-        </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount.Creation">
-            <summary>
-            该用户账户的创建日期.
             </summary>
         </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountStatusConverter">
@@ -442,27 +497,37 @@
             <param name="value"></param>
             <param name="buffer"></param>
         </member>
-        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermission">
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroup">
             <summary>
-            用户账户的权限.
+            表示用户账户表的实体
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermission.UID">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroup.Id">
             <summary>
-            表示用户账户ID.
+            组 ID
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermission.Permissions">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroup.Name">
             <summary>
-            表示用户账户的权限.
+            组名称.
             </summary>
         </member>
-        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserPermissionsConverter">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroup.Description">
+            <summary>
+            组说明.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountGroup.Permissions">
+            <summary>
+            该组的权限集.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.IntegerCollectionConverter">
             <summary>
             表示用户账户权限集合转换器.
             </summary>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserPermissionsConverter.ConvertTo(System.Collections.Generic.List{System.Int32},System.Type,System.Object@)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.IntegerCollectionConverter.ConvertTo(System.Collections.Generic.List{System.Int32},System.Type,System.Object@)">
             <summary>
             转换到数据库支持的值类型.
             </summary>
@@ -470,12 +535,42 @@
             <param name="dest"></param>
             <param name="buffer"></param>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserPermissionsConverter.Parse(System.Object,System.Collections.Generic.List{System.Int32}@)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.IntegerCollectionConverter.Parse(System.Object,System.Collections.Generic.List{System.Int32}@)">
             <summary>
             从数据库中的值转换为集合.
             </summary>
             <param name="value"></param>
             <param name="buffer"></param>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.WriteDateTime">
+            <summary>
+            定义包含记录写入（创建及最后修改）日期字段的实体基类.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.WriteDateTime.Creation">
+            <summary>
+            创建日期.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.WriteDateTime.LastModified">
+            <summary>
+            最后修改日期.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.WriteDateSoftDelete">
+            <summary>
+            同时定义记录写入（创建及最后修改）日期及软删除字段的实体基类.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.WriteDateSoftDelete.IsDeleted">
+            <summary>
+            是否已删除.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.WriteDateSoftDelete.DeletionDate">
+            <summary>
+            删除日期.
+            </summary>
         </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyDbContext">
             <summary>
@@ -493,12 +588,18 @@
             用户账户表.
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyDbContext.UserPermissions">
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyDbContext.UserAccountGroups">
             <summary>
             用户账户权限表.
             </summary>
         </member>
         <!-- Badly formed XML comment ignored for member "M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyDbContext.OnBeforeGenerating(Wunion.DataAdapter.Kernel.CodeFirst.IGeneratingOptions)" -->
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyDbContext.OnGenerateCompleted(System.Action{System.String})">
+            <summary>
+            在数据库架构生成完成时创建预置数据.
+            </summary>
+            <param name="log"></param>
+        </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyTableUpgradeMigrator">
             <summary>
             用于在表升级重建时迁移数据.
@@ -594,14 +695,14 @@
             用户账户名称.
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Password">
-            <summary>
-            用户密码.
-            </summary>
-        </member>
         <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Status">
             <summary>
             用户账户的状态.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Groups">
+            <summary>
+            用户账户组.
             </summary>
         </member>
         <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.User">
@@ -619,14 +720,14 @@
             电子邮件.
             </summary>
         </member>
-        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Permissions">
-            <summary>
-            表示用户账户的权限.
-            </summary>
-        </member>
         <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.Creation">
             <summary>
-            该用户账户的创建日期.
+            创建日期.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel.LastModified">
+            <summary>
+            最后修改日期.
             </summary>
         </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection">
@@ -745,6 +846,7 @@
             应用程序服务的基础实现类型.
             </summary>
             <typeparam name="TData">数据实体或模型的类型名称.</typeparam>
+            <typeparam name="TDao">实体的数据查询访问类型名称.</typeparam>
         </member>
         <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1.#ctor(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.MyDbContext)">
             <summary>
@@ -775,6 +877,16 @@
             </summary>
             <param name="condition">删除条件.</param>
         </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.ApplicationService`1.Delete``2(Wunion.DataAdapter.Kernel.CodeFirst.DbTableContext{``0},System.Func{``1,System.Object[]},System.Object)">
+            <summary>
+            支持软删除的实现.
+            </summary>
+            <typeparam name="TEntity">实体类型名称.</typeparam>
+            <typeparam name="TDao">查询访问器类型名称.</typeparam>
+            <param name="tableContext">表上下文对象.</param>
+            <param name="condition">删除条件</param>
+            <param name="controller">执行删除的的事务控制器(<see cref="T:Wunion.DataAdapter.Kernel.DbInterop.DBTransactionController"/>)或批处理(<see cref="T:Wunion.DataAdapter.Kernel.BatchCommander"/>)对象.</param>
+        </member>
         <member name="T:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService">
             <summary>
             应用程序的用户账户服务.
@@ -794,15 +906,16 @@
             <param name="creation">用户账户的创建日期.</param>
             <returns></returns>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.GetEntities(Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel,Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount@,Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccountPermission@)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.ThrowIfFieldOccupied(System.String,Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount,Wunion.DataAdapter.Kernel.BatchCommander)">
             <summary>
-            从数据模型中获取用户及权限实体.
+            若指定的字段值已被占用时触发异常.
             </summary>
-            <param name="model"></param>
-            <param name="account"></param>
-            <param name="permission"></param>
+            <param name="field">要检测的字段名称.</param>
+            <param name="data">实体对象.</param>
+            <param name="batch"></param>
+            <exception cref="T:System.Exception"></exception>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.Add(Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.Add(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount)">
             <summary>
             添加用户账户.
             </summary>
@@ -814,7 +927,7 @@
             </summary>
             <param name="condition">删除条件.</param>
         </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.Update(Wunion.DataAdapter.CodeFirstDemo.Data.UserDataModel)">
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.Update(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount)">
             <summary>
             修改用户账户.
             </summary>
@@ -824,13 +937,6 @@
             <summary>
             获取所有用户账户列表.
             </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.GetById(System.Int32)">
-            <summary>
-            获到指定 UID 的用户账户.
-            </summary>
-            <param name="uid"></param>
             <returns></returns>
         </member>
         <member name="M:Wunion.DataAdapter.CodeFirstDemo.Services.UserAccountService.LogIn(System.String,System.String)">

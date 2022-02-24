@@ -46,7 +46,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
                     throw new NoNullAllowedException(string.Format("Type of undefined column: {0}", definition.Name));
                 tableBuffers.AppendLine().AppendFormat("\t{0}{1}{2}", ElemIdentifierL, definition.Name, ElemIdentifierR);
                 tableBuffers.AppendFormat(" {0} {1}", columnType, definition.NotNull ? "NOT NULL" : "NULL");
-                if (definition.Default != null && definition.Identity == null)
+                if (definition.Default != null)// && definition.Identity == null
                     tableBuffers.AppendFormat(" {0}", ParseDefaultValue(definition, ref DbParameters));
                 if (definition.Identity != null)
                 {
@@ -168,7 +168,7 @@ namespace Wunion.DataAdapter.Kernel.PostgreSQL.CommandParser
                 switch (definition.DataType)
                 {
                     case GenericDbType.Boolean:
-                        return string.Format("DEFAULT {0}", Convert.ToBoolean(definition.Default) ? 1 : 0);
+                        return string.Format("DEFAULT {0}", Convert.ToBoolean(definition.Default) ? "TRUE" : "FALSE");
                     case GenericDbType.SmallInt:
                     case GenericDbType.Int:
                     case GenericDbType.BigInt:

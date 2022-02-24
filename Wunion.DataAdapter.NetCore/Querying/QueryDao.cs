@@ -41,7 +41,7 @@ namespace Wunion.DataAdapter.Kernel.Querying
         /// </summary>
         /// <param name="name">字段名.</param>
         /// <returns></returns>
-        protected FieldDescription GetField(string name)
+        public FieldDescription GetField(string name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));

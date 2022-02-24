@@ -41,6 +41,11 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
         public FieldDescription Status => GetField("Status");
 
         /// <summary>
+        /// 该用户隶属的组.
+        /// </summary>
+        public FieldDescription Groups => GetField("Groups");
+
+        /// <summary>
         /// 该用户账户的使用人.
         /// </summary>
         public FieldDescription User => GetField("User");
@@ -55,10 +60,9 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
         /// </summary>
         public FieldDescription Email => GetField("Email");
 
-        /// <summary>
-        /// 该用户账户的创建日期.
-        /// </summary>
         public FieldDescription Creation => GetField("Creation");
+
+        public FieldDescription LastModified => GetField("LastModified");
 
         protected override IDbTableContext GetTableContext(string name)
         {
@@ -74,10 +78,12 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
                 Name,
                 Password,
                 Status,
+                Groups,
                 User,
                 PhoneNumber,
                 Email,
-                Creation
+                Creation,
+                LastModified
             };
         }
     }

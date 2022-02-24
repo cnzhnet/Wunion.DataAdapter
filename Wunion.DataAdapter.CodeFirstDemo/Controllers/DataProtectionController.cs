@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Wunion.DataAdapter.CodeFirstDemo.Data;
 using Wunion.DataAdapter.CodeFirstDemo.Data.Models;
 using Wunion.DataAdapter.CodeFirstDemo.Data.Security;
 
@@ -18,17 +19,38 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Controllers
     public class DataProtectionController : ControllerBase
     {
         private readonly IDataProtection protection;
+        private readonly IDatabaseContainer dbContainer;
         private readonly AuthorizationAccessor authAccessor;
 
         /// <summary>
         /// 创建一个 <see cref="DataProtectionController"/> 控制器实例.
         /// </summary>
+        /// <param name="container"></param>
         /// <param name="dp"></param>
         /// <param name="accessor"></param>
-        public DataProtectionController(IDataProtection dp, AuthorizationAccessor accessor)
+        public DataProtectionController(IDatabaseContainer container, IDataProtection dp, AuthorizationAccessor accessor)
         {
+            dbContainer = container;
             protection = dp;
             authAccessor = accessor;
+        }
+
+        /// <summary>
+        /// 切换当前正在使用的数据库.
+        /// </summary>
+        /// <param name="kind">数据库种类（取值范围：mssql, mysql, npgsql, sqlite3）.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        [HttpGet, Route("/[controller]/ChangeDatabase/{kind}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultMessage))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ResultMessage))]
+        public IActionResult ChangeDatabase([FromRoute] string kind)
+        { 
+            if (string.IsNullOrEmpty(kind))
+                throw new ArgumentNullException(nameof(kind));
+
+            dbContainer.DbKind = kind;
+            return new JsonResult(new ResultMessage { Code = 0x00, Message = $"已切换至 {kind} 数据库." });
         }
 
         /// <summary>

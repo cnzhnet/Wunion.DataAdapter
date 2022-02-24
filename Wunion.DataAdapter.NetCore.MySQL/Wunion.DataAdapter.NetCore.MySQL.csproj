@@ -12,11 +12,10 @@
     <RootNamespace>Wunion.DataAdapter.Kernel.MySQL</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Wunion.DataAdapter.NetCore 的 MySQL 数据库支持包。
-1.0.4更新说明（Update Logs）
-1.  新增 Create Table命令构建器的 MySQL 解释器实现.
-2.  新增 DropTable 及 TableExists 方法.
-1.  Add MySQL interpreter implementation of the create table command builder.
-2.  Add DropTable and TableExists methods.</Description>
+MySQL database support package for Wunion.DataAdapter
+
+1. 修复 TableBuildParser 在无自动增长字段时报错的问题
+   Fix TableBuildParser error when there is no AUTO_INCREMENT field</Description>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
@@ -36,7 +35,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.20" />
+    <PackageReference Include="MySql.Data" Version="8.0.28" />
   </ItemGroup>
 
   <ItemGroup>

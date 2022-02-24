@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <!--<TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>-->
+    <!--<TargetFramework>net5.0</TargetFramework>-->
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <AssemblyName>WDA-CF</AssemblyName>
     <RootNamespace>TeleprompterConsole</RootNamespace>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>WDA-CF</ToolCommandName>
-    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageOutputPath>./bin/nupkg</PackageOutputPath>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 

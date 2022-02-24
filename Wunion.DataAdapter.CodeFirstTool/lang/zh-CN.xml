@@ -12,6 +12,7 @@
   <string name="dll_not_found_exception" value="未找到程序集：{0}。请先使用 Debug|AnyCPU 模式编译目标项目!" />
   <string name="analyzing_target_dll" value="正在分析目标程序集 {0} ..." />
   <string name="database_context_found" value="发现数据库上下文定义：{0}" />
+  <string name="database_kind_missing" value="未指定数据库种类." />
   <string name="database_not_supported" value="不支持数据库：{0}" />
   <string name="db_connection_missing_exception" value="您必须重写 {0} 的 OnBeforeGenerating 方法，并正确实现数据库连接的配置." />
   <string name="dao_namespace_missing_exception" value="请在 {0}.OnBeforeGenerating 方法中使用 options.DaoGenerateNamespace 设置要生成的实体查询 DAO 类的命名空间!" />

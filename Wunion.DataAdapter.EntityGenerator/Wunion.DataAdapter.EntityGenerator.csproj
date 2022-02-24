@@ -58,7 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wunion.DataAdapter.NetCore.EntityUtils\Wunion.DataAdapter.NetCore.EntityUtils.csproj">

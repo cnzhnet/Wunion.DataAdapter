@@ -4,13 +4,9 @@ using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Wunion.DataAdapter.CodeFirstDemo.Data;
 using Wunion.DataAdapter.CodeFirstDemo.Data.Domain;
@@ -88,11 +84,11 @@ namespace Wunion.DataAdapter.CodeFirstDemo
                 c.IncludeXmlComments(System.IO.Path.Combine(basePath, "Wunion.DataAdapter.CodeFirstDemo.xml"));
             });
             services.AddDbContainer((container) => {
-                container.DbKind = "sqlite3";
+                container.DbKind = "mysql";
             });
             services.AddDbConverterOptions((options) => {
                 options.Add(typeof(UserAccountStatus), new UserAccountStatusConverter());
-                options.Add(typeof(List<int>), new UserPermissionsConverter());
+                options.Add(typeof(List<int>), new IntegerCollectionConverter());
             });
             services.AddSingleton<IDataProtection>(new RsaDataProtection());
             services.AddScoped<WebApiExceptionFilter>();
