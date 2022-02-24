@@ -45,7 +45,7 @@ namespace Wunion.DataAdapter.CodeFirstDemo.Data.Domain
                     options.Database.ConnectionString = @"Data Source=D:\SQLiteStudio\wda-codefirst.db";
                     break;
                 case "mysql":
-                    options.Database.ConnectionString = "Data Source=app01.ksdemo.cn;Database=long_range;User ID=long_range; Password=P8iT2hekJPZ27Xzt;";
+                    options.Database.ConnectionString = "Data Source=192.168.1.11;Database=Wunion.DataAdapter.CodeFirstDemo;User ID=cnzhnet; Password=lengyifan;";
                     break;
                 case "npgsql":
                     options.Database.ConnectionString = "Host=192.168.1.11;Username=postgres;Password=lengyifan;Database=Wunion.DataAdapter.CodeFirstDemo;";
