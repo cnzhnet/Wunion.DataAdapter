@@ -10,13 +10,19 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.Kernel</RootNamespace>
-    <AssemblyVersion>1.0.5.0</AssemblyVersion>
-    <FileVersion>1.0.5.0</FileVersion>
+    <AssemblyVersion>1.0.5.1</AssemblyVersion>
+    <FileVersion>1.0.5.1</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.5</Version>
-    <Description>1.0.5 更新说明（Update Logs）
+    <Version>1.0.5.1</Version>
+    <Description>自该 1.0.5.0 版本开始放弃对 Wunion.DataAdapter.NetCore.EntityUtils 的维护，采用新增加的 CodeFirst ORM模式。CodeFirst文档正在整理中，不久将会公布。可以先参考 Demo 工程：https://github.com/cnzhnet/LingOpenSource/tree/master/Wunion.DataAdapter.CodeFirstDemo
+Since the 1.0.5.0 version, the maintenance of Wunion.DataAdapter.NetCore.EntityUtils has been abandoned, and the newly added CodeFirst ORM mode has been adopted. The CodeFirst documentation is being finalized and will be published shortly. You can refer to the Demo project first: https://github.com/cnzhnet/LingOpenSource/tree/master/Wunion.DataAdapter.CodeFirstDemo
+
+1.0.5.1 更新说明（Update Logs）
 增加 CodeFirst 支持，需要安装 dotnet tool “WDA-CF”.
-Add CodeFirst support, need to install dotnet tool "WDA-CF".</Description>
+Add CodeFirst support, need to install dotnet tool "WDA-CF".
+
+在 DbContext 以及 QueryBuilder 中增加异步方法的实现.
+Add implementations of async methods to DbContext and QueryBuilder.</Description>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <Copyright>cnzhnet</Copyright>

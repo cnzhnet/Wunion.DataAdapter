@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Wunion.DataAdapter.Kernel;
 using Wunion.DataAdapter.Kernel.DbInterop;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
@@ -94,6 +95,19 @@ namespace Wunion.DataAdapter.Kernel.Querying
         }
 
         /// <summary>
+        /// 指行查询并返回结果中第一行第一列的数据（异步方法）.
+        /// </summary>
+        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="NotSupportedException"></exception>
+        public async Task<object> ExecuteScalarAsync(object controller = null)
+        { 
+            object result = await Task.Run<object>(() => ExecuteScalar(controller));
+            return result;
+        }
+
+        /// <summary>
         ///  执行查询并将结果返回为非实体对象集合.
         /// </summary>
         /// <typeparam name="T">目标对象类型.</typeparam>
@@ -107,6 +121,18 @@ namespace Wunion.DataAdapter.Kernel.Querying
             {
                 queryResult = reader.ToList<T>(engine);
             }
+            return queryResult;
+        }
+
+        /// <summary>
+        ///  执行查询并将结果返回为非实体对象集合（异步方法）.
+        /// </summary>
+        /// <typeparam name="T">目标对象类型.</typeparam>
+        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
+        /// <returns></returns>
+        public async Task<List<T>> ToListAsyn<T>(object controller = null) where T : class, new()
+        {
+            List<T> queryResult = await Task.Run<List<T>>(() => ToList<T>(controller));
             return queryResult;
         }
 
@@ -128,6 +154,18 @@ namespace Wunion.DataAdapter.Kernel.Querying
         }
 
         /// <summary>
+        /// 执行查询并将结果返回为实体集合（异步方法）.
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
+        /// <returns></returns>
+        public async Task<List<TEntity>> ToEntityListAsync<TEntity>(object controller = null) where TEntity : class, new()
+        {
+            List<TEntity> queryResult = await Task.Run<List<TEntity>>(() => ToEntityList<TEntity>(controller));
+            return queryResult;
+        }
+
+        /// <summary>
         /// 执行查询并将结果返回为动态实体集合.
         /// </summary>
         /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
@@ -141,6 +179,18 @@ namespace Wunion.DataAdapter.Kernel.Querying
             {
                 queryResult = reader.ToDynamicList(converter);
             }
+            return queryResult;
+        }
+
+        /// <summary>
+        /// 执行查询并将结果返回为动态实体集合.
+        /// </summary>
+        /// <param name="controller">在其中执行命令的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
+        /// <param name="converter">用于转换字段值的数据类型.</param>
+        /// <returns></returns>
+        public async Task<List<dynamic>> ToDynamicListAsync(object controller = null, Func<string, object, Type, object> converter = null)
+        {
+            List<dynamic> queryResult = await Task.Run<List<dynamic>>(() => ToDynamicList(controller));
             return queryResult;
         }
     }

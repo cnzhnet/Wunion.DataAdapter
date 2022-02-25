@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using Wunion.DataAdapter.Kernel.DbInterop;
 using Wunion.DataAdapter.Kernel.CommandBuilders;
 using Wunion.DataAdapter.Kernel.Querying;
@@ -119,7 +120,7 @@ namespace Wunion.DataAdapter.Kernel.CodeFirst
             if (trans != null)
             {
                 result = trans.DBA.ExecuteNoneQuery(cb);
-                ThrowExceptionExecResult(result, trans.DBA.Errors.FirstOrDefault());
+                ThrowExceptionExecResult(result, trans.DBA.Errors.LastOrDefault());
                 return result;
             }
 
@@ -201,6 +202,17 @@ namespace Wunion.DataAdapter.Kernel.CodeFirst
         }
 
         /// <summary>
+        /// 将指定的实体插入到指定的表中（异步方法）.
+        /// </summary>
+        /// <param name="entity">实体对象.</param>
+        /// <param name="controller">执行数据插入的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
+        public async Task<int> AddAsync(TEntity entity, object controller = null)
+        {
+            int result = await Task.Run<int>(() => Add(entity, controller));
+            return result;
+        }
+
+        /// <summary>
         /// 将指定的实体更新到数据库中.
         /// </summary>
         /// <param name="entity">实体对象.</param>
@@ -241,6 +253,17 @@ namespace Wunion.DataAdapter.Kernel.CodeFirst
         }
 
         /// <summary>
+        /// 将指定的实体更新到数据库中（异步方法）.
+        /// </summary>
+        /// <param name="entity">实体对象.</param>
+        /// <param name="controller">执行数据插入的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
+        public async Task UpdateAsync(TEntity entity, object controller = null)
+        { 
+            Task t = Task.Run(() => Update(entity, controller));
+            await t;
+        }
+
+        /// <summary>
         /// 从数据库中删除指定条件的数据.
         /// </summary>
         /// <param name="conditions">用于确定删除条件.</param>
@@ -257,12 +280,23 @@ namespace Wunion.DataAdapter.Kernel.CodeFirst
         }
 
         /// <summary>
+        /// 从数据库中删除指定条件的数据.
+        /// </summary>
+        /// <param name="conditions">用于确定删除条件.</param>
+        /// <param name="controller">执行数据插入的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
+        public async Task DeleteAsync<TQueryDAO>(Func<TQueryDAO, object[]> conditions, object controller = null) where TQueryDAO : QueryDao, new()
+        {
+            Task t = Task.Run(() => Delete<TQueryDAO>(conditions, controller));
+            await t;
+        }
+
+        /// <summary>
         /// 查询符合条件的记录数量.
         /// </summary>
         /// <param name="conditions">条件.</param>
-        /// <param name="batch">在此批处理中执行查询.</param>
+        /// <param name="controller">执行数据插入的事务控制器(<see cref="DBTransactionController"/>)或批处理(<see cref="BatchCommander"/>)对象.</param>
         /// <returns></returns>
-        public int Count<TQueryDAO>(Func<TQueryDAO, object[]> conditions = null, BatchCommander batch = null) where TQueryDAO : QueryDao, new()
+        public int Count<TQueryDAO>(Func<TQueryDAO, object[]> conditions = null, object controller = null) where TQueryDAO : QueryDao, new()
         {
             if (string.IsNullOrEmpty(tableName))
                 throw new Exception("Unable to determine the name of the table in the database.");
@@ -275,8 +309,45 @@ namespace Wunion.DataAdapter.Kernel.CodeFirst
             {
                 cb.Select(Fun.Count(1)).From(tableName).Where(conditions(new TQueryDAO { db = db }));
             }
-            object val = batch == null ? db.DbEngine.ExecuteScalar(cb) : batch.QueryScalar(cb);
-            return (val == null || val == DBNull.Value) ? 0 : Convert.ToInt32(val);
+            object val;
+            // 直接执行.
+            if (controller == null)
+            {
+                val = db.DbEngine.ExecuteScalar(cb);
+                if (db.DbEngine.DBA.Error != null)
+                    throw new Exception(db.DbEngine.DBA.Error.Message);
+                return Convert.ToInt32(val);
+            }
+            // 在事务中执行.
+            DBTransactionController trans = controller as DBTransactionController;
+            if (trans != null)
+            {
+                val = trans.DBA.ExecuteScalar(cb);
+                DbError error = trans.DBA.Errors.LastOrDefault();
+                if (error != null)
+                    throw new Exception(error.Message);
+                return Convert.ToInt32(val);
+            }
+            //在批处理中执行.
+            BatchCommander batch = controller as BatchCommander;
+            if (batch != null)
+            {
+                val = batch.QueryScalar(cb);
+                return Convert.ToInt32(val);
+            }
+            throw new NotSupportedException("Incorrect parameter type: controller");
+        }
+
+        /// <summary>
+        /// 查询符合条件的记录数量（异步方法）.
+        /// </summary>
+        /// <param name="conditions">条件.</param>
+        /// <param name="batch">在此批处理中执行查询.</param>
+        /// <returns></returns>
+        public async Task<int> CountAsync<TQueryDAO>(Func<TQueryDAO, object[]> conditions = null, BatchCommander batch = null) where TQueryDAO : QueryDao, new()
+        {
+            int result = await Task.Run<int>(() => Count<TQueryDAO>(conditions, batch));
+            return result;
         }
     }
 }
