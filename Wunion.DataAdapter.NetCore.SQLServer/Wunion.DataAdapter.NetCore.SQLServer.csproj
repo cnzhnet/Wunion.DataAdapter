@@ -10,8 +10,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.SQLServer</RootNamespace>
-    <AssemblyVersion>1.0.5.0</AssemblyVersion>
-    <FileVersion>1.0.5.0</FileVersion>
+    <AssemblyVersion>1.0.5.2</AssemblyVersion>
+    <FileVersion>1.0.5.2</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Wunion.DataAdapter.NetCore 的 Microsoft SQL Server 2008 R2 SP3及以上版本数据库支持包。
 1.0.4更新说明（Update Logs）
@@ -19,12 +19,12 @@
 2.  新增 DropTable 及 TableExists 方法.
 1.  Add SQL Server interpreter implementation of the create table command builder.
 2.  Add DropTable and TableExists methods.</Description>
-    <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/cnzhnet/Wunion.DataAdapter</PackageProjectUrl>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <Copyright>cnzhnet</Copyright>
-    <Version>1.0.5</Version>
-    <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
+    <Version>1.0.5.2</Version>
+    <RepositoryUrl>https://github.com/cnzhnet/Wunion.DataAdapter.git</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

@@ -18,12 +18,12 @@ MySQL database support package for Wunion.DataAdapter
    Fix TableBuildParser error when there is no AUTO_INCREMENT field</Description>
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
-    <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/cnzhnet/Wunion.DataAdapter</PackageProjectUrl>
     <Copyright>cnzhnet</Copyright>
-    <AssemblyVersion>1.0.5.0</AssemblyVersion>
-    <FileVersion>1.0.5.0</FileVersion>
-    <Version>1.0.5</Version>
-    <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
+    <AssemblyVersion>1.0.5.2</AssemblyVersion>
+    <FileVersion>1.0.5.2</FileVersion>
+    <Version>1.0.5.2</Version>
+    <RepositoryUrl>https://github.com/cnzhnet/Wunion.DataAdapter.git</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

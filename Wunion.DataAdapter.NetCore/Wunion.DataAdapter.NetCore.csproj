@@ -10,12 +10,22 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Wunion.DataAdapter.Kernel</RootNamespace>
-    <AssemblyVersion>1.0.5.1</AssemblyVersion>
-    <FileVersion>1.0.5.1</FileVersion>
+    <AssemblyVersion>1.0.5.2</AssemblyVersion>
+    <FileVersion>1.0.5.2</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.5.1</Version>
-    <Description>自该 1.0.5.0 版本开始放弃对 Wunion.DataAdapter.NetCore.EntityUtils 的维护，采用新增加的 CodeFirst ORM模式。CodeFirst文档正在整理中，不久将会公布。可以先参考 Demo 工程：https://github.com/cnzhnet/LingOpenSource/tree/master/Wunion.DataAdapter.CodeFirstDemo
-Since the 1.0.5.0 version, the maintenance of Wunion.DataAdapter.NetCore.EntityUtils has been abandoned, and the newly added CodeFirst ORM mode has been adopted. The CodeFirst documentation is being finalized and will be published shortly. You can refer to the Demo project first: https://github.com/cnzhnet/LingOpenSource/tree/master/Wunion.DataAdapter.CodeFirstDemo
+    <Version>1.0.5.2</Version>
+    <Description>自该 1.0.5.1 版本开始放弃对 Wunion.DataAdapter.NetCore.EntityUtils 的维护，采用新增加的 CodeFirst ORM模式。  
+参考 Demo 工程：https://github.com/cnzhnet/Wunion.DataAdapter.Examples    
+开发人员文档： https://github.com/cnzhnet/Wunion.DataAdapter/tree/master/Documents    
+--------------------------------------------------------------------------------------------------  
+Since the 1.0.5.1 version, the maintenance of Wunion.DataAdapter.NetCore.EntityUtils has been abandoned, and the newly added CodeFirst ORM mode has been adopted.
+See the Demo project:  https://github.com/cnzhnet/Wunion.DataAdapter.Examples   
+See the developer documentation:  https://github.com/cnzhnet/Wunion.DataAdapter/tree/master/Documents   
+
+--------------------------------------------------------------------------------------------------  
+1.0.5.2 更新说明（Update Logs）
+仅仅为了更新nuget包的说明信息
+Just to update the nutet package description information
 
 1.0.5.1 更新说明（Update Logs）
 增加 CodeFirst 支持，需要安装 dotnet tool “WDA-CF”.
@@ -26,10 +36,11 @@ Add implementations of async methods to DbContext and QueryBuilder.</Description
     <Authors>cnzhnet(巽翎君)</Authors>
     <Company />
     <Copyright>cnzhnet</Copyright>
-    <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/cnzhnet/Wunion.DataAdapter</PackageProjectUrl>
     <PackageReleaseNotes>该组件为开源项目，目前完全免费。所有该组件的原生代码版权为开发者本人所有，任何企业及个人皆可免费使用，但除开发者外禁止任何企业以及个人以任何形式将组件的源代码纳入自己的知识产权范围。使用该组件源引起的任何商业或利益上的损失、风险以及任何刑事或民事纠纷一概由使用者自行承担。</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageIconUrl>https://github.com/cnzhnet/LingOpenSource</PackageIconUrl>
+    <RepositoryUrl>https://github.com/cnzhnet/Wunion.DataAdapter.git</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

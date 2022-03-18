@@ -17,9 +17,9 @@ PostgreSQL database support package for Wunion.DataAdapter
 1. 修复 TableBuildParser 的默认值解析错误的问题.
    Fix default value parsing error for TableBuildParser.</Description>
     <Copyright>cnzhnet</Copyright>
-    <PackageProjectUrl>https://github.com/cnzhnet/LingOpenSource</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/cnzhnet/LingOpenSource</RepositoryUrl>
-    <Version>1.0.5</Version>
+    <PackageProjectUrl>https://github.com/cnzhnet/Wunion.DataAdapter</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cnzhnet/Wunion.DataAdapter.git</RepositoryUrl>
+    <Version>1.0.5.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
