@@ -10,9 +10,9 @@
     <ToolCommandName>WDA-CF</ToolCommandName>
     <PackageOutputPath>./bin/nupkg</PackageOutputPath>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-	<VersionPrefix>1.0.1</VersionPrefix>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
+	<VersionPrefix>1.0.2</VersionPrefix>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <FileVersion>1.0.2</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
