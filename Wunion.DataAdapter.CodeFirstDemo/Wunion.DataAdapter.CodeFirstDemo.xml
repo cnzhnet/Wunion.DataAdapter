@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Wunion.DataAdapter.CodeFirstDemo</name>
+    </assembly>
+    <members>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.AuthorizationAccessor">
+            <summary>
+            用于实现授权访问器的接口.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.AuthorizationAccessor.Authorization">
+            <summary>
+            用户权限信息.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.DateTimeJsonConverter">
+            <summary>
+            <see cref="T:System.DateTime"/> 类型的 Json 序列化格式转换控制.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.DateTimeNullableConverter">
+            <summary>
+            <see cref="T:System.DateTime"/> 可空类型的 Json 序列化格式转换控制.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.ServiceCollectionExtensions">
+            <summary>
+            用于扩展 <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 对象的方法.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ServiceCollectionExtensions.AddDbContainer(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Wunion.DataAdapter.CodeFirstDemo.Data.IDatabaseContainer})">
+            <summary>
+            添加数据库容器的依赖注入支持.
+            </summary>
+            <param name="services"></param>
+            <param name="configure">用于设置数据库容器</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ServiceCollectionExtensions.AddDbConverterOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Wunion.DataAdapter.Kernel.DbValueConverterOptions})">
+            <summary>
+            添加数据库值类型转换器的配置.
+            </summary>
+            <param name="services"></param>
+            <param name="configure">用于配置值转换器的方法.</param>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.ApplicationBuilderExtensions">
+            <summary>
+            用于扩展 <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/>
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ApplicationBuilderExtensions.UseSqlServer(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Wunion.DataAdapter.CodeFirstDemo.Data.DbEngineConfiguration})">
+            <summary>
+            使用 Microsoft SQL Server 数据库.
+            </summary>
+            <param name="app"></param>
+            <param name="configure">用于配置数据库.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ApplicationBuilderExtensions.UseMySql(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Wunion.DataAdapter.CodeFirstDemo.Data.DbEngineConfiguration})">
+            <summary>
+            使用 MySQL 数据库.
+            </summary>
+            <param name="app"></param>
+            <param name="configure">用于配置数据库.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ApplicationBuilderExtensions.UseNpgsql(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Wunion.DataAdapter.CodeFirstDemo.Data.DbEngineConfiguration})">
+            <summary>
+            使用 PostgreSQL 数据库.
+            </summary>
+            <param name="app"></param>
+            <param name="configure">用于配置数据库.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ApplicationBuilderExtensions.UseSqlite3(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Wunion.DataAdapter.CodeFirstDemo.Data.DbEngineConfiguration})">
+            <summary>
+            使用 Sqlite3 数据库.
+            </summary>
+            <param name="app"></param>
+            <param name="configure">用于配置数据库.</param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.ApplicationBuilderExtensions.UseRsaProtect(Microsoft.AspNetCore.Builder.IApplicationBuilder,System.Action{Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection})">
+            <summary>
+            使用 RSA 数据保护服务.
+            </summary>
+            <param name="app"></param>
+            <param name="configure"></param>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute">
+            <summary>
+            用于验证用户账的授权，若不通过则阻断访问.
+            </summary>
+        </member>
+        <member name="F:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.SUPER_USER_UID">
+            <summary>
+            超级用户的 UID.
+            </summary>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.RequiredPermission">
+            <summary>
+            获取或设置验证时所需要的权限.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.OnAuthorize(Wunion.DataAdapter.CodeFirstDemo.Data.Models.UserAuthorization)">
+            <summary>
+            授权通过返回 true，否则应返回 false .
+            </summary>
+            <param name="authorization">授权信息.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.PermissionDenied(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            没有权限时阻断请求.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.UserAuthorizeAttribute.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)">
+            <summary>
+            执行访问授权的验证.
+            </summary>
+            <param name="context"></param>
+            <param name="next"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.WebApiException">
+            <summary>
+            表示 webapi 中触发的异常.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.WebApiException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.WebApiException"/> 的对象实例.
+            </summary>
+            <param name="code">错误代码.</param>
+            <param name="message">错误信息.</param>
+            <param name="innerException">引发当前错误的异常信息.</param>
+        </member>
+        <member name="P:Wunion.DataAdapter.CodeFirstDemo.WebApiException.Code">
+            <summary>
+            已知错误的异常代码.
+            </summary>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter">
+            <summary>
+            用于自动处理 WebApi 的异常.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter.#ctor(Microsoft.Extensions.Logging.ILogger{Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter},Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter"/> 的对象实例.
+            </summary>
+            <param name="_logger"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.WebApiExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            WebApi 中产生错误时执行.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController">
+            <summary>
+            用于提供数据保护服务的 WebApi 控制器.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.#ctor(Wunion.DataAdapter.CodeFirstDemo.Data.IDatabaseContainer,Wunion.DataAdapter.CodeFirstDemo.Data.Security.IDataProtection,Wunion.DataAdapter.CodeFirstDemo.AuthorizationAccessor)">
+            <summary>
+            创建一个 <see cref="T:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController"/> 控制器实例.
+            </summary>
+            <param name="container"></param>
+            <param name="dp"></param>
+            <param name="accessor"></param>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.ChangeDatabase(System.String)">
+            <summary>
+            切换当前正在使用的数据库.
+            </summary>
+            <param name="kind">数据库种类（取值范围：mssql, mysql, npgsql, sqlite3）.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.GenKey">
+            <summary>
+            生成密钥.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.Encrypt(System.String)">
+            <summary>
+            加密保护给定的文本.
+            </summary>
+            <param name="text">要保护的文本.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.DataProtectionController.Decrypt(System.String)">
+            <summary>
+            解密给定的文本.
+            </summary>
+            <param name="text">待解密的文本.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController">
+            <summary>
+            提供用户账户管理功能的控制器.
+            </summary>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.GetAsync">
+            <summary>
+            获取所有用户账户列表.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.CreateAsync(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount)">
+            <summary>
+            用于创建用户账户.
+            </summary>
+            <param name="user">用户账户信息.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Update(Wunion.DataAdapter.CodeFirstDemo.Data.Domain.UserAccount)">
+            <summary>
+            更新指定的用户账户信息.
+            </summary>
+            <param name="user">用户账户信息.</param>
+            <returns></returns>
+            <exception cref="T:Wunion.DataAdapter.CodeFirstDemo.WebApiException"></exception>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.Delete(System.Int32)">
+            <summary>
+            删除指定 uid 的用户账户.
+            </summary>
+            <param name="uid">用户账户的 uid</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Controllers.UserAccountController.LogIn(System.String,System.String)">
+            <summary>
+            用户账户登录.
+            </summary>
+            <param name="name">用户账户名或邮箱.</param>
+            <param name="password">登录密码.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wunion.DataAdapter.CodeFirstDemo.Startup.GetDbSettings(System.String)">
+            <summary>
+            获取指定类型数据库的设置段.
+            </summary>
+            <param name="kind">数据库类型.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
